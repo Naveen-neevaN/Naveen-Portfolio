@@ -1,5 +1,5 @@
 .skills {
-  background-color: var(--bg-secondary);
+  background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 50%, #d1d9ff 100%);
 }
 
 .skills-grid {
@@ -11,7 +11,7 @@
 }
 
 .skill-category {
-  background-color: var(--bg-primary);
+  background: linear-gradient(135deg, #ffffff, rgba(102, 126, 234, 0.05));
   padding: 2rem;
   border-radius: 0.5rem;
   box-shadow: var(--shadow-sm);

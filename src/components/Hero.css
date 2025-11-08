@@ -42,10 +42,53 @@
   z-index: 1;
 }
 
-.hero-image-container {
+.hero-images-container {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  align-items: center;
   margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.hero-image-container {
   display: flex;
   justify-content: center;
+}
+
+.hero-carousel-container {
+  display: flex;
+  justify-content: center;
+}
+
+.hero-carousel-wrapper {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid #f093fb;
+  box-shadow: 0 10px 30px rgba(240, 147, 251, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: linear-gradient(135deg, #f093fb, #4facfe);
+  padding: 4px;
+  position: relative;
+}
+
+.hero-carousel-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .hero-image-wrapper {
@@ -149,5 +192,80 @@
     width: 100%;
     max-width: 300px;
   }
+
+  .hero-image-wrapper {
+    width: 150px;
+    height: 150px;
+  }
+
+  .hero-carousel-wrapper {
+    width: 150px;
+    height: 150px;
+  }
+}
+
+/* Image Modal */
+.image-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  animation: fadeIn 0.3s ease;
+  cursor: pointer;
+}
+
+.image-modal-content {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+  animation: scaleIn 0.3s ease;
+  cursor: default;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.image-modal-close {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  font-size: 2rem;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease;
+  z-index: 10001;
+}
+
+.image-modal-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.image-modal-image {
+  max-width: 100%;
+  max-height: 90vh;
+  border-radius: 0.5rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
 }
 
