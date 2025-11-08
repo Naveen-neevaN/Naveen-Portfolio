@@ -46,8 +46,8 @@ export const personalInfo = {
   // Images will change every 3 seconds automatically
   // Rectangular faded shape spanning significant page width
   carouselImages: [
-    '/images/carousel/image1.jpg',
-    '/images/carousel/image2.jpg',
+    './images/carousel/image1.jpg',
+    './images/carousel/image2.jpg',
     // '/images/carousel/image3.jpg',
   ] as string[],
   
