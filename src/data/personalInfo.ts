@@ -41,6 +41,9 @@ export const personalInfo = {
   phone: '+91 9843165568',
   location: 'Tiruchirappalli, Tamil Nadu, India',
   
+  // Profile Picture - Place your image in public/images/profile.jpg
+  profileImage: '/images/profile.jpg',
+  
   // About Section
   bio: `Tosca Automation Test Lead with nearly 5 years of experience in BFSI applications, 
         driving automation delivery and client engagement. Proficient in Tosca framework design, 
