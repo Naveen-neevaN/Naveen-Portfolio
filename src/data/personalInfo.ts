@@ -41,12 +41,10 @@ export const personalInfo = {
   phone: '+91 9843165568',
   location: 'Tiruchirappalli, Tamil Nadu, India',
   
-  // Profile Picture - Place your image in public/images/profile.jpg
-  profileImage: '/images/profile.jpg',
-  
   // Carousel Images - Add multiple images that will shuffle automatically
   // Place images in public/images/carousel/ folder
   // Images will change every 3 seconds automatically
+  // Rectangular faded shape spanning significant page width
   carouselImages: [
     '/images/carousel/image1.jpg',
     '/images/carousel/image2.jpg',

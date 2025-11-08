@@ -5,8 +5,8 @@ import { personalInfo } from '@/data/personalInfo'
 import './Hero.css'
 
 const Hero = () => {
-  const [showImageModal, setShowImageModal] = useState(false)
   const [currentCarouselImage, setCurrentCarouselImage] = useState(0)
+  const [carouselError, setCarouselError] = useState(false)
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId)
@@ -26,14 +26,6 @@ const Hero = () => {
     document.body.removeChild(link)
   }
 
-  const handleImageClick = () => {
-    setShowImageModal(true)
-  }
-
-  const closeModal = () => {
-    setShowImageModal(false)
-  }
-
   // Carousel auto-shuffle effect
   useEffect(() => {
     if (personalInfo.carouselImages && personalInfo.carouselImages.length > 0) {
@@ -51,40 +43,30 @@ const Hero = () => {
     <section id="hero" className="hero">
       <div className="container">
         <div className="hero-content fade-in-up">
-          <div className="hero-images-container">
-            <div className="hero-image-container">
-              <div className="hero-image-wrapper" onClick={handleImageClick} style={{ cursor: 'pointer' }}>
+          {/* Carousel Image - Rectangular, above intro text */}
+          <div className="hero-carousel-container">
+            <div className="hero-carousel-wrapper">
+              {personalInfo.carouselImages && personalInfo.carouselImages.length > 0 && !carouselError ? (
                 <img
-                  src={personalInfo.profileImage}
-                  alt={personalInfo.name}
-                  className="hero-image"
-                  onError={(e) => {
-                    // Fallback if image doesn't exist - show placeholder
-                    const target = e.currentTarget as HTMLImageElement
-                    target.style.display = 'none'
-                    const wrapper = target.closest('.hero-image-wrapper')
-                    if (wrapper) {
-                      wrapper.innerHTML = '<div class="hero-image-placeholder"><span>Add Your Photo</span></div>'
-                    }
+                  src={personalInfo.carouselImages[currentCarouselImage]}
+                  alt={`Carousel ${currentCarouselImage + 1}`}
+                  className="hero-carousel-image"
+                  key={currentCarouselImage}
+                  onError={() => {
+                    setCarouselError(true)
+                  }}
+                  onLoad={() => {
+                    setCarouselError(false)
                   }}
                 />
-              </div>
-            </div>
-            
-            {/* Carousel Image */}
-            {personalInfo.carouselImages && personalInfo.carouselImages.length > 0 && (
-              <div className="hero-carousel-container">
-                <div className="hero-carousel-wrapper">
-                  <img
-                    src={personalInfo.carouselImages[currentCarouselImage]}
-                    alt={`Carousel ${currentCarouselImage + 1}`}
-                    className="hero-carousel-image"
-                    key={currentCarouselImage}
-                  />
+              ) : (
+                <div className="hero-carousel-placeholder">
+                  <span>Add Carousel Images to public/images/carousel/</span>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
+          
           <h1 className="hero-title">
             Hi, I'm <span className="highlight">{personalInfo.name}</span>
           </h1>
@@ -112,20 +94,6 @@ const Hero = () => {
           </div>
         </div>
       </div>
-
-      {/* Image Modal */}
-      {showImageModal && (
-        <div className="image-modal" onClick={closeModal}>
-          <div className="image-modal-content" onClick={(e) => e.stopPropagation()}>
-            <button className="image-modal-close" onClick={closeModal}>×</button>
-            <img
-              src={personalInfo.profileImage}
-              alt={personalInfo.name}
-              className="image-modal-image"
-            />
-          </div>
-        </div>
-      )}
     </section>
   )
 }
