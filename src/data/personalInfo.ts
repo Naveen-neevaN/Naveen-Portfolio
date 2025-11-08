@@ -48,7 +48,7 @@ export const personalInfo = {
   carouselImages: [
     '/images/carousel/image1.jpg',
     '/images/carousel/image2.jpg',
-    '/images/carousel/image3.jpg',
+    // '/images/carousel/image3.jpg',
   ] as string[],
   
   // About Section - Rephrased content

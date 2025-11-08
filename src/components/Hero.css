@@ -64,10 +64,53 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  animation: fadeIn 0.5s ease-in;
-  opacity: 0.85;
-  filter: brightness(0.95);
+  animation: fadeInZoom 2.5s ease-in-out forwards;
+  opacity: 1;
+  filter: brightness(0.85);
+  transition: opacity 1.5s ease, transform 1.5s ease;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  z-index: 1;
+  transition: opacity 1.5s ease, transform 1.5s ease;
 }
+
+/* Show the active image */
+.hero-carousel-image.active {
+  opacity: 1;
+  z-index: 2;
+  animation: fadeInZoom 2.5s ease-in-out forwards;
+  /* Each image stays for 6 seconds, transition is smooth */
+  animation-delay: 0s;
+  animation-duration: 6s;
+}
+
+/* Add transitions only for interactive states */
+.hero-carousel-image:hover,
+.hero-carousel-image:focus {
+  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+@keyframes fadeInZoom {
+  0% {
+    opacity: 0;
+    transform: scale(1.08);
+  }
+  20% {
+    opacity: 0.85;
+    transform: scale(1);
+  }
+  80% {
+    opacity: 0.85;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(0.98);
+  }
+}
+
 
 .hero-carousel-placeholder {
   width: 100%;
