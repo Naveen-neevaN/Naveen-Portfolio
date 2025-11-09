@@ -5,22 +5,48 @@
 }
 
 :root {
-  --primary-color: #667eea;
-  --primary-dark: #5568d3;
-  --primary-light: #8b9eff;
-  --secondary-color: #764ba2;
-  --accent-color: #f093fb;
-  --accent-blue: #4facfe;
-  --text-primary: #1e293b;
-  --text-secondary: #64748b;
-  --bg-primary: #f8f9ff;
-  --bg-secondary: #f0f4ff;
-  --bg-tertiary: #e8ecff;
-  --border-color: #e2e8f0;
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
-  --shadow-colored: 0 10px 30px rgba(102, 126, 234, 0.2);
+  --primary-color: #6dd5ed;
+  --primary-dark: #2193b0;
+  --primary-light: #bde6fa;
+  --secondary-color: #fbc2eb;
+  --accent-color: #fcb69f;
+  --accent-blue: #a1c4fd;
+  /* hero gradient: bold and vibrant professional colors */
+  --hero-gradient: linear-gradient(135deg, 
+    #00c6ff 0%, 
+    #ff758c 35%,
+    #0072ff 65%,
+    #00c6ff 100%
+  );
+  --text-primary: #22223b;
+  --text-secondary: #4a4e69;
+  --bg-primary: #f8f9fa;
+  --bg-secondary: #f1f3f6;
+  --bg-tertiary: #e9ecef;
+  --border-color: #dee2e6;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.04);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.08);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08);
+  --shadow-colored: 0 10px 30px rgba(109, 213, 237, 0.15);
+}
+
+[data-theme="dark"] {
+  --text-primary: #f8f9fa;
+  --text-secondary: #bde6fa;
+  --bg-primary: #22223b;
+  --bg-secondary: #4a4e69;
+  --bg-tertiary: #6dd5ed;
+  --hero-gradient: linear-gradient(135deg, 
+    #4834d4 0%, 
+    #686de0 35%,
+    #30336b 65%,
+    #130f40 100%
+  );
+  --border-color: #4a4e69;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.7);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.7);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.7);
+  --shadow-colored: 0 10px 30px rgba(109, 213, 237, 0.25);
 }
 
 html {
@@ -99,13 +125,14 @@ section {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  background: var(--hero-gradient);
   color: white;
   box-shadow: var(--shadow-colored);
 }
 
 .btn-primary:hover {
-  background: linear-gradient(135deg, var(--primary-dark), var(--secondary-color));
+  /* slightly darker on hover by using the same hero gradient (kept subtle) */
+  background: var(--hero-gradient);
   transform: translateY(-2px);
   box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);
 }
@@ -117,7 +144,7 @@ section {
 }
 
 .btn-secondary:hover {
-  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  background: var(--hero-gradient);
   color: white;
   border-color: transparent;
   transform: translateY(-2px);
@@ -130,7 +157,8 @@ section {
   font-weight: 700;
   text-align: center;
   margin-bottom: 1rem;
-  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  /* use the hero gradient for prominent section headings */
+  background: var(--hero-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

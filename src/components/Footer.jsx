@@ -1,9 +1,8 @@
-import { personalInfo } from '@/data/personalInfo'
+import { personalInfo } from '@/data/personalInfo.js'
 import { FaGithub, FaLinkedin, FaTwitter, FaEnvelope } from 'react-icons/fa'
 import './Footer.css'
 
-// Icon mapping
-const iconMap: { [key: string]: React.ComponentType } = {
+const iconMap = {
   FaGithub,
   FaLinkedin,
   FaTwitter,
@@ -17,7 +16,7 @@ const Footer = () => {
     <footer className="footer">
       <div className="container">
         <div className="footer-content">
-          <div className="footer-social">
+          <div className="footer-social" role="navigation" aria-label="Social media links">
             {personalInfo.socialLinks.map((social, index) => {
               const IconComponent = iconMap[social.icon] || FaEnvelope
               return (
@@ -27,15 +26,17 @@ const Footer = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="social-link"
-                  aria-label={social.name}
+                  aria-label={`Connect on ${social.name}`}
+                  title={social.name}
                 >
-                  <IconComponent />
+                  <IconComponent aria-hidden="true" />
                 </a>
               )
             })}
           </div>
-          <p className="footer-text">
-            © {currentYear} {personalInfo.name}. All rights reserved.
+          <p className="footer-text" role="contentinfo">Let's connect and create something amazing together</p>
+          <p className="copyright-text">
+            © {currentYear} Naveen K. All rights reserved
           </p>
         </div>
       </div>
@@ -44,4 +45,3 @@ const Footer = () => {
 }
 
 export default Footer
-

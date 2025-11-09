@@ -1,14 +1,12 @@
-import { personalInfo } from '@/data/personalInfo'
+'use client'
+
+import { personalInfo } from '@/data/personalInfo.js'
+import { useScrollAnimation } from '@/hooks/useScrollAnimation.js'
 import './Skills.css'
 
-// Icon mapping - you can customize this based on react-icons
-const getIconComponent = (iconName?: string) => {
-  // This is a placeholder - in a real implementation, you'd import and use react-icons
-  // For now, we'll use a simple approach
-  return null
-}
-
 const Skills = () => {
+  const [ref, isVisible] = useScrollAnimation(0.2)
+  
   const skillCategories = {
     frontend: personalInfo.skills.filter(s => s.category === 'frontend'),
     backend: personalInfo.skills.filter(s => s.category === 'backend'),
@@ -22,16 +20,27 @@ const Skills = () => {
         <h2 className="section-title">Skills</h2>
         <p className="section-subtitle">Technologies and tools I work with</p>
         
-        <div className="skills-grid">
-          {Object.entries(skillCategories).map(([category, skills]) => {
+        <div 
+          ref={ref}
+          className={`skills-grid ${isVisible ? 'fade-in-up' : ''}`}
+        >
+          {Object.entries(skillCategories).map(([category, skills], catIndex) => {
             if (skills.length === 0) return null
             
             return (
-              <div key={category} className="skill-category">
+              <div 
+                key={category} 
+                className="skill-category"
+                style={{ animationDelay: `${catIndex * 0.1}s` }}
+              >
                 <h3 className="category-title">{category.charAt(0).toUpperCase() + category.slice(1)}</h3>
                 <div className="skill-items">
                   {skills.map((skill, index) => (
-                    <div key={index} className="skill-item">
+                    <div 
+                      key={index} 
+                      className="skill-item"
+                      style={{ animationDelay: `${(catIndex * 0.1) + (index * 0.05)}s` }}
+                    >
                       <span className="skill-name">{skill.name}</span>
                     </div>
                   ))}
@@ -46,4 +55,3 @@ const Skills = () => {
 }
 
 export default Skills
-

@@ -1,5 +1,7 @@
 .projects {
-  background: linear-gradient(135deg, #f8f9ff 0%, #e8ecff 50%, #d1d9ff 100%);
+  /* use hero gradient for the section background */
+  background: var(--hero-gradient);
+  color: var(--text-primary);
 }
 
 .projects-grid {
@@ -8,16 +10,28 @@
   gap: 2rem;
   max-width: 1200px;
   margin: 0 auto;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.projects-grid.fade-in-up {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .project-card {
-  background: linear-gradient(135deg, #ffffff, rgba(102, 126, 234, 0.05));
-  border-radius: 0.5rem;
+  /* cards remain white for readability on top of gradient */
+  background: #ffffff;
+  border-radius: 1rem;
   overflow: hidden;
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-md);
   transition: all 0.3s ease;
-  border: 2px solid rgba(102, 126, 234, 0.2);
+  border: 1px solid rgba(102, 126, 234, 0.12);
   width: 100%;
+  opacity: 0;
+  animation: fadeInUp 0.6s ease-out forwards;
+  color: var(--text-primary);
 }
 
 .project-card:hover {
@@ -54,9 +68,22 @@
   background-color: var(--primary-color);
   color: white;
   padding: 0.375rem 0.75rem;
-  border-radius: 0.25rem;
+  border-radius: 0.5rem;
   font-size: 0.875rem;
   font-weight: 500;
+  opacity: 0;
+  animation: fadeInUp 0.4s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .project-links {
@@ -76,8 +103,9 @@
 }
 
 .project-link:hover {
-  background-color: var(--primary-color);
+  background: var(--hero-gradient);
   color: white;
+  border-color: transparent;
 }
 
 @media (max-width: 768px) {

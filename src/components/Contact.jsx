@@ -1,23 +1,22 @@
 'use client'
 
 import { useState } from 'react'
-import { personalInfo } from '@/data/personalInfo'
+import { personalInfo } from '@/data/personalInfo.js'
+import { useScrollAnimation } from '@/hooks/useScrollAnimation.js'
 import './Contact.css'
 
 const Contact = () => {
+  const [ref, isVisible] = useScrollAnimation(0.2)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     message: '',
   })
-  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
+  const [status, setStatus] = useState('idle')
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     setStatus('sending')
-    
-    // In a real implementation, you would send this to a backend API
-    // For now, we'll simulate a submission
     setTimeout(() => {
       setStatus('success')
       setFormData({ name: '', email: '', message: '' })
@@ -25,7 +24,7 @@ const Contact = () => {
     }, 1000)
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -38,7 +37,10 @@ const Contact = () => {
         <h2 className="section-title">Get In Touch</h2>
         <p className="section-subtitle">I'd love to hear from you</p>
         
-        <div className="contact-content">
+        <div 
+          ref={ref}
+          className={`contact-content ${isVisible ? 'fade-in-up' : ''}`}
+        >
           <div className="contact-info">
             <h3>Contact Information</h3>
             <div className="contact-details">
@@ -114,4 +116,3 @@ const Contact = () => {
 }
 
 export default Contact
-

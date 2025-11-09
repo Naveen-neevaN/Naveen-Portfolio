@@ -1,23 +1,40 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { personalInfo } from '@/data/personalInfo'
+import { personalInfo } from '@/data/personalInfo.js'
 import './Hero.css'
+import './Hero.additional.css'
 
 const Hero = () => {
   const [currentCarouselImage, setCurrentCarouselImage] = useState(0)
   const [carouselError, setCarouselError] = useState(false)
+  const [isTransitioning, setIsTransitioning] = useState(false)
+  const [typedTitle, setTypedTitle] = useState('')
 
-  const scrollToSection = (sectionId: string) => {
+  useEffect(() => {
+    const title = personalInfo.title;
+    let currentIndex = 0;
+    const typingInterval = setInterval(() => {
+      if (currentIndex <= title.length) {
+        setTypedTitle(title.slice(0, currentIndex));
+        currentIndex++;
+      } else {
+        clearInterval(typingInterval);
+      }
+    }, 50);
+
+    return () => clearInterval(typingInterval);
+  }, []);
+
+  const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId)
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' })
     }
   }
 
-  const handleResumeDownload = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleResumeDownload = (e) => {
     e.preventDefault()
-    // Create a temporary anchor element to trigger download
     const link = document.createElement('a')
     link.href = personalInfo.resumeUrl
     link.download = 'Naveen_K_Resume.pdf'
@@ -26,14 +43,15 @@ const Hero = () => {
     document.body.removeChild(link)
   }
 
-  // Carousel auto-shuffle effect
   useEffect(() => {
     if (personalInfo.carouselImages && personalInfo.carouselImages.length > 0) {
       const interval = setInterval(() => {
-        setCurrentCarouselImage((prev) => 
-          (prev + 1) % personalInfo.carouselImages!.length
-        )
-      }, 6000) // Change image every 3 seconds
+        setIsTransitioning(true)
+        setTimeout(() => {
+          setCurrentCarouselImage((prev) => (prev + 1) % personalInfo.carouselImages.length)
+          setIsTransitioning(false)
+        }, 500)
+      }, 6000)
 
       return () => clearInterval(interval)
     }
@@ -43,22 +61,29 @@ const Hero = () => {
     <section id="hero" className="hero">
       <div className="container">
         <div className="hero-content fade-in-up">
-          {/* Carousel Image - Rectangular, above intro text */}
           <div className="hero-carousel-container">
             <div className="hero-carousel-wrapper">
               {personalInfo.carouselImages && personalInfo.carouselImages.length > 0 && !carouselError ? (
-                <img
-                  src={personalInfo.carouselImages[currentCarouselImage]}
-                  alt={`Carousel ${currentCarouselImage + 1}`}
-                  className="hero-carousel-image"
-                  key={currentCarouselImage}
-                  onError={() => {
-                    setCarouselError(true)
-                  }}
-                  onLoad={() => {
-                    setCarouselError(false)
-                  }}
-                />
+                <div className="hero-carousel-images-wrapper">
+                  {personalInfo.carouselImages.map((image, index) => (
+                    <img
+                      key={index}
+                      src={image}
+                      alt={`Carousel ${index + 1}`}
+                      className={`hero-carousel-image ${index === currentCarouselImage ? 'active' : ''}`}
+                      onError={() => {
+                        if (index === currentCarouselImage) {
+                          setCarouselError(true)
+                        }
+                      }}
+                      onLoad={() => {
+                        if (index === currentCarouselImage) {
+                          setCarouselError(false)
+                        }
+                      }}
+                    />
+                  ))}
+                </div>
               ) : (
                 <div className="hero-carousel-placeholder">
                   <span>Add Carousel Images to public/images/carousel/</span>
@@ -68,9 +93,14 @@ const Hero = () => {
           </div>
           
           <h1 className="hero-title">
-            Hi, I'm <span className="highlight">{personalInfo.name}</span>
+            Hi, I'm <span className="highlight-gradient">{personalInfo.name}</span>
           </h1>
-          <h2 className="hero-subtitle">{personalInfo.title}</h2>
+          <div className="hero-location">
+            <span>📍 {personalInfo.location}</span>
+          </div>
+          <h2 className="hero-subtitle">
+            {typedTitle}<span className="typing-cursor">|</span>
+          </h2>
           <p className="hero-description">{personalInfo.bio}</p>
           <div className="hero-buttons">
             <a
@@ -99,4 +129,3 @@ const Hero = () => {
 }
 
 export default Hero
-

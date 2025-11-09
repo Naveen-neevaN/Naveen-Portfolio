@@ -2,6 +2,9 @@
 
 import { useState, useEffect } from 'react'
 import './Header.css'
+import './Header.additional.css'
+import { ThemeSwitch } from './ThemeSwitch'
+import { personalInfo } from '@/data/personalInfo.js'
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -16,7 +19,7 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const scrollToSection = (sectionId: string) => {
+  const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId)
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' })
@@ -38,19 +41,22 @@ const Header = () => {
         <nav className="nav">
           <div className="nav-brand">
             <a href="#hero" onClick={(e) => { e.preventDefault(); scrollToSection('hero') }}>
-              Portfolio
+              <span className="brand-name">{personalInfo.name}</span>
             </a>
           </div>
-          
-          <button
-            className="mobile-menu-toggle"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label="Toggle menu"
-          >
-            <span></span>
-            <span></span>
-            <span></span>
-          </button>
+
+          <div className="nav-right">
+            <ThemeSwitch />
+            <button
+              className="mobile-menu-toggle"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="Toggle menu"
+            >
+              <span></span>
+              <span></span>
+              <span></span>
+            </button>
+          </div>
 
           <ul className={`nav-links ${isMobileMenuOpen ? 'open' : ''}`}>
             {navItems.map((item) => (
@@ -74,4 +80,3 @@ const Header = () => {
 }
 
 export default Header
-
