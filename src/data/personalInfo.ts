@@ -35,7 +35,7 @@ export interface SocialLink {
 
 export const personalInfo = {
   // Basic Information
-  name: 'NAVEEN K',
+  name: 'Naveen K',
   title: 'Senior Project Engineer – Tosca Automation / Test Lead',
   email: 'naveennagendiran321@gmail.com',
   phone: '+91 9843165568',
@@ -48,7 +48,8 @@ export const personalInfo = {
   carouselImages: [
     './images/carousel/image1.jpg',
     './images/carousel/image2.jpg',
-    // '/images/carousel/image3.jpg',
+    './images/carousel/image3.jpg',
+    // './images/carousel/image4.jpg',
   ] as string[],
   
   // About Section - Rephrased content

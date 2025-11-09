@@ -33,7 +33,7 @@ const Hero = () => {
         setCurrentCarouselImage((prev) => 
           (prev + 1) % personalInfo.carouselImages!.length
         )
-      }, 3000) // Change image every 3 seconds
+      }, 6000) // Change image every 3 seconds
 
       return () => clearInterval(interval)
     }
