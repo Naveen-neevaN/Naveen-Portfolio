@@ -9,9 +9,9 @@ export const personalInfo = {
   
   // Carousel Images
   carouselImages: [
-    './public/images/carousel/image1.jpg',
-    './public/images/carousel/image2.jpg',
-    '.public/images/carousel/image3.jpg',
+    './images/carousel/image1.jpg',
+    './images/carousel/image2.jpg',
+    './images/carousel/image3.jpg',
   ],
   
   // About Section
