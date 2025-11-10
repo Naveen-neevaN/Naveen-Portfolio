@@ -14,77 +14,105 @@ const Contact = () => {
   })
   const [status, setStatus] = useState('idle')
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
+  const handleSubmit = (event) => {
+    event.preventDefault()
     setStatus('sending')
     setTimeout(() => {
       setStatus('success')
       setFormData({ name: '', email: '', message: '' })
-      setTimeout(() => setStatus('idle'), 3000)
+      setTimeout(() => setStatus('idle'), 2800)
     }, 1000)
   }
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    })
+  const handleChange = (event) => {
+    setFormData((previous) => ({
+      ...previous,
+      [event.target.name]: event.target.value,
+    }))
   }
 
   return (
     <section id="contact" className="contact section-padding">
       <div className="container">
-        <h2 className="section-title">Get In Touch</h2>
-        <p className="section-subtitle">I'd love to hear from you</p>
-        
-        <div 
-          ref={ref}
-          className={`contact-content ${isVisible ? 'fade-in-up' : ''}`}
-        >
-          <div className="contact-info">
-            <h3>Contact Information</h3>
-            <div className="contact-details">
-              <div className="contact-item">
-                <strong>Email:</strong>
-                <a href={`mailto:${personalInfo.email}`}>{personalInfo.email}</a>
+        <h2 className="section-heading">Get In Touch</h2>
+        <p className="section-subheading">
+          Whether it’s automation strategy, AI-driven assurance, or an exciting collaboration — let’s create something
+          meaningful.
+        </p>
+
+        <div ref={ref} className={`contact__grid ${isVisible ? 'is-visible' : ''}`}>
+          <div className="contact__card glass-panel">
+            <span className="contact__badge glass-inline">Open for opportunities</span>
+            <h3 className="contact__title gradient-text">Let’s build resilient digital experiences</h3>
+            <p className="contact__description text-muted">
+              I partner with global teams to architect QA accelerators, orchestrate Tosca automation, and cultivate
+              seamless delivery pipelines.
+            </p>
+
+            <div className="contact__details">
+              <div className="contact__detail">
+                <span className="contact__detail-icon" aria-hidden="true">
+                  ✉️
+                </span>
+                <span className="contact__detail-label">Email</span>
+                <a href={`mailto:${personalInfo.email}`} className="contact__detail-value">
+                  {personalInfo.email}
+                </a>
               </div>
-              {personalInfo.phone && (
-                <div className="contact-item">
-                  <strong>Phone:</strong>
-                  <a href={`tel:${personalInfo.phone}`}>{personalInfo.phone}</a>
+
+              {personalInfo.phone ? (
+                <div className="contact__detail">
+                  <span className="contact__detail-icon" aria-hidden="true">
+                    📞
+                  </span>
+                  <span className="contact__detail-label">Phone</span>
+                  <a href={`tel:${personalInfo.phone}`} className="contact__detail-value">
+                    {personalInfo.phone}
+                  </a>
                 </div>
-              )}
-              <div className="contact-item">
-                <strong>Location:</strong>
-                <span>{personalInfo.location}</span>
+              ) : null}
+
+              <div className="contact__detail">
+                <span className="contact__detail-icon" aria-hidden="true">
+                  📍
+                </span>
+                <span className="contact__detail-label">Location</span>
+                <span className="contact__detail-value">{personalInfo.location}</span>
               </div>
             </div>
           </div>
 
-          <form className="contact-form" onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label htmlFor="name">Name</label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-              />
+          <form className="contact__form glass-panel" onSubmit={handleSubmit} noValidate>
+            <div className="contact__formRow">
+              <div className="contact__field">
+                <label htmlFor="name">Name</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  autoComplete="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                  placeholder="Enter your name"
+                />
+              </div>
+              <div className="contact__field">
+                <label htmlFor="email">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  autoComplete="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                  placeholder="you@example.com"
+                />
+              </div>
             </div>
-            <div className="form-group">
-              <label htmlFor="email">Email</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="form-group">
+
+            <div className="contact__field">
               <label htmlFor="message">Message</label>
               <textarea
                 id="message"
@@ -92,22 +120,26 @@ const Contact = () => {
                 value={formData.message}
                 onChange={handleChange}
                 rows={6}
+                placeholder="Tell me a little about your project or idea..."
                 required
               />
             </div>
-            <button
-              type="submit"
-              className="btn btn-primary"
-              disabled={status === 'sending'}
-            >
-              {status === 'sending' ? 'Sending...' : status === 'success' ? 'Sent!' : 'Send Message'}
+
+            <button type="submit" className="btn btn-primary contact__submit" disabled={status === 'sending'}>
+              {status === 'sending' ? 'Sending...' : status === 'success' ? 'Message Sent' : 'Send Message'}
             </button>
-            {status === 'success' && (
-              <p className="form-success">Thank you! I'll get back to you soon.</p>
-            )}
-            {status === 'error' && (
-              <p className="form-error">Something went wrong. Please try again.</p>
-            )}
+
+            <div className="contact__status" role="status" aria-live="polite">
+              {status === 'success' ? (
+                <span className="contact__statusMessage contact__statusMessage--success">
+                  Thank you! I’ll be in touch shortly.
+                </span>
+              ) : status === 'error' ? (
+                <span className="contact__statusMessage contact__statusMessage--error">
+                  Something went wrong. Please try again.
+                </span>
+              ) : null}
+            </div>
           </form>
         </div>
       </div>

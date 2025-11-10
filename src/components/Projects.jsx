@@ -10,57 +10,59 @@ const Projects = () => {
   return (
     <section id="projects" className="projects section-padding">
       <div className="container">
-        <h2 className="section-title">Projects</h2>
-        <p className="section-subtitle">Some of my recent work</p>
-        
-        <div 
-          ref={ref}
-          className={`projects-grid ${isVisible ? 'fade-in-up' : ''}`}
-        >
+        <h2 className="section-heading">Some of My Recent Work</h2>
+        <p className="section-subheading">
+          Impactful automation programs and enterprise accelerators delivered in high-stakes environments.
+        </p>
+
+        <div ref={ref} className={`projects__grid ${isVisible ? 'is-visible' : ''}`}>
           {personalInfo.projects.map((project, index) => (
-            <div 
-              key={index} 
-              className="project-card"
-              style={{ animationDelay: `${index * 0.2}s` }}
+            <article
+              key={project.title}
+              className="projects__card glass-panel"
+              style={{ transitionDelay: `${index * 110}ms` }}
             >
-              <div className="project-content">
-                <h3 className="project-title">{project.title}</h3>
-                <p className="project-description">{project.description}</p>
-                <div className="project-technologies">
-                  {project.technologies.map((tech, techIndex) => (
-                    <span 
-                      key={techIndex} 
-                      className="tech-tag"
-                      style={{ animationDelay: `${(index * 0.2) + (techIndex * 0.05)}s` }}
-                    >
+              <div className="projects__cardBody">
+                <span className="projects__eyebrow">Featured Project</span>
+                <h3 className="projects__title gradient-text">{project.title}</h3>
+                <p className="projects__description text-muted">{project.description}</p>
+              </div>
+
+              <div className="projects__footer">
+                <div className="projects__tech">
+                  {project.technologies?.map((tech) => (
+                    <span key={`${project.title}-${tech}`} className="projects__techChip">
                       {tech}
                     </span>
                   ))}
                 </div>
-                <div className="project-links">
-                  {project.githubUrl && (
-                    <a
-                      href={project.githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="project-link"
-                    >
-                      GitHub
-                    </a>
-                  )}
-                  {project.liveUrl && (
-                    <a
-                      href={project.liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="project-link"
-                    >
-                      Live Demo
-                    </a>
-                  )}
-                </div>
+
+                {(project.githubUrl || project.liveUrl) && (
+                  <div className="projects__links">
+                    {project.githubUrl ? (
+                      <a
+                        href={project.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="projects__link"
+                      >
+                        GitHub
+                      </a>
+                    ) : null}
+                    {project.liveUrl ? (
+                      <a
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="projects__link"
+                      >
+                        Live Demo
+                      </a>
+                    ) : null}
+                  </div>
+                )}
               </div>
-            </div>
+            </article>
           ))}
         </div>
       </div>

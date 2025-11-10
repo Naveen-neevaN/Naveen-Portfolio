@@ -1,5 +1,5 @@
 import { personalInfo } from '@/data/personalInfo.js'
-import { FaGithub, FaLinkedin, FaTwitter, FaEnvelope } from 'react-icons/fa'
+import { FaGithub, FaLinkedin, FaTwitter, FaEnvelope, FaInstagram } from 'react-icons/fa'
 import './Footer.css'
 
 const iconMap = {
@@ -7,6 +7,7 @@ const iconMap = {
   FaLinkedin,
   FaTwitter,
   FaEnvelope,
+  FaInstagram,
 }
 
 const Footer = () => {
@@ -21,7 +22,7 @@ const Footer = () => {
               const IconComponent = iconMap[social.icon] || FaEnvelope
               return (
                 <a
-                  key={index}
+                  key={social.name ?? index}
                   href={social.url}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -34,10 +35,10 @@ const Footer = () => {
               )
             })}
           </div>
-          <p className="footer-text" role="contentinfo">Let's connect and create something amazing together</p>
-          <p className="copyright-text">
-            © {currentYear} Naveen K. All rights reserved
+          <p className="footer-text" role="contentinfo">
+            Let&apos;s connect and create something amazing together
           </p>
+          <p className="copyright-text">© {currentYear} Naveen K. All rights reserved</p>
         </div>
       </div>
     </footer>
