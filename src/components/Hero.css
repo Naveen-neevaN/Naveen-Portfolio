@@ -383,10 +383,9 @@
   .hero__visual {
     width: 94%;
     aspect-ratio: 4 / 5;
-  }
-
-  .hero__role {
-    font-size: 1rem;
+    /* Let the visual shrink naturally on very small screens to avoid large empty blocks */
+    min-height: auto;
+    padding: 0.4rem;
   }
 
   .hero__meta {

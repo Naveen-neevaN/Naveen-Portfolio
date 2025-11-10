@@ -75,8 +75,17 @@ const Contact = () => {
                 <span className="contact__detail-icon" aria-hidden="true">
                   📍
                 </span>
-                <span className="contact__detail-label">Location</span>
-                <span className="contact__detail-value">{personalInfo.location}</span>
+                <div className="contact__detail--location">
+                  <span className="contact__detail-label">Location</span>
+                  <a
+                    className="contact__detail-value"
+                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(personalInfo.location)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {personalInfo.location}
+                  </a>
+                </div>
               </div>
             </div>
           </div>
