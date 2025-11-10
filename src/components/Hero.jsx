@@ -20,18 +20,31 @@ const resolveImageSource = (path) => {
   // Convert backslashes (Windows paths) to forward slashes and trim
   const normalized = path.replace(/\\/g, '/').trim()
 
-  // If already root-based (starts with '/'), keep it but remove accidental '/public/' prefix
-  if (normalized.startsWith('/')) {
-    return encodeURI(normalized.replace(/^\/public\//, '/'))
+  // Determine a base path for deployments (e.g., GitHub Pages serving under /RepoName)
+  let basePath = ''
+  try {
+    if (typeof window !== 'undefined' && window.location && typeof window.location.pathname === 'string') {
+      const parts = window.location.pathname.split('/').filter(Boolean)
+      if (parts.length && parts[0]) {
+        basePath = `/${parts[0]}`
+      }
+    }
+  } catch (e) {
+    basePath = ''
   }
 
-  // Handle relative paths like './public/..' or './images/...'
-  if (normalized.startsWith('./')) {
-    const cleaned = normalized.replace(/^\.\//, '')
-    return encodeURI(`/${cleaned.replace(/^public\//, '')}`)
-  }
+  // Build cleaned path (remove any leading public/ segment)
+  const cleaned = normalized.replace(/^public\//, '').replace(/^\/public\//, '').replace(/^\./, '')
+  // Ensure we have a single leading slash between basePath and cleaned path
+  const raw = `${basePath}/${cleaned}`
+  const finalPath = raw.replace(/\\/g, '/').replace(/\/{2,}/g, '/')
 
-  return encodeURI(`/${normalized.replace(/^public\//, '')}`)
+  // If the original path was an absolute URL, we already handled it above.
+  try {
+    return encodeURI(finalPath)
+  } catch (e) {
+    return finalPath
+  }
 }
 
 const Hero = () => {
@@ -128,7 +141,8 @@ const Hero = () => {
   const handleResumeDownload = (event) => {
     event.preventDefault()
     const link = document.createElement('a')
-    link.href = personalInfo.resumeUrl
+    // Resolve resume URL to respect possible basePath in hosted environments
+    link.href = resolveImageSource(personalInfo.resumeUrl || '')
     link.download = 'Naveen_K_Resume.pdf'
     document.body.appendChild(link)
     link.click()
