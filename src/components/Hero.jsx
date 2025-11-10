@@ -16,15 +16,17 @@ const resolveImageSource = (path) => {
     return path
   }
 
+  // Normalize any `public/...` references to root-based path
   if (path.startsWith('/')) {
-    return path
+    return path.replace(/^\/public\//, '/')
   }
 
   if (path.startsWith('./')) {
-    return `/${path.replace(/^\.\//, '')}`
+    const cleaned = path.replace(/^\.\//, '')
+    return `/${cleaned.replace(/^public\//, '')}`
   }
 
-  return `/${path.replace(/^\/?/, '')}`
+  return `/${path.replace(/^\/?/, '').replace(/^public\//, '')}`
 }
 
 const Hero = () => {
@@ -35,6 +37,11 @@ const Hero = () => {
   const [typedTitle, setTypedTitle] = useState('')
   const [roleIndex, setRoleIndex] = useState(0)
   const [isDeleting, setIsDeleting] = useState(false)
+  const [roleMinCh, setRoleMinCh] = useState(0)
+  const rolesRef = useRef([
+    'Senior Project Engineer – Automation',
+    'Tosca Automation Test Lead',
+  ])
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
   const [hasCarouselError, setHasCarouselError] = useState(false)
   const typingIndexRef = useRef(0)
@@ -60,11 +67,7 @@ const Hero = () => {
   }, [])
 
   useEffect(() => {
-    const roles = [
-      'Senior Project Engineer – Automation',
-      'Tosca Automation Test Lead',
-    ]
-
+    const roles = rolesRef.current
     if (prefersReducedMotion) {
       setTypedTitle(roles[0])
       return
@@ -93,6 +96,12 @@ const Hero = () => {
 
     return () => clearTimeout(timer)
   }, [typedTitle, isDeleting, roleIndex, prefersReducedMotion])
+
+  useEffect(() => {
+    // Reserve width to avoid layout shift/flicker
+    const maxLen = rolesRef.current.reduce((m, s) => Math.max(m, s.length), 0)
+    setRoleMinCh(maxLen + 2)
+  }, [])
 
   useEffect(() => {
     if (!hasCarousel || hasCarouselError || prefersReducedMotion || carouselImages.length <= 1) {
@@ -130,11 +139,13 @@ const Hero = () => {
       <div className="container">
         <div className={`hero__layout ${isMounted ? 'is-mounted' : ''}`}>
           <div className={`hero__column hero__column--intro ${isMounted ? 'is-active' : ''}`}>
-            <div className="hero__introLabel">Hi, I&apos;m</div>
-            <h1 className="hero__title">
-              <span className="hero__highlight gradient-text">{personalInfo.name}</span>
-            </h1>
-            <p className="hero__role">{typedTitle}</p>
+            <div className="hero__introRow">
+              <span className="hero__introLabel">Hi, I&apos;m</span>
+              <h1 className="hero__title">
+                <span className="hero__highlight gradient-text">{personalInfo.name}</span>
+              </h1>
+            </div>
+            <p className="hero__role" style={{ minWidth: `${roleMinCh}ch` }}>{typedTitle}</p>
 
             <p className="hero__bio text-muted">{heroDescription}</p>
 

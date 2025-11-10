@@ -26,7 +26,7 @@
 .hero__layout {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
   align-items: center;
   gap: clamp(2.5rem, 6vw, 4.5rem);
   z-index: 1;
@@ -71,13 +71,19 @@
   line-height: 1.04;
 }
 
+.hero__introRow {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+
 .hero__introLabel {
   font-family: var(--font-family-display);
   font-weight: 600;
-  font-size: clamp(1.2rem, 3vw, 1.6rem);
+  font-size: clamp(1.3rem, 3.2vw, 1.8rem);
   letter-spacing: 0.04em;
   color: var(--text-primary);
-  margin-bottom: 0.25rem;
+  margin-bottom: 0;
 }
 
 .hero__highlight {
@@ -90,6 +96,8 @@
   color: var(--text-primary);
   font-weight: 500;
   letter-spacing: 0.02em;
+  display: inline-block;
+  white-space: nowrap;
 }
 
 .hero__bio {
@@ -138,9 +146,9 @@
 
 .hero__visual {
   position: relative;
-  width: min(520px, 90%);
-  aspect-ratio: 5 / 5;
-  min-height: 52vh;
+  width: min(850px, 95%);
+  aspect-ratio: 16 / 11;
+  min-height: 65vh;
   overflow: hidden;
   border-radius: var(--radius-xl);
   padding: clamp(0.4rem, 1.8vw, 0.8rem);

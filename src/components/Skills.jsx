@@ -16,16 +16,70 @@ const Skills = () => {
   const [ref, isVisible] = useScrollAnimation(0.2)
 
   const skillGroups = useMemo(() => {
-    const grouped = personalInfo.skills.reduce((acc, skill) => {
-      const category = skill.category ?? 'other'
-      if (!acc[category]) {
-        acc[category] = []
-      }
-      acc[category].push(skill)
-      return acc
-    }, /** @type {Record<string, typeof personalInfo.skills>} */ ({}))
+    const automationToolsSet = new Set([
+      'Tosca',
+      'Selenium (Java)',
+      'Selenium (Python)',
+      'Playwright',
+      'Katalon',
+      'Postman',
+      'Jenkins',
+      'Jira',
+      'Git',
+      'Bitbucket',
+      'SailPoint',
+    ])
+    const frontendBackendSet = new Set([
+      'JavaScript',
+      'TypeScript (basic)',
+      'MySQL',
+      'Python',
+    ])
+    const otherSet = new Set([
+      'AWS',
+      'Azure (basic)',
+      'Google Vertex AI',
+      'Agile',
+      'Test Strategy',
+      'Test Framework Design',
+      'Wipro GenAI Accelerator',
+      'MCP Servers',
+      'Salesforce',
+    ])
 
-    return Object.entries(grouped).filter(([, skills]) => skills.length > 0)
+    const buckets = {
+      automation: [],
+      fullstack: [],
+      other: [],
+    }
+
+    for (const s of personalInfo.skills) {
+      const name = s.name
+      if (automationToolsSet.has(name)) {
+        buckets.automation.push(s)
+      } else if (frontendBackendSet.has(name)) {
+        buckets.fullstack.push(s)
+      } else if (otherSet.has(name)) {
+        buckets.other.push(s)
+      } else {
+        // fallback: infer based on category
+        if (s.category === 'backend' || s.category === 'frontend') {
+          buckets.fullstack.push(s)
+        } else if (s.category === 'tools') {
+          buckets.automation.push(s)
+        } else {
+          buckets.other.push(s)
+        }
+      }
+    }
+
+    const ordered = [
+      ['Automation / Testing Tools', buckets.automation],
+      ['Frontend + Backend Skills', buckets.fullstack],
+      ['Other Technical / Cloud / AI', buckets.other],
+    ]
+
+    return ordered
   }, [])
 
   return (
@@ -37,23 +91,21 @@ const Skills = () => {
         </p>
 
         <div ref={ref} className={`skills__grid ${isVisible ? 'is-visible' : ''}`}>
-          {skillGroups.map(([category, skills], index) => (
+          {skillGroups.map(([groupTitle, skills], index) => (
             <article
-              key={category}
+              key={groupTitle}
               className="skills__group glass-panel"
               style={{ transitionDelay: `${index * 90}ms` }}
             >
               <header className="skills__groupHeader">
-                <span className="skills__groupBadge">{friendlyCategoryNames[category] ?? category}</span>
-                <h3 className="skills__groupTitle gradient-text">
-                  {friendlyCategoryNames[category] ?? category}
-                </h3>
+                <span className="skills__groupBadge">{groupTitle}</span>
+                <h3 className="skills__groupTitle gradient-text">{groupTitle}</h3>
               </header>
 
               <div className="skills__chips">
                 {skills.map((skill, skillIndex) => (
                   <span
-                    key={`${category}-${skill.name}`}
+                    key={`${groupTitle}-${skill.name}`}
                     className="skills__chip"
                     style={{ transitionDelay: `${index * 90 + skillIndex * 40}ms` }}
                   >

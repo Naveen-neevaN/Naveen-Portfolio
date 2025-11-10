@@ -46,7 +46,7 @@
 }
 
 .social-link {
-  color: var(--text-primary);
+  color: #0b3a37;
   font-size: 1.2rem;
   transition: all 0.3s ease;
   display: inline-flex;
@@ -97,7 +97,7 @@
 }
 
 .footer-text {
-  color: var(--text-primary);
+  color: #0b3a37;
   font-size: 0.95rem;
   margin: 0;
   font-weight: 500;
@@ -105,7 +105,7 @@
 }
 
 .copyright-text {
-  color: var(--text-primary);
+  color: #0b3a37;
   font-size: 0.85rem;
   margin: 0;
   font-weight: 400;
