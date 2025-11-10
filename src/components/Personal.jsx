@@ -9,7 +9,7 @@ const Personal = () => {
       <h3 id="personal-title" className="section-subhead">Beyond the Code</h3>
       <div className="personal__panel glass-panel">
         <p>
-          Beyond the professional realm, I’m an accomplished chess player who captained my college team and enjoy
+          Beyond the professional realm, I'm an accomplished chess player who captained my college team and enjoy
           exploring AI-driven innovations and DevOps practices.
         </p>
 

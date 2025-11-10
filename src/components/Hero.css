@@ -112,6 +112,7 @@
   font-size: clamp(1rem, 2vw, 1.1rem);
   line-height: 1.8;
   max-width: 580px;
+  margin: 0.75rem 0;
 }
 
 .hero__meta {
@@ -120,6 +121,9 @@
   gap: 0.75rem 1.25rem;
   font-size: 0.95rem;
   color: var(--text-muted);
+  width: 100%;
+  justify-content: flex-start;
+  margin: 0.75rem 0;
 }
 
 .hero__meta-item {
@@ -276,6 +280,11 @@
 }
 
 @media (max-width: 1080px) {
+  .hero {
+    min-height: auto;
+    padding-top: clamp(5rem, 8vw, 7rem);
+  }
+
   .hero__layout {
     grid-template-columns: 1fr;
     gap: clamp(2rem, 6vw, 3rem);
@@ -286,59 +295,106 @@
     align-items: center;
   }
 
+  .hero__introRow {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
   .hero__badge {
     align-self: center;
   }
 
   .hero__bio {
     max-width: 640px;
+    padding: 0 1rem;
+    margin: 0.5rem auto;
   }
 
   .hero__meta {
     justify-content: center;
+    margin: 0.5rem 0;
   }
 
   .hero__meta-item {
     background: rgba(255, 255, 255, 0.45);
+    padding: 0.5rem 1rem;
   }
 
   .hero__visual {
-    /* mobile/tablet size increased by ~10% */
-    width: min(616px, 100%);
+    width: min(616px, 92%);
+    margin: 1rem auto;
+  }
+
+  .hero__role {
+    font-size: clamp(1.1rem, 2.2vw, 1.4rem);
   }
 }
 
 @media (max-width: 768px) {
   .hero {
-    padding-top: clamp(6.5rem, 14vw, 8rem);
+    padding-top: clamp(5.5rem, 12vw, 7rem);
+    padding-bottom: clamp(3rem, 6vw, 4rem);
   }
 
   .hero__actions {
     width: 100%;
     flex-direction: column;
     gap: 0.75rem;
+    padding: 0 1rem;
   }
 
   .hero__actions .btn {
     width: 100%;
+    margin: 0;
+    padding: 0.9rem 1.5rem;
   }
 
   .hero__meta-item {
     font-size: 0.9rem;
+    padding: 0.45rem 0.9rem;
+  }
+
+  .hero__title {
+    font-size: clamp(2.6rem, 8vw, 3.2rem);
+    letter-spacing: -0.02em;
+  }
+
+  .hero__introLabel {
+    font-size: clamp(1.8rem, 3vw, 2rem);
   }
 }
 
 @media (max-width: 540px) {
+  .hero {
+    padding-top: clamp(5rem, 10vw, 6rem);
+  }
+
   .hero__title {
-    font-size: clamp(2.4rem, 10vw, 3rem);
+    font-size: clamp(2.2rem, 9vw, 2.8rem);
   }
 
   .hero__bio {
     font-size: 0.95rem;
+    line-height: 1.7;
+    padding: 0 0.5rem;
   }
 
   .hero__visual {
+    width: 94%;
     aspect-ratio: 4 / 5;
+  }
+
+  .hero__role {
+    font-size: 1rem;
+  }
+
+  .hero__meta {
+    gap: 0.5rem 1rem;
+  }
+
+  .hero__meta-item {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
   }
 }
 

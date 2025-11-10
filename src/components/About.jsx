@@ -38,6 +38,21 @@ const About = () => {
           <Innovation />
           <TechExpertise />
           <Personal />
+          
+          <section className="about-cta">
+            <div className="about-cta__inner">
+              <a
+                href="#contact"
+                className="btn btn-primary"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
+                Let's build smarter systems together
+              </a>
+            </div>
+          </section>
         </div>
       </div>
     </section>
