@@ -33,6 +33,8 @@ const Hero = () => {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isMounted, setIsMounted] = useState(false)
   const [typedTitle, setTypedTitle] = useState('')
+  const [roleIndex, setRoleIndex] = useState(0)
+  const [isDeleting, setIsDeleting] = useState(false)
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
   const [hasCarouselError, setHasCarouselError] = useState(false)
   const typingIndexRef = useRef(0)
@@ -58,26 +60,39 @@ const Hero = () => {
   }, [])
 
   useEffect(() => {
-    const title = personalInfo.title ?? ''
-    if (!title || prefersReducedMotion) {
-      setTypedTitle(title)
+    const roles = [
+      'Senior Project Engineer – Automation',
+      'Tosca Automation Test Lead',
+    ]
+
+    if (prefersReducedMotion) {
+      setTypedTitle(roles[0])
       return
     }
 
-    typingIndexRef.current = 0
-    setTypedTitle('')
+    const currentRole = roles[roleIndex % roles.length]
+    const typingSpeed = isDeleting ? 35 : 55
+    const pauseAtEndMs = 1200
+    const pauseAtStartMs = 400
 
-    const interval = setInterval(() => {
-      typingIndexRef.current += 1
-      if (typingIndexRef.current > title.length) {
-        clearInterval(interval)
-        return
-      }
-      setTypedTitle(title.slice(0, typingIndexRef.current))
-    }, 55)
+    let timer
+    if (!isDeleting && typedTitle === currentRole) {
+      timer = setTimeout(() => setIsDeleting(true), pauseAtEndMs)
+    } else if (isDeleting && typedTitle === '') {
+      setIsDeleting(false)
+      setRoleIndex((i) => (i + 1) % roles.length)
+      timer = setTimeout(() => {}, pauseAtStartMs)
+    } else {
+      timer = setTimeout(() => {
+        const nextText = isDeleting
+          ? currentRole.slice(0, typedTitle.length - 1)
+          : currentRole.slice(0, typedTitle.length + 1)
+        setTypedTitle(nextText)
+      }, typingSpeed)
+    }
 
-    return () => clearInterval(interval)
-  }, [prefersReducedMotion])
+    return () => clearTimeout(timer)
+  }, [typedTitle, isDeleting, roleIndex, prefersReducedMotion])
 
   useEffect(() => {
     if (!hasCarousel || hasCarouselError || prefersReducedMotion || carouselImages.length <= 1) {
@@ -115,11 +130,11 @@ const Hero = () => {
       <div className="container">
         <div className={`hero__layout ${isMounted ? 'is-mounted' : ''}`}>
           <div className={`hero__column hero__column--intro ${isMounted ? 'is-active' : ''}`}>
-            <span className="hero__badge glass-inline">Hi, I&apos;m</span>
+            <div className="hero__introLabel">Hi, I&apos;m</div>
             <h1 className="hero__title">
               <span className="hero__highlight gradient-text">{personalInfo.name}</span>
             </h1>
-            <p className="hero__role">{typedTitle || personalInfo.title}</p>
+            <p className="hero__role">{typedTitle}</p>
 
             <p className="hero__bio text-muted">{heroDescription}</p>
 
@@ -127,10 +142,6 @@ const Hero = () => {
               <span className="hero__meta-item">
                 <span aria-hidden="true">📍</span>
                 {personalInfo.location}
-              </span>
-              <span className="hero__meta-item">
-                <span aria-hidden="true">✉️</span>
-                {personalInfo.email}
               </span>
             </div>
 
@@ -180,18 +191,7 @@ const Hero = () => {
                       </div>
                     ))}
                   </div>
-                  <div className="hero__indicators" role="tablist" aria-label="Hero carousel indicators">
-                    {carouselImages.map((_, index) => (
-                      <button
-                        key={`indicator-${index}`}
-                        type="button"
-                        className={`hero__indicator ${index === currentSlide ? 'is-active' : ''}`}
-                        onClick={() => setCurrentSlide(index)}
-                        aria-label={`Show slide ${index + 1}`}
-                        aria-selected={index === currentSlide}
-                      />
-                    ))}
-                  </div>
+                  {/* indicators removed as requested */}
                 </>
               )}
             </div>

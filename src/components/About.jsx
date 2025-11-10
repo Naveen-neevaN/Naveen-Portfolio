@@ -26,43 +26,26 @@ const About = () => {
         </p>
 
         <div ref={ref} className={`about__wrapper ${isVisible ? 'is-visible' : ''}`}>
-          <article className="about__card glass-panel">
-            <div className="about__intro">
-              {aboutParagraphs.map((paragraph, index) => (
-                <p key={`about-paragraph-${index}`} className="about__paragraph">
-                  {paragraph}
-                </p>
-              ))}
+          <article className="about__grid">
+            <div className="about__media glass-panel">
+              <video
+                className="about__video"
+                src="/Wipro%20Logo%20Video.mp4"
+                autoPlay
+                muted
+                loop
+                playsInline
+                aria-label="Wipro showcase"
+              />
             </div>
-
-            <div className="about__details">
-              <div className="about__detail">
-                <span className="about__detail-icon" aria-hidden="true">
-                  ✉️
-                </span>
-                <span className="about__detail-label">Email</span>
-                <a href={`mailto:${personalInfo.email}`} className="about__detail-value">
-                  {personalInfo.email}
-                </a>
+            <div className="about__card glass-panel">
+              <div className="about__intro">
+                {aboutParagraphs.map((paragraph, index) => (
+                  <p key={`about-paragraph-${index}`} className="about__paragraph">
+                    {paragraph}
+                  </p>
+                ))}
               </div>
-              <div className="about__detail">
-                <span className="about__detail-icon" aria-hidden="true">
-                  📍
-                </span>
-                <span className="about__detail-label">Location</span>
-                <span className="about__detail-value">{personalInfo.location}</span>
-              </div>
-              {personalInfo.phone ? (
-                <div className="about__detail">
-                  <span className="about__detail-icon" aria-hidden="true">
-                    📞
-                  </span>
-                  <span className="about__detail-label">Phone</span>
-                  <a href={`tel:${personalInfo.phone}`} className="about__detail-value">
-                    {personalInfo.phone}
-                  </a>
-                </div>
-              ) : null}
             </div>
           </article>
         </div>

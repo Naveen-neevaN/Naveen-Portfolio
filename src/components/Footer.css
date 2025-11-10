@@ -1,10 +1,10 @@
 .footer {
-  background: var(--hero-gradient);
-  background-size: 400% 400%;
-  animation: gradientShift 25s ease infinite;
+  background: var(--gradient-gold-soft);
+  background-size: 240% 240%;
+  animation: gradientShift 22s ease infinite;
   color: var(--text-primary);
   position: relative;
-  min-height: 110px;
+  min-height: 80px;
   display: flex;
   align-items: center;
 }
@@ -77,7 +77,7 @@
 
 .social-link:hover {
   transform: translateY(-2px) scale(1.05);
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 14px 30px rgba(21, 143, 129, 0.25);
   color: white;
 }
 

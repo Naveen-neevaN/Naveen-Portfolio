@@ -36,8 +36,7 @@ const Contact = () => {
       <div className="container">
         <h2 className="section-heading">Get In Touch</h2>
         <p className="section-subheading">
-          Whether it’s automation strategy, AI-driven assurance, or an exciting collaboration — let’s create something
-          meaningful.
+          Let’s collaborate to build reliable, automated, and high-quality digital solutions.
         </p>
 
         <div ref={ref} className={`contact__grid ${isVisible ? 'is-visible' : ''}`}>
@@ -83,7 +82,7 @@ const Contact = () => {
           </div>
 
           <form className="contact__form glass-panel" onSubmit={handleSubmit} noValidate>
-            <div className="contact__formRow">
+            <div className="contact__formRow contact__formRow--stacked">
               <div className="contact__field">
                 <label htmlFor="name">Name</label>
                 <input

@@ -31,7 +31,7 @@ const Skills = () => {
   return (
     <section id="skills" className="skills section-padding">
       <div className="container">
-        <h2 className="section-heading">Technologies and Tools I Work With</h2>
+        <h2 className="section-heading">Technologies and Tools</h2>
         <p className="section-subheading">
           Modern automation ecosystems, AI accelerators, and quality engineering toolchains I partner with daily.
         </p>

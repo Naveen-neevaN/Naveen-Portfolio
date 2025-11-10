@@ -34,23 +34,45 @@ export const personalInfo = {
           my college team as captain. My passion extends to exploring cutting-edge AI-driven testing innovations and 
           advancing DevOps practices in the automation landscape.`,
   
-  // Skills
+  // Skills (expanded and grouped for Automation focus)
   skills: [
+    // Automation Tools
     { name: 'Tosca', category: 'tools' },
-    { name: 'Katalon', category: 'tools' },
+    { name: 'Selenium (Java)', category: 'tools' },
+    { name: 'Selenium (Python)', category: 'tools' },
     { name: 'Playwright', category: 'tools' },
-    { name: 'Selenium', category: 'tools' },
-    { name: 'Wipro GenAI Accelerator', category: 'other' },
-    { name: 'Google Vertex AI', category: 'other' },
+    { name: 'Katalon', category: 'tools' },
+
+    // Test Management & CI/CD
     { name: 'Jenkins', category: 'tools' },
     { name: 'Jira', category: 'tools' },
-    { name: 'BitBucket', category: 'tools' },
-    { name: 'MCP Servers', category: 'tools' },
-    { name: 'Python', category: 'backend' },
-    { name: 'MySQL', category: 'backend' },
+    { name: 'Git', category: 'tools' },
+    { name: 'Bitbucket', category: 'tools' },
+
+    // API Testing
     { name: 'Postman', category: 'tools' },
+
+    // Cloud Platforms
     { name: 'AWS', category: 'tools' },
-    { name: 'Salesforce', category: 'tools' },
+    { name: 'Azure (basic)', category: 'tools' },
+
+    // Generative AI
+    { name: 'Google Vertex AI', category: 'other' },
+
+    // Databases
+    { name: 'MySQL', category: 'backend' },
+
+    // IAM
+    { name: 'SailPoint', category: 'tools' },
+
+    // Development
+    { name: 'JavaScript', category: 'frontend' },
+    { name: 'TypeScript (basic)', category: 'frontend' },
+
+    // Others
+    { name: 'Agile', category: 'other' },
+    { name: 'Test Strategy', category: 'other' },
+    { name: 'Test Framework Design', category: 'other' },
   ],
   
   // Projects

@@ -119,42 +119,44 @@ const Header = () => {
               scrollToSection('hero')
             }}
           >
-            <span className="site-header__brand-mark">Portfolio</span>
             <span className="site-header__brand-title gradient-text">{SITE_TITLE}</span>
           </a>
 
-          <nav className="site-header__nav" aria-label="Primary">
-            <ul className={`site-header__links ${isMobileMenuOpen ? 'is-open' : ''}`}>
-              {navItems.map((item) => (
-                <li key={item.id} className="site-header__item">
-                  <a
-                    href={`#${item.id}`}
-                    className="site-header__link"
-                    onClick={(event) => {
-                      event.preventDefault()
-                      scrollToSection(item.id)
-                    }}
-                  >
-                    {item.label}
-                  </a>
+          <div className="site-header__right">
+            <nav className="site-header__nav" aria-label="Primary">
+              <ul className={`site-header__links ${isMobileMenuOpen ? 'is-open' : ''}`}>
+                {navItems.map((item) => (
+                  <li key={item.id} className="site-header__item">
+                    <a
+                      href={`#${item.id}`}
+                      className="site-header__link"
+                      onClick={(event) => {
+                        event.preventDefault()
+                        scrollToSection(item.id)
+                      }}
+                    >
+                      {item.label}
+                    </a>
+                  </li>
+                ))}
+                <li className="site-header__item site-header__item--switch">
+                  <ThemeSwitch />
                 </li>
-              ))}
-            </ul>
-          </nav>
-
-          <div className="site-header__controls">
-            <ThemeSwitch />
-            <button
-              type="button"
-              className="site-header__menuButton"
-              aria-label="Toggle navigation"
-              aria-expanded={isMobileMenuOpen}
-              onClick={() => setIsMobileMenuOpen((open) => !open)}
-            >
-              <span />
-              <span />
-              <span />
-            </button>
+              </ul>
+            </nav>
+            <div className="site-header__controls">
+              <button
+                type="button"
+                className="site-header__menuButton"
+                aria-label="Toggle navigation"
+                aria-expanded={isMobileMenuOpen}
+                onClick={() => setIsMobileMenuOpen((open) => !open)}
+              >
+                <span />
+                <span />
+                <span />
+              </button>
+            </div>
           </div>
         </div>
       </header>

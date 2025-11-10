@@ -60,7 +60,7 @@
 .site-header__inner {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 1.5rem;
 }
 
@@ -102,6 +102,13 @@
   letter-spacing: 0.02em;
 }
 
+.site-header__right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-left: auto;
+}
+
 .site-header__nav {
   display: flex;
   align-items: center;
@@ -119,6 +126,11 @@
 
 .site-header__item {
   position: relative;
+}
+
+.site-header__item--switch {
+  display: inline-flex;
+  align-items: center;
 }
 
 .site-header__link {
@@ -246,7 +258,7 @@
     padding: clamp(6rem, 8vh, 7rem) 2rem;
     flex-direction: column;
     justify-content: flex-start;
-    gap: 1.5rem;
+    gap: 1.2rem;
     background: linear-gradient(160deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.6) 100%);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
@@ -279,13 +291,13 @@
   .site-header__link::after {
     display: none;
   }
+
+  .site-header__item--switch {
+    margin-top: 0.5rem;
+  }
 }
 
 @media (max-width: 540px) {
-  .site-header__brand-mark {
-    display: none;
-  }
-
   .site-header__brand {
     padding: 0;
   }
