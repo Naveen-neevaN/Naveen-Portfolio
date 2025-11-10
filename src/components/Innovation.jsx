@@ -2,7 +2,7 @@
 
 import React from 'react'
 import './About.css'
-import { resolveAssetPath } from '@/lib/resolveAssetPath'
+import resolveAssetPath from '@/lib/resolveAssetPath'
 
 const Innovation = () => {
   return (

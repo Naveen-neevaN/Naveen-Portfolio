@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import './About.css'
-import { resolveAssetPath } from '@/lib/resolveAssetPath'
+import resolveAssetPath from '@/lib/resolveAssetPath'
 
 const AboutIntro = ({ videoSrc, prefersReducedMotion }) => {
   const [videoError, setVideoError] = useState(false)

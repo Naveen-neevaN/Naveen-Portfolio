@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 // Use native <img> to simplify loading from /public and avoid Next Image sizing issues for this static export
 import { personalInfo } from '@/data/personalInfo.js'
-import { resolveAssetPath } from '@/lib/resolveAssetPath'
+import resolveAssetPath from '@/lib/resolveAssetPath'
 import './Hero.css'
 
 const SLIDE_DURATION_MS = 6500
@@ -21,6 +21,7 @@ const Hero = () => {
   const rolesRef = useRef(['Tosca Test Lead', 'Senior Project Engineer'])
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
   const [hasCarouselError, setHasCarouselError] = useState(false)
+  const [failedCarouselUrls, setFailedCarouselUrls] = useState([])
   const typingIndexRef = useRef(0)
 
   const heroDescription = useMemo(() => personalInfo.bio?.replace(/\s+/g, ' ').trim() ?? '', [])
@@ -28,6 +29,22 @@ const Hero = () => {
   useEffect(() => {
     setIsMounted(true)
   }, [])
+
+  // Diagnostic: log resolved asset URLs (helps capture what the resolver returns in different hosts)
+  useEffect(() => {
+    try {
+      const resolved = (carouselImages || []).map((img) => ({ original: img, resolved: resolveAssetPath(img) }))
+      const resumeResolved = resolveAssetPath(personalInfo.resumeUrl || '')
+      if (typeof window !== 'undefined' && window.console && resolved.length) {
+        console.groupCollapsed('Asset resolver diagnostics — hero')
+        console.table(resolved)
+        console.log('Resolved resume URL:', resumeResolved)
+        console.groupEnd()
+      }
+    } catch (err) {
+      if (process.env.NODE_ENV !== 'production') console.warn('Resolver diagnostics failed', err)
+    }
+  }, [isMounted])
 
   useEffect(() => {
     if (typeof window === 'undefined' || !window.matchMedia) {
@@ -191,7 +208,35 @@ const Hero = () => {
 
               {showFallback ? (
                 <div className="hero__fallback">
-                  <span>Add carousel images to `public/images/carousel/` to complete the look.</span>
+                  {hasCarouselError ? (
+                    <div>
+                      <p style={{ margin: 0 }}>Carousel failed to load images from the public folder. Diagnostic info:</p>
+                      <ul style={{ textAlign: 'left', margin: '0.6rem 0' }}>
+                        {failedCarouselUrls.length ? (
+                          failedCarouselUrls.map((it) => (
+                            <li key={it.resolved} style={{ marginBottom: '0.4rem' }}>
+                              <div><strong>original:</strong> {it.original}</div>
+                              <div>
+                                <strong>resolved:</strong>{' '}
+                                <a href={it.resolved} target="_blank" rel="noopener noreferrer">
+                                  {it.resolved}
+                                </a>
+                              </div>
+                            </li>
+                          ))
+                        ) : (
+                          <li>No resolved URLs captured yet — refresh the page to retry loading.</li>
+                        )}
+                      </ul>
+                      <p style={{ marginTop: '0.6rem' }}>
+                        If these URLs 404 on your host, the site is likely served under a different base path (for example
+                        GitHub Pages serves sites under <code>/RepoName/</code>). Copy one failing Request URL from DevTools
+                        Network and paste it here and I will patch the resolver to match that pattern.
+                      </p>
+                    </div>
+                  ) : (
+                    <span>Add carousel images to `public/images/carousel/` to complete the look.</span>
+                  )}
                 </div>
               ) : (
                 <>
@@ -212,10 +257,16 @@ const Hero = () => {
                                         className="hero__image"
                                         loading="lazy"
                                         onError={(e) => {
-                                          // mark error to fall back and log useful diagnostic info
+                                          // mark error to fall back and capture resolved URL for diagnostics
+                                          const resolved = resolveAssetPath(image)
                                           if (process.env.NODE_ENV !== 'production') {
-                                            console.warn('Carousel image failed to load:', image, 'resolved->', resolveAssetPath(image), e?.nativeEvent?.src || e?.target?.src)
+                                            console.warn('Carousel image failed to load:', image, 'resolved->', resolved, e?.nativeEvent?.src || e?.target?.src)
                                           }
+                                          setFailedCarouselUrls((s) => {
+                                            const exists = s.find((x) => x.resolved === resolved)
+                                            if (exists) return s
+                                            return [...s, { original: image, resolved }]
+                                          })
                                           setHasCarouselError(true)
                                         }}
                                       />
