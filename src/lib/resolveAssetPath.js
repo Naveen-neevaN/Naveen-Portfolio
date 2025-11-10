@@ -36,7 +36,10 @@ export function resolveAssetPath(path) {
   // e.g., when served at https://username.github.io/RepoName/
   let basePath = ''
   try {
-    if (typeof window !== 'undefined' && window.location && typeof window.location.pathname === 'string') {
+    // Prefer an explicit public env var (set at build time via next.config.js)
+    if (typeof process !== 'undefined' && process.env && process.env.NEXT_PUBLIC_BASE_PATH) {
+      basePath = process.env.NEXT_PUBLIC_BASE_PATH || ''
+    } else if (typeof window !== 'undefined' && window.location && typeof window.location.pathname === 'string') {
       const parts = window.location.pathname.split('/').filter(Boolean)
       if (parts.length && parts[0]) basePath = `/${parts[0]}`
     }

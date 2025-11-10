@@ -169,6 +169,25 @@ const Hero = () => {
           <div className={`hero__column hero__column--visual ${isMounted ? 'is-active' : ''}`}>
             <div className="hero__visual glass-panel">
               <div className="hero__visual-glow" />
+              {/* SVG overlay provides a crisper gold accent and glass shape (GPU-friendly) */}
+              <svg
+                className="hero__visual-svg"
+                viewBox="0 0 100 100"
+                preserveAspectRatio="none"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <defs>
+                  <linearGradient id="g-gold" x1="0%" x2="100%">
+                    <stop offset="0%" stopColor="#D4AF37" stopOpacity="0.95" />
+                    <stop offset="100%" stopColor="#F1C969" stopOpacity="0.95" />
+                  </linearGradient>
+                </defs>
+                {/* subtle gold top-right accent line */}
+                <line x1="8" y1="12" x2="92" y2="12" stroke="url(#g-gold)" strokeWidth="0.6" strokeLinecap="round" opacity="0.95" />
+                {/* glass bevel highlight (soft) */}
+                <rect x="0" y="0" width="100" height="100" fill="none" />
+              </svg>
 
               {showFallback ? (
                 <div className="hero__fallback">
@@ -176,7 +195,11 @@ const Hero = () => {
                 </div>
               ) : (
                 <>
-                  <div className="hero__carousel" aria-live="polite">
+                  <div
+                    className="hero__carousel"
+                    aria-live="polite"
+                    data-prefers-reduced-motion={prefersReducedMotion ? 'true' : 'false'}
+                  >
                     {carouselImages.map((image, index) => (
                       <div
                         key={image}

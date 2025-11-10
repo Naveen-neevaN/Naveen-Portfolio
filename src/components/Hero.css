@@ -292,19 +292,31 @@
   background: transparent;
 }
 
-/* subtle layered glass overlay above the images for the refined look */
-.hero__visual::before {
+/* SVG overlay (inserted in markup) provides a crisper GPU-accelerated accent line */
+.hero__visual-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 3; /* above glow but below interactive overlays */
+  mix-blend-mode: overlay;
+  opacity: 0.95;
+}
+
+/* Inner shadow / subtle glass bevel rendered with a pseudo-element for depth */
+.hero__visual::after {
   content: '';
   position: absolute;
   inset: 0;
   border-radius: inherit;
   pointer-events: none;
-  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0));
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  mix-blend-mode: overlay;
-  opacity: 0.7;
-  z-index: 2;
+  box-shadow: inset 0 18px 40px rgba(6, 35, 43, 0.06), inset 0 -12px 30px rgba(255, 230, 170, 0.02);
+  z-index: 4;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  opacity: 0.9;
 }
 
 .hero__visual-glow {
@@ -321,10 +333,12 @@
   opacity: 0.42;
 }
 
-[data-theme='dark'] .hero__visual::before {
-  /* darker glass overlay with emerald tint for depth in dark mode */
-  background: linear-gradient(180deg, rgba(6,35,43,0.18), rgba(6,35,43,0.06));
-  opacity: 0.9;
+[data-theme='dark'] .hero__visual::after {
+  /* darker inner shadow and slightly stronger blur for depth in dark mode */
+  box-shadow: inset 0 20px 48px rgba(0, 0, 0, 0.35), inset 0 -14px 36px rgba(6, 35, 43, 0.12);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  opacity: 1;
 }
 
 .hero__carousel {
@@ -343,7 +357,7 @@
   opacity: 0;
   height: 100%;
   width: 100%;
-  transition: opacity 0.9s ease, filter 0.9s ease;
+  transition: opacity 0.9s ease, filter 0.9s ease, transform 0.9s ease;
   filter: blur(4px) saturate(0.98) brightness(0.98);
 }
 
@@ -358,8 +372,19 @@
   height: 100%;
   object-fit: cover;
   object-position: center;
-  will-change: opacity, filter;
+  will-change: opacity, filter, transform;
   transition: opacity 0.9s ease, transform 1s ease;
+  transform: translateZ(0);
+}
+
+/* Parallax micro-translate on the active slide when motion is allowed */
+.hero__carousel[data-prefers-reduced-motion='false'] .hero__slide.is-active .hero__image {
+  transform: translateY(-3%) scale(1.02);
+}
+
+/* When reduced motion is preferred, disable the parallax micro-translate */
+.hero__carousel[data-prefers-reduced-motion='true'] .hero__slide.is-active .hero__image {
+  transform: none;
 }
 
 .hero__fallback {
