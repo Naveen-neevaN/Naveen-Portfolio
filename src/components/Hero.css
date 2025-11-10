@@ -284,7 +284,9 @@
   min-height: 420px;
   overflow: hidden;
   border-radius: var(--radius-xl);
-  padding: 0; /* allow images to be edge-to-edge */
+  /* frame padding creates a visible outer rim around the carousel */
+  --hero-frame: clamp(8px, 1.2vw, 14px);
+  padding: var(--hero-frame);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -307,24 +309,45 @@
 
 /* Inner shadow / subtle glass bevel rendered with a pseudo-element for depth */
 .hero__visual::after {
+  /* subtle decorative rim and glow behind the inner carousel to create an outer frame */
   content: '';
   position: absolute;
   inset: 0;
   border-radius: inherit;
   pointer-events: none;
-  box-shadow: inset 0 18px 40px rgba(6, 35, 43, 0.06), inset 0 -12px 30px rgba(255, 230, 170, 0.02);
-  z-index: 4;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  z-index: 2;
+  /* Layered visual: soft outer glow and a delicate gold-teal gradient ring */
+  background:
+    radial-gradient(120% 80% at 10% 10%, rgba(16,185,129,0.06), transparent 20%),
+    radial-gradient(100% 60% at 90% 90%, rgba(212,175,55,0.05), transparent 20%);
+  box-shadow: 0 10px 40px rgba(6,35,43,0.06);
+  opacity: 0.95;
+}
+
+/* decorative outer rim: thin gradient stroke visible between the visual padding and inner carousel */
+.hero__visual::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 3;
+  /* create a thin stroke inside the visual area using background-clip technique */
+  background: linear-gradient(90deg, rgba(212,175,55,0.22), rgba(16,185,129,0.18));
+  -webkit-mask: linear-gradient(#fff,#fff) content-box, linear-gradient(#000,#000);
+  mask: linear-gradient(#fff,#fff) content-box, linear-gradient(#000,#000);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  padding: var(--hero-frame);
   opacity: 0.9;
 }
 
 .hero__visual-glow {
   position: absolute;
   inset: -20% -10% -10% -10%;
-  background: radial-gradient(circle at 50% 20%, rgba(212,175,55,0.16) 0%, transparent 40%), radial-gradient(circle at 80% 80%, rgba(16,185,129,0.18) 0%, transparent 50%);
-  filter: blur(36px);
-  opacity: 0.6;
+  background: radial-gradient(circle at 50% 20%, rgba(212,175,55,0.10) 0%, transparent 40%), radial-gradient(circle at 80% 80%, rgba(16,185,129,0.08) 0%, transparent 50%);
+  filter: blur(48px);
+  opacity: 0.45;
   pointer-events: none;
   z-index: 1;
 }
@@ -346,7 +369,8 @@
   flex: 1;
   width: 100%;
   height: 100%;
-  border-radius: inherit;
+  /* inner carousel is inset so the visual's padding shows as the outer frame */
+  border-radius: calc(var(--radius-xl) - var(--hero-frame));
   overflow: hidden;
   background: transparent;
 }
@@ -358,7 +382,9 @@
   height: 100%;
   width: 100%;
   transition: opacity 0.9s ease, filter 0.9s ease, transform 0.9s ease;
-  filter: blur(4px) saturate(0.98) brightness(0.98);
+  filter: blur(2px) saturate(0.98) brightness(0.98);
+  border-radius: inherit; /* ensure slide corners match the container */
+  overflow: hidden; /* clip the image to the rounded frame so it fills exactly */
 }
 
 .hero__slide.is-active {
@@ -368,13 +394,76 @@
 }
 
 .hero__image {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
+  object-position: center center;
   will-change: opacity, filter, transform;
   transition: opacity 0.9s ease, transform 1s ease;
   transform: translateZ(0);
+  display: block;
+  border-radius: 0; /* image is clipped by the slide which has the rounded corners */
+  box-shadow: none; /* remove framed inner shadows */
+}
+
+/* Four-sided enter/exit animations. The active slide uses an enter animation
+   from the given data-direction; the previously-active slide gets an exit
+   animation (class .was-active). Anim duration matches SLIDE_ANIM_MS in JS (~700ms).
+*/
+.hero__slide.is-active[data-direction='left'] { animation: hero-enter-left 700ms cubic-bezier(.22,.9,.3,1) both; }
+.hero__slide.is-active[data-direction='right'] { animation: hero-enter-right 700ms cubic-bezier(.22,.9,.3,1) both; }
+.hero__slide.is-active[data-direction='top'] { animation: hero-enter-top 700ms cubic-bezier(.22,.9,.3,1) both; }
+.hero__slide.is-active[data-direction='bottom'] { animation: hero-enter-bottom 700ms cubic-bezier(.22,.9,.3,1) both; }
+
+.hero__slide.was-active[data-direction='left'] { animation: hero-exit-left 700ms cubic-bezier(.22,.9,.3,1) both; z-index:1 }
+.hero__slide.was-active[data-direction='right'] { animation: hero-exit-right 700ms cubic-bezier(.22,.9,.3,1) both; z-index:1 }
+.hero__slide.was-active[data-direction='top'] { animation: hero-exit-top 700ms cubic-bezier(.22,.9,.3,1) both; z-index:1 }
+.hero__slide.was-active[data-direction='bottom'] { animation: hero-exit-bottom 700ms cubic-bezier(.22,.9,.3,1) both; z-index:1 }
+
+@keyframes hero-enter-left {
+  0% { transform: translateX(-12%) scale(1.02); opacity: 0; filter: blur(6px); }
+  60% { opacity: 1; transform: translateX(3%) scale(1.01); filter: blur(2px); }
+  100% { transform: translateX(0) scale(1); opacity: 1; filter: blur(0); }
+}
+
+@keyframes hero-exit-left {
+  0% { transform: translateX(0) scale(1); opacity: 1; filter: blur(0); }
+  100% { transform: translateX(12%) scale(0.98); opacity: 0; filter: blur(4px); }
+}
+
+@keyframes hero-enter-right {
+  0% { transform: translateX(12%) scale(1.02); opacity: 0; filter: blur(6px); }
+  60% { opacity: 1; transform: translateX(-3%) scale(1.01); filter: blur(2px); }
+  100% { transform: translateX(0) scale(1); opacity: 1; filter: blur(0); }
+}
+
+@keyframes hero-exit-right {
+  0% { transform: translateX(0) scale(1); opacity: 1; filter: blur(0); }
+  100% { transform: translateX(-12%) scale(0.98); opacity: 0; filter: blur(4px); }
+}
+
+@keyframes hero-enter-top {
+  0% { transform: translateY(-12%) scale(1.02); opacity: 0; filter: blur(6px); }
+  60% { opacity: 1; transform: translateY(3%) scale(1.01); filter: blur(2px); }
+  100% { transform: translateY(0) scale(1); opacity: 1; filter: blur(0); }
+}
+
+@keyframes hero-exit-top {
+  0% { transform: translateY(0) scale(1); opacity: 1; filter: blur(0); }
+  100% { transform: translateY(12%) scale(0.98); opacity: 0; filter: blur(4px); }
+}
+
+@keyframes hero-enter-bottom {
+  0% { transform: translateY(12%) scale(1.02); opacity: 0; filter: blur(6px); }
+  60% { opacity: 1; transform: translateY(-3%) scale(1.01); filter: blur(2px); }
+  100% { transform: translateY(0) scale(1); opacity: 1; filter: blur(0); }
+}
+
+@keyframes hero-exit-bottom {
+  0% { transform: translateY(0) scale(1); opacity: 1; filter: blur(0); }
+  100% { transform: translateY(-12%) scale(0.98); opacity: 0; filter: blur(4px); }
 }
 
 /* Parallax micro-translate on the active slide when motion is allowed */

@@ -7,11 +7,13 @@ import resolveAssetPath from '@/lib/resolveAssetPath'
 import './Hero.css'
 
 const SLIDE_DURATION_MS = 6500
+const SLIDE_ANIM_MS = 700
 
 const Hero = () => {
   const carouselImages = personalInfo.carouselImages ?? []
   const hasCarousel = carouselImages.length > 0
   const [currentSlide, setCurrentSlide] = useState(0)
+  const [prevSlide, setPrevSlide] = useState(null)
   const [isMounted, setIsMounted] = useState(false)
   const [typedTitle, setTypedTitle] = useState('')
   const [roleIndex, setRoleIndex] = useState(0)
@@ -103,7 +105,14 @@ const Hero = () => {
     }
 
     const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % carouselImages.length)
+      // use functional update to capture previous index so we can mark it for exit animation
+      setCurrentSlide((prev) => {
+        const next = (prev + 1) % carouselImages.length
+        setPrevSlide(prev)
+        // clear the prev marker after the animation duration
+        setTimeout(() => setPrevSlide(null), SLIDE_ANIM_MS + 50)
+        return next
+      })
     }, SLIDE_DURATION_MS)
 
     return () => clearInterval(interval)
@@ -245,33 +254,42 @@ const Hero = () => {
                     aria-live="polite"
                     data-prefers-reduced-motion={prefersReducedMotion ? 'true' : 'false'}
                   >
-                    {carouselImages.map((image, index) => (
-                      <div
-                        key={image}
-                        className={`hero__slide ${index === currentSlide ? 'is-active' : ''}`}
-                        aria-hidden={index !== currentSlide}
-                      >
-                                      <img
-                                        src={resolveAssetPath(image)}
-                                        alt={`Portfolio highlight ${index + 1}`}
-                                        className="hero__image"
-                                        loading="lazy"
-                                        onError={(e) => {
-                                          // mark error to fall back and capture resolved URL for diagnostics
-                                          const resolved = resolveAssetPath(image)
-                                          if (process.env.NODE_ENV !== 'production') {
-                                            console.warn('Carousel image failed to load:', image, 'resolved->', resolved, e?.nativeEvent?.src || e?.target?.src)
-                                          }
-                                          setFailedCarouselUrls((s) => {
-                                            const exists = s.find((x) => x.resolved === resolved)
-                                            if (exists) return s
-                                            return [...s, { original: image, resolved }]
-                                          })
-                                          setHasCarouselError(true)
-                                        }}
-                                      />
-                      </div>
-                    ))}
+                    {carouselImages.map((image, index) => {
+                      const isActive = index === currentSlide
+                      const isPrev = prevSlide === index
+                      // cycle entry directions so slides enter from all four sides
+                      const directions = ['left', 'top', 'right', 'bottom']
+                      const dir = directions[currentSlide % directions.length]
+
+                      return (
+                        <div
+                          key={image}
+                          className={`hero__slide ${isActive ? 'is-active' : ''} ${isPrev ? 'was-active' : ''}`}
+                          data-direction={dir}
+                          aria-hidden={!isActive}
+                        >
+                          <img
+                            src={resolveAssetPath(image)}
+                            alt={`Portfolio highlight ${index + 1}`}
+                            className="hero__image"
+                            loading="lazy"
+                            onError={(e) => {
+                              // mark error to fall back and capture resolved URL for diagnostics
+                              const resolved = resolveAssetPath(image)
+                              if (process.env.NODE_ENV !== 'production') {
+                                console.warn('Carousel image failed to load:', image, 'resolved->', resolved, e?.nativeEvent?.src || e?.target?.src)
+                              }
+                              setFailedCarouselUrls((s) => {
+                                const exists = s.find((x) => x.resolved === resolved)
+                                if (exists) return s
+                                return [...s, { original: image, resolved }]
+                              })
+                              setHasCarouselError(true)
+                            }}
+                          />
+                        </div>
+                      )
+                    })}
                   </div>
                   {/* indicators removed as requested */}
                 </>
