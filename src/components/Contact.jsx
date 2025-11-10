@@ -139,6 +139,10 @@ const Contact = () => {
                 </span>
               ) : null}
             </div>
+
+            <p className="contact__quip">
+              Because even QA and Dev need to talk before the bug report hits production 😉
+            </p>
           </form>
         </div>
       </div>

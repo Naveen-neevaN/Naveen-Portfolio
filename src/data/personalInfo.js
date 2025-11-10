@@ -19,20 +19,7 @@ export const personalInfo = {
         I excel at orchestrating automation initiatives and fostering meaningful client partnerships. My core strengths 
         lie in designing robust Tosca frameworks, implementing DEX integrations, and pioneering AI-driven testing methodologies.`,
   
-  about: `As a Senior Project Engineer and Tosca Automation Test Lead at Wipro Ltd, I bring a wealth of experience 
-          spanning nearly 5 years in the BFSI sector. My professional journey centers on delivering exceptional automation 
-          solutions while building lasting client relationships through innovative testing approaches.
-          
-          I've played a pivotal role in Wipro's GenAI Accelerator PoC initiative, where I spearheaded comprehensive 
-          tool assessments leveraging Katalon and Playwright across diverse client landscapes. My technical expertise 
-          encompasses MCP server orchestration, seamless CI/CD pipeline integration, and strategic automation planning.
-          
-          My track record speaks volumes: I've successfully delivered 50+ production releases with a flawless zero-escalation 
-          record, consistently exceeding stakeholder expectations through meticulous execution and proactive problem-solving.
-          
-          Beyond the professional realm, I'm an accomplished chess player who has competed at the district level and led 
-          my college team as captain. My passion extends to exploring cutting-edge AI-driven testing innovations and 
-          advancing DevOps practices in the automation landscape.`,
+  about: `As a Senior Project Engineer and Tosca Automation Test Lead at Wipro Ltd, I bring a wealth of experience spanning nearly 5 years in the BFSI sector. My professional journey centers on delivering exceptional automation solutions while building lasting client relationships through innovative testing approaches. I've played a pivotal role in Wipro's GenAI Accelerator PoC initiative, where I spearheaded comprehensive tool assessments leveraging Katalon and Playwright across diverse client landscapes. My technical expertise encompasses MCP server orchestration, seamless CI/CD pipeline integration, and strategic automation planning. My track record speaks volumes: I've successfully delivered 50+ production releases with a flawless zero-escalation record, consistently exceeding stakeholder expectations through meticulous execution and proactive problem-solving. Beyond the professional realm, I'm an accomplished chess player who has competed at the district level and led my college team as captain. My passion extends to exploring cutting-edge AI-driven testing innovations and advancing DevOps practices in the automation landscape.`,
   
   // Skills (expanded and grouped for Automation focus)
   skills: [

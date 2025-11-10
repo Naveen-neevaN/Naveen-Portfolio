@@ -56,17 +56,7 @@
 }
 
 .skills__groupBadge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.4rem 0.9rem;
-  border-radius: 999px;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  color: rgba(6, 60, 59, 0.75);
-  background: rgba(255, 255, 255, 0.5);
-  border: 1px solid rgba(21, 143, 129, 0.22);
+  display: none;
 }
 
 [data-theme='dark'] .skills__groupBadge {
@@ -76,9 +66,10 @@
 }
 
 .skills__groupTitle {
-  font-size: clamp(1.35rem, 2.3vw, 1.65rem);
+  font-size: clamp(1.5rem, 2.6vw, 1.9rem);
   letter-spacing: 0.01em;
   margin: 0;
+  text-shadow: 0 12px 30px rgba(21, 143, 129, 0.22);
 }
 
 .skills__chips {

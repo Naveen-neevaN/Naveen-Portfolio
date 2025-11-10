@@ -80,7 +80,7 @@
 .hero__introLabel {
   font-family: var(--font-family-display);
   font-weight: 600;
-  font-size: clamp(1.3rem, 3.2vw, 1.8rem);
+  font-size: clamp(1.6rem, 3.6vw, 2.1rem);
   letter-spacing: 0.04em;
   color: var(--text-primary);
   margin-bottom: 0;
@@ -98,6 +98,14 @@
   letter-spacing: 0.02em;
   display: inline-block;
   white-space: nowrap;
+}
+
+.hero__rolePrefix {
+  opacity: 0.85;
+}
+
+.hero__roleTyped {
+  display: inline-block;
 }
 
 .hero__bio {
@@ -148,7 +156,7 @@
   position: relative;
   width: min(850px, 95%);
   aspect-ratio: 16 / 11;
-  min-height: 65vh;
+  min-height: 78vh;
   overflow: hidden;
   border-radius: var(--radius-xl);
   padding: clamp(0.4rem, 1.8vw, 0.8rem);
@@ -185,7 +193,7 @@
 
 .hero__carousel {
   position: relative;
-  flex: 1;
+  flex: 12;
   border-radius: calc(var(--radius-xl) - 10px);
   overflow: hidden;
 }

@@ -30,7 +30,7 @@ const About = () => {
             <div className="about__media glass-panel">
               <video
                 className="about__video"
-                src="/Wipro%20Logo%20Video.mp4"
+                src={encodeURI('./public/Wipro Logo Video.mp4')}
                 autoPlay
                 muted
                 loop

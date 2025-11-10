@@ -220,6 +220,18 @@
   color: #9a1f2d;
 }
 
+.contact__quip {
+  margin-top: 0rem;
+  text-align: center;
+  font-style: italic;
+  font-size: 1.4rem;
+  color: rgba(95, 157, 129, 0.8);
+}
+
+[data-theme='dark'] .contact__quip {
+  color: rgba(236, 245, 245, 0.75);
+}
+
 @media (max-width: 768px) {
   .contact__formRow {
     grid-template-columns: 1fr;

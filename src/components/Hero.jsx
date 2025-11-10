@@ -13,20 +13,20 @@ const resolveImageSource = (path) => {
   }
 
   if (/^https?:\/\//i.test(path)) {
-    return path
+    return encodeURI(path)
   }
 
   // Normalize any `public/...` references to root-based path
   if (path.startsWith('/')) {
-    return path.replace(/^\/public\//, '/')
+    return encodeURI(path.replace(/^\/public\//, '/'))
   }
 
   if (path.startsWith('./')) {
     const cleaned = path.replace(/^\.\//, '')
-    return `/${cleaned.replace(/^public\//, '')}`
+    return encodeURI(`/${cleaned.replace(/^public\//, '')}`)
   }
 
-  return `/${path.replace(/^\/?/, '').replace(/^public\//, '')}`
+  return encodeURI(`/${path.replace(/^\/?/, '').replace(/^public\//, '')}`)
 }
 
 const Hero = () => {
@@ -38,10 +38,8 @@ const Hero = () => {
   const [roleIndex, setRoleIndex] = useState(0)
   const [isDeleting, setIsDeleting] = useState(false)
   const [roleMinCh, setRoleMinCh] = useState(0)
-  const rolesRef = useRef([
-    'Senior Project Engineer – Automation',
-    'Tosca Automation Test Lead',
-  ])
+  const prefix = 'QA Automation – '
+  const rolesRef = useRef(['Tosca Test Lead', 'Senior Project Engineer'])
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
   const [hasCarouselError, setHasCarouselError] = useState(false)
   const typingIndexRef = useRef(0)
@@ -145,7 +143,10 @@ const Hero = () => {
                 <span className="hero__highlight gradient-text">{personalInfo.name}</span>
               </h1>
             </div>
-            <p className="hero__role" style={{ minWidth: `${roleMinCh}ch` }}>{typedTitle}</p>
+            <p className="hero__role" style={{ minWidth: `${roleMinCh + prefix.length}ch` }}>
+              <span className="hero__rolePrefix">{prefix}</span>
+              <span className="hero__roleTyped">{typedTitle}</span>
+            </p>
 
             <p className="hero__bio text-muted">{heroDescription}</p>
 
