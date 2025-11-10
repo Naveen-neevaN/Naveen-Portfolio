@@ -38,7 +38,7 @@ const AboutIntro = ({ videoSrc, prefersReducedMotion }) => {
               }}
             />
           ) : (
-            <img className="about-intro__video" src={poster} alt="About visual" />
+            <img className="about-intro__video" src={poster} alt="About visual" loading="lazy" />
           )}
           <div className="about-intro__media-overlay" />
         </div>

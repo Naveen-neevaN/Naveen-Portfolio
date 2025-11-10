@@ -140,42 +140,54 @@ const Hero = () => {
   return (
     <section id="hero" className="hero section-padding">
       <div className="container">
+        {/* Top intro inside hero: single-line greeting rendered inside a glassy button-like element */}
+        <div className="hero__topIntro">
+          <h1 className="hero__title hero__title--singleline">
+            <span className="hero__introLabel">Hi, I&apos;m</span>
+            <button
+              type="button"
+              className="hero__introButton"
+              onClick={(e) => e.preventDefault()}
+              aria-label={`${personalInfo.name}`}
+            >
+              <span className="hero__highlight">{personalInfo.name}</span>
+            </button>
+          </h1>
+        </div>
         <div className={`hero__layout ${isMounted ? 'is-mounted' : ''}`}>
           <div className={`hero__column hero__column--intro ${isMounted ? 'is-active' : ''}`}>
-            <div className="hero__introRow">
-              <span className="hero__introLabel">Hi, I&apos;m</span>
-              <h1 className="hero__title">
-                <span className="hero__highlight gradient-text">{personalInfo.name}</span>
-              </h1>
-            </div>
-            <p className="hero__role" style={{ minWidth: `${roleMinCh + prefix.length}ch` }}>
-              <span className="hero__rolePrefix">{prefix}</span>
-              <span className="hero__roleTyped">{typedTitle}</span>
-            </p>
+            <div className="hero__leftTile glass-panel">
+              <div className="hero__columnContent">
+                <p className="hero__role" style={{ minWidth: `${roleMinCh + prefix.length}ch` }}>
+                  <span className="hero__rolePrefix">{prefix}</span>
+                  <span className="hero__roleTyped">{typedTitle}</span>
+                </p>
 
-            <p className="hero__bio text-muted">{heroDescription}</p>
+                <p className="hero__bio text-muted">{heroDescription}</p>
 
-            <div className="hero__meta">
-              <span className="hero__meta-item">
-                <span aria-hidden="true">📍</span>
-                {personalInfo.location}
-              </span>
-            </div>
+                <div className="hero__meta">
+                  <span className="hero__meta-item">
+                    <span aria-hidden="true">📍</span>
+                    {personalInfo.location}
+                  </span>
+                </div>
 
-            <div className="hero__actions">
-              <a
-                href="#projects"
-                className="btn btn-primary"
-                onClick={(event) => {
-                  event.preventDefault()
-                  scrollToSection('projects')
-                }}
-              >
-                View My Work
-              </a>
-              <a href={personalInfo.resumeUrl} className="btn btn-outline" onClick={handleResumeDownload}>
-                Download Resume
-              </a>
+                <div className="hero__actions">
+                  <a
+                    href="#projects"
+                    className="btn btn-primary"
+                    onClick={(event) => {
+                      event.preventDefault()
+                      scrollToSection('projects')
+                    }}
+                  >
+                    View My Work
+                  </a>
+                  <a href={personalInfo.resumeUrl} className="btn btn-outline" onClick={handleResumeDownload}>
+                    Download Resume
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -200,6 +212,7 @@ const Hero = () => {
                               src={resolveImageSource(image)}
                               alt={`Portfolio highlight ${index + 1}`}
                               className="hero__image"
+                              loading="lazy"
                               onError={(e) => {
                                 // mark error to fall back and log useful diagnostic info
                                 console.warn('Carousel image failed to load:', image, 'resolved->', resolveImageSource(image), e?.nativeEvent?.src || e?.target?.src)

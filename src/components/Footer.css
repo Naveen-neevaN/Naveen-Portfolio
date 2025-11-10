@@ -1,13 +1,13 @@
 .footer {
-  background: var(--gradient-gold-soft);
-  background-size: 240% 240%;
-  animation: gradientShift 22s ease infinite;
+  background: var(--card-background);
   color: var(--text-primary);
   position: relative;
   min-height: 64px;
   padding: 8px 0;
   display: flex;
   align-items: center;
+  box-shadow: 0 -6px 24px rgba(6,60,59,0.04);
+  border-top: 1px solid rgba(244,231,206,0.06);
 }
 
 .footer::before {
@@ -47,19 +47,19 @@
 }
 
 .social-link {
-  color: #0b3a37;
+  color: #08362f;
   font-size: 1.2rem;
-  transition: all 0.3s ease;
+  transition: all 0.28s ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 40px;
   height: 40px;
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(12px);
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(10px);
   box-shadow: var(--shadow-sm);
-  border: 1px solid rgba(21, 143, 129, 0.25);
+  border: 1px solid rgba(20,184,166,0.12);
   position: relative;
   overflow: hidden;
 }
@@ -71,14 +71,14 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: var(--gradient-teal-gold);
+  background: var(--gradient-primary);
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.28s ease;
 }
 
 .social-link:hover {
   transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 14px 30px rgba(21, 143, 129, 0.25);
+  box-shadow: 0 14px 30px rgba(16,185,129,0.12), 0 0 18px rgba(212,175,55,0.06);
   color: white;
 }
 

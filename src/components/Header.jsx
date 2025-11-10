@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import './Header.css'
 import { ThemeSwitch } from './ThemeSwitch'
 
-const SITE_TITLE = "Naveen's Portfolio"
+const SITE_TITLE = "Surf My Profile"
 
 const navItems = [
   { id: 'hero', label: 'Home' },

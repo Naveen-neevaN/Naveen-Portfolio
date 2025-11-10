@@ -8,6 +8,11 @@
   --font-family-sans: var(--font-poppins, 'Poppins'), var(--font-manrope, 'Manrope'), 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-family-display: var(--font-manrope, 'Manrope'), var(--font-poppins, 'Poppins'), 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
+  /* Theme palette (Emerald + Teal + Champagne + Gold) */
+  --emerald: #10B981; /* primary */
+  --teal: #14B8A6; /* secondary */
+  --champagne: #F7E7CE; /* light accents */
+  --gold: #D4AF37; /* highlights */
   --color-teal-50: #ecf9f8;
   --color-teal-200: #b8e8e2;
   --color-teal-400: #39b5a4;
@@ -26,29 +31,33 @@
   --color-warm-gray: #65727a;
   --color-deep-navy: #04161d;
 
-  --bg-primary: radial-gradient(circle at 20% 20%, rgba(21, 143, 129, 0.18) 0%, transparent 55%), radial-gradient(circle at 80% 0%, rgba(241, 201, 105, 0.15) 0%, transparent 50%), linear-gradient(135deg, #f7f3eb 0%, #ecf9f8 100%);
+  /* Light theme background blend (champagne + soft teal) */
+  --bg-primary: linear-gradient(135deg, #E9F8F5 0%, #F7E7CE 50%, #FFF8E1 100%);
   --bg-surface: rgba(255, 255, 255, 0.72);
   --bg-highlight: rgba(255, 255, 255, 0.92);
-  --bg-gradient: linear-gradient(135deg, rgba(21, 143, 129, 0.85) 0%, rgba(26, 163, 124, 0.65) 35%, rgba(241, 201, 105, 0.75) 100%);
+  --bg-gradient: linear-gradient(135deg, rgba(16,185,129,0.9) 0%, rgba(20,184,166,0.8) 35%, rgba(247,231,206,0.6) 100%);
 
   --text-primary: #063c3b;
   --text-secondary: #1b4a4a;
   --text-muted: rgba(6, 60, 59, 0.65);
 
-  --gradient-teal-gold: linear-gradient(120deg, #0f766e 0%, #1aa37c 32%, #39b5a4 60%, #f1c969 100%);
-  --gradient-teal-deep: linear-gradient(140deg, #01343a 0%, #0f766e 35%, #39b5a4 100%);
-  --gradient-gold-soft: linear-gradient(135deg, rgba(244, 201, 93, 0.65) 0%, rgba(247, 237, 210, 0.9) 100%);
+  --gradient-primary: linear-gradient(135deg, #10B981 0%, #14B8A6 100%);
+  --gradient-luxury: linear-gradient(135deg, #F7E7CE 0%, #D4AF37 100%);
+  /* premium blend for accents (avoid very white/washed tones for text gradients) */
+  --gradient-premium-blend: linear-gradient(135deg, var(--emerald) 0%, var(--teal) 45%, var(--gold) 100%);
+  /* name gradient: deeper emerald -> teal -> gold without white highlights */
+  --gradient-name: linear-gradient(135deg, var(--emerald) 0%, var(--teal) 50%, var(--gold) 100%);
 
-  --shadow-sm: 0 10px 35px rgba(10, 67, 67, 0.12);
-  --shadow-md: 0 20px 50px rgba(8, 52, 52, 0.16);
-  --shadow-lg: 0 35px 80px rgba(4, 22, 29, 0.3);
+  --shadow-sm: 0 8px 24px rgba(16, 185, 129, 0.12);
+  --shadow-md: 0 18px 48px rgba(6, 60, 59, 0.12);
+  --shadow-lg: 0 30px 80px rgba(4, 22, 29, 0.28);
 
-  --glass-bg: rgba(255, 255, 255, 0.65);
-  --glass-border: rgba(255, 255, 255, 0.45);
-  --glass-border-strong: rgba(255, 255, 255, 0.8);
-  --glass-highlight: rgba(255, 255, 255, 0.18);
-  --glass-gradient: linear-gradient(135deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.28) 100%);
-  --glass-blur: 20px;
+  --card-background: rgba(255,255,255,0.08);
+  --card-blur: 12px;
+  --card-border: 1px solid rgba(244,231,206,0.18);
+  --card-highlight: rgba(255,255,255,0.12);
+  --glass-gradient: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(247,231,206,0.04) 100%);
+  --glass-blur: 16px;
 
   --border-subtle: rgba(9, 67, 67, 0.1);
   --border-strong: rgba(9, 67, 67, 0.18);
@@ -62,33 +71,32 @@
   --transition-fast: 0.28s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-slow: 0.6s cubic-bezier(0.19, 1, 0.22, 1);
 
-  --hero-gradient: var(--gradient-teal-gold);
+  --hero-gradient: var(--gradient-primary);
   /* header height used for scroll offsets */
   --header-height: 68px;
 }
 
 [data-theme='dark'] {
-  --bg-primary: radial-gradient(circle at 15% 15%, rgba(14, 121, 114, 0.35) 0%, transparent 55%), radial-gradient(circle at 85% 10%, rgba(212, 175, 55, 0.25) 0%, transparent 55%), linear-gradient(140deg, rgba(2, 43, 51, 0.95) 0%, rgba(1, 25, 32, 0.92) 100%);
-  --bg-surface: rgba(3, 24, 31, 0.72);
-  --bg-highlight: rgba(7, 38, 44, 0.9);
-  --bg-gradient: linear-gradient(140deg, rgba(6, 60, 59, 0.95) 0%, rgba(21, 143, 129, 0.7) 55%, rgba(212, 175, 55, 0.75) 100%);
+  /* Dark theme with emerald/teal and gold accents */
+  --bg-primary: linear-gradient(135deg, #0B1410 0%, #064E3B 40%, #134E4A 70%, #0A2E22 100%);
+  --bg-surface: rgba(6, 35, 43, 0.72);
+  --bg-highlight: rgba(10, 27, 23, 0.88);
+  --bg-gradient: linear-gradient(135deg, rgba(6,60,59,0.95) 0%, rgba(20,184,166,0.7) 55%, rgba(212,175,55,0.75) 100%);
 
-  --text-primary: #f6f7f9;
-  --text-secondary: rgba(233, 242, 244, 0.82);
-  --text-muted: rgba(214, 226, 227, 0.6);
+  --text-primary: #F7E7CE;
+  --text-secondary: rgba(247,231,206,0.88);
+  --text-muted: rgba(247,231,206,0.6);
 
-  --shadow-sm: 0 12px 35px rgba(1, 25, 32, 0.45);
-  --shadow-md: 0 24px 60px rgba(0, 20, 26, 0.55);
-  --shadow-lg: 0 50px 90px rgba(0, 10, 15, 0.6);
+  --shadow-sm: 0 12px 30px rgba(0,0,0,0.45);
+  --shadow-md: 0 24px 60px rgba(0,0,0,0.55);
+  --shadow-lg: 0 50px 90px rgba(0,0,0,0.6);
 
-  --glass-bg: rgba(5, 29, 35, 0.65);
-  --glass-border: rgba(241, 201, 105, 0.28);
-  --glass-border-strong: rgba(241, 201, 105, 0.45);
-  --glass-highlight: rgba(255, 255, 255, 0.08);
-  --glass-gradient: linear-gradient(135deg, rgba(9, 53, 60, 0.75) 0%, rgba(4, 24, 29, 0.65) 100%);
+  --card-background: rgba(16,185,129,0.06);
+  --card-border: 1px solid rgba(244,231,206,0.3);
+  --glass-gradient: linear-gradient(135deg, rgba(9,53,60,0.75) 0%, rgba(4,24,29,0.65) 100%);
 
-  --border-subtle: rgba(38, 103, 110, 0.32);
-  --border-strong: rgba(36, 109, 117, 0.45);
+  --border-subtle: rgba(244,231,206,0.12);
+  --border-strong: rgba(244,231,206,0.22);
 }
 
 html {
@@ -178,11 +186,24 @@ section {
   font-size: clamp(2rem, 4vw, 3rem);
   text-align: center;
   margin-bottom: 1rem;
-  background: var(--gradient-teal-gold);
+  /* Use a rich Emerald -> Teal -> Gold gradient without white-ish tones */
+  background: linear-gradient(135deg, var(--emerald) 0%, var(--teal) 35%, var(--gold) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   letter-spacing: 0.02em;
+}
+
+/* Animated gradient for headings and gradient-text utility */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.gradient-text {
+  background-size: 200% 200%;
+  animation: gradientShift 5s ease-in-out infinite;
 }
 
 .section-subheading {
@@ -213,9 +234,9 @@ section {
 }
 
 .btn-primary {
-  color: #052b23;
-  background: var(--gradient-teal-gold);
-  box-shadow: var(--shadow-sm);
+  color: #08221a;
+  background: var(--gradient-primary);
+  box-shadow: 0 10px 30px rgba(16,185,129,0.12);
 }
 
 .btn-primary::after {
@@ -239,8 +260,8 @@ section {
 .btn-outline {
   color: var(--text-primary);
   background: transparent;
-  border: 1px solid rgba(21, 143, 129, 0.35);
-  box-shadow: inset 0 0 0 0 rgba(21, 143, 129, 0.2);
+  border: 1px solid rgba(20,184,166,0.18);
+  box-shadow: inset 0 0 0 0 rgba(20,184,166,0.06);
   backdrop-filter: blur(8px);
 }
 
@@ -254,8 +275,8 @@ section {
 .glass-panel {
   position: relative;
   border-radius: var(--radius-lg);
-  background: var(--glass-gradient);
-  border: 1px solid var(--glass-border);
+  background: var(--card-background, rgba(255,255,255,0.08));
+  border: var(--card-border, 1px solid rgba(244,231,206,0.18));
   box-shadow: var(--shadow-sm);
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));

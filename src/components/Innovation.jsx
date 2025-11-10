@@ -16,7 +16,7 @@ const Innovation = () => {
         </div>
 
         <div className="innovation__image">
-          <img src={encodeURI('/about-poster.png')} alt="vibrant visual" />
+          <img src={encodeURI('/about-poster.png')} alt="vibrant visual" loading="lazy" />
         </div>
       </div>
     </section>

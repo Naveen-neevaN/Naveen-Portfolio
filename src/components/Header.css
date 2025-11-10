@@ -37,9 +37,10 @@
 
 .site-header,
 .site-header::before {
-  background: linear-gradient(140deg, rgba(255, 255, 255, 0.58) 0%, rgba(255, 255, 255, 0.15) 100%);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+  background: var(--card-background, rgba(255,255,255,0.08));
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(244,231,206,0.06);
 }
 
 [data-theme='dark'] .site-header,
@@ -114,8 +115,8 @@
   height: 2.05rem;
   padding: 0.35rem;
   border-radius: 999px;
-  border: 1px solid rgba(21, 143, 129, 0.18);
-  background: var(--gradient-teal-gold);
+  border: 1px solid rgba(20,184,166,0.18);
+  background: var(--gradient-primary);
   color: white;
   cursor: pointer;
   transition: transform var(--transition-fast), box-shadow var(--transition-fast), opacity var(--transition-fast);
@@ -199,7 +200,7 @@
   width: 0;
   height: 2px;
   border-radius: 999px;
-  background: var(--gradient-teal-gold);
+  background: var(--gradient-primary);
   transition: width var(--transition-fast), left var(--transition-fast);
 }
 
@@ -228,9 +229,9 @@
   width: 2.75rem;
   height: 2.75rem;
   border-radius: 999px;
-  border: 1px solid rgba(21, 143, 129, 0.25);
-  background: rgba(255, 255, 255, 0.65);
-  box-shadow: inset 0 0 0 0 rgba(212, 175, 55, 0.45);
+  border: 1px solid rgba(20,184,166,0.12);
+  background: rgba(255,255,255,0.6);
+  box-shadow: inset 0 0 0 0 rgba(212, 175, 55, 0.3);
   padding: 0.65rem;
   cursor: pointer;
   transition:
