@@ -23,8 +23,8 @@ const About = () => {
     return () => mq.removeEventListener('change', update)
   }, [])
 
-  // single video from public folder
-  const videoPath = '/Wipro Logo Video.mp4'
+  // single video from public folder (renamed to a safe filename)
+  const videoPath = '/wipro-logo.mp4'
 
   return (
     <section id="about" className="about section-padding">

@@ -16,17 +16,22 @@ const resolveImageSource = (path) => {
     return encodeURI(path)
   }
 
-  // Normalize any `public/...` references to root-based path
-  if (path.startsWith('/')) {
-    return encodeURI(path.replace(/^\/public\//, '/'))
+  // Normalize path separators and public/ references to root-based paths
+  // Convert backslashes (Windows paths) to forward slashes and trim
+  const normalized = path.replace(/\\/g, '/').trim()
+
+  // If already root-based (starts with '/'), keep it but remove accidental '/public/' prefix
+  if (normalized.startsWith('/')) {
+    return encodeURI(normalized.replace(/^\/public\//, '/'))
   }
 
-  if (path.startsWith('./')) {
-    const cleaned = path.replace(/^\.\//, '')
+  // Handle relative paths like './public/..' or './images/...'
+  if (normalized.startsWith('./')) {
+    const cleaned = normalized.replace(/^\.\//, '')
     return encodeURI(`/${cleaned.replace(/^public\//, '')}`)
   }
 
-  return encodeURI(`/${path.replace(/^\/?/, '').replace(/^public\//, '')}`)
+  return encodeURI(`/${normalized.replace(/^public\//, '')}`)
 }
 
 const Hero = () => {
@@ -191,12 +196,16 @@ const Hero = () => {
                         className={`hero__slide ${index === currentSlide ? 'is-active' : ''}`}
                         aria-hidden={index !== currentSlide}
                       >
-                        <img
-                          src={resolveImageSource(image)}
-                          alt={`Portfolio highlight ${index + 1}`}
-                          className="hero__image"
-                          onError={() => setHasCarouselError(true)}
-                        />
+                            <img
+                              src={resolveImageSource(image)}
+                              alt={`Portfolio highlight ${index + 1}`}
+                              className="hero__image"
+                              onError={(e) => {
+                                // mark error to fall back and log useful diagnostic info
+                                console.warn('Carousel image failed to load:', image, 'resolved->', resolveImageSource(image), e?.nativeEvent?.src || e?.target?.src)
+                                setHasCarouselError(true)
+                              }}
+                            />
                       </div>
                     ))}
                   </div>

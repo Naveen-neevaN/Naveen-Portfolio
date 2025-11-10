@@ -357,6 +357,25 @@
   }
 }
 
+/* Make Innovation image center and scale on tablet/phone */
+@media (max-width: 1024px) {
+  .about-innovation__inner {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .innovation__image {
+    justify-content: center;
+    padding: 0.5rem 0;
+  }
+
+  .innovation__image img {
+    width: min(240px, 44%);
+    margin-left: 0;
+  }
+}
+
 @media (max-width: 768px) {
   .about__content-wrapper {
     padding: 1.5rem;
@@ -546,14 +565,31 @@
   margin-bottom: 0.85rem;
 }
 
+.innovation__image {
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-end; /* keep image to the right of the tile on desktop */
+  padding: 0;
+  height: 100%;
+}
+
 .innovation__image img {
+  /* fill the tile fully and crop as needed */
   width: 100%;
-  max-width: 180px; /* reduce image footprint */
-  height: auto;
+  height: 100%;
+  object-fit: cover;
   display: block;
   border-radius: calc(var(--radius-md, 12px));
-  object-fit: cover;
-  margin-left: auto;
+  box-shadow: 0 10px 28px rgba(6, 35, 43, 0.12);
+  transform: translateY(12px) scale(0.98);
+  opacity: 0;
+  transition: transform 620ms cubic-bezier(0.19, 1, 0.22, 1), opacity 420ms ease;
+  will-change: transform, opacity;
+}
+
+.about__wrapper.is-visible .innovation__image img {
+  transform: translateY(0) scale(1);
+  opacity: 1;
 }
 
 .innovation__visual {

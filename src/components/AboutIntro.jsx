@@ -7,12 +7,15 @@ const normalizeSrc = (path) => {
   if (!path) return ''
   if (typeof path !== 'string') return path
   if (/^https?:\/\//i.test(path)) return encodeURI(path)
-  return encodeURI(path.replace(/^\.\/?/, '/').replace(/^public\//, '/'))
+
+  // Normalize backslashes and leading './' or 'public/' prefixes
+  const normalized = path.replace(/\\/g, '/').replace(/^\.\/?/, '/').replace(/^public\//, '')
+  return encodeURI(normalized.startsWith('/') ? normalized : `/${normalized}`)
 }
 
 const AboutIntro = ({ videoSrc, prefersReducedMotion }) => {
   const [videoError, setVideoError] = useState(false)
-  const poster = normalizeSrc('/A sharp vibrant ima.png')
+  const poster = normalizeSrc('/about-poster.png')
   const src = normalizeSrc(videoSrc)
 
   return (
@@ -29,7 +32,10 @@ const AboutIntro = ({ videoSrc, prefersReducedMotion }) => {
               loop={!prefersReducedMotion}
               playsInline
               aria-hidden="true"
-              onError={() => setVideoError(true)}
+              onError={(e) => {
+                console.warn('AboutIntro video failed to load:', src, e?.nativeEvent?.src || e?.target?.src)
+                setVideoError(true)
+              }}
             />
           ) : (
             <img className="about-intro__video" src={poster} alt="About visual" />
