@@ -22,31 +22,35 @@ const Header = () => {
   const scrollMeta = useRef({ lastY: 0, ticking: false })
 
   useEffect(() => {
-    scrollMeta.current.lastY = window.scrollY
+    let lastScrollY = window.scrollY
+    let ticking = false
 
     const handleScroll = () => {
-      const currentY = window.scrollY
-      setIsScrolled(currentY > 24)
-
-      if (!scrollMeta.current.ticking) {
+      if (!ticking) {
         window.requestAnimationFrame(() => {
-          const lastY = scrollMeta.current.lastY
-          const delta = currentY - lastY
-          const isScrollingDown = delta > 6
-          const isScrollingUp = delta < -6
-
-          if (currentY < 120) {
+          const currentScrollY = window.scrollY
+          const delta = currentScrollY - lastScrollY
+          
+          // Show header at the top of the page
+          if (currentScrollY < 50) {
             setIsHidden(false)
-          } else if (isScrollingDown) {
+            setIsScrolled(false)
+          } 
+          // Hide header when scrolling down
+          else if (delta > 10) {
             setIsHidden(true)
-          } else if (isScrollingUp) {
+            setIsScrolled(true)
+          } 
+          // Show header when scrolling up
+          else if (delta < -10) {
             setIsHidden(false)
+            setIsScrolled(true)
           }
 
-          scrollMeta.current.lastY = currentY
-          scrollMeta.current.ticking = false
+          lastScrollY = currentScrollY
+          ticking = false
         })
-        scrollMeta.current.ticking = true
+        ticking = true
       }
     }
 
