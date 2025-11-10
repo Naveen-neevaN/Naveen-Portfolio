@@ -16,8 +16,10 @@ const TechExpertise = () => {
       <div className="skills__row">
         {skills.map((s) => (
           <div key={s.id} className="skill__card glass-panel">
-            <div className="skill__icon" aria-hidden>⚙️</div>
-            <div className="skill__title">{s.title}</div>
+            <div className="skill__head">
+              <div className="skill__icon" aria-hidden>⚙️</div>
+              <div className="skill__title">{s.title}</div>
+            </div>
             <div className="skill__desc">{s.desc}</div>
           </div>
         ))}

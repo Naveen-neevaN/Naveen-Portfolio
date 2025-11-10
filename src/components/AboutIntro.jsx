@@ -21,17 +21,14 @@ const AboutIntro = ({ videoSrc, prefersReducedMotion }) => {
         </div>
 
         <div className="about-intro__text">
-          <h2 id="about-intro-title" className="projects__title gradient-text">Senior Project Engineer & Tosca Automation Test Lead</h2>
+          <h2 id="about-intro-title" className="projects__title gradient-text">Experience and Expertise</h2>
           <p className="about-intro__summary">
             As a Senior Project Engineer and Tosca Automation Test Lead at Wipro Ltd, I bring a wealth of
             experience spanning nearly 5 years in the BFSI sector. My professional journey centers on delivering
             exceptional automation solutions while building lasting client relationships through innovative testing
             approaches.
           </p>
-          <div className="about-intro__name-badge">
-            <span className="about-intro__name">Naveen</span>
-            <span className="about-intro__designation">Senior Project Engineer & Tosca Automation Test Lead</span>
-          </div>
+          {/* name badge intentionally removed per design */}
         </div>
       </div>
     </section>

@@ -154,10 +154,10 @@
 
 .hero__visual {
   position: relative;
-  /* increased size by ~10% */
-  width: min(935px, 95%);
+  /* reduced slightly (5%) to minimize carousel size per request */
+  width: min(935px, 90%);
   aspect-ratio: 16 / 11;
-  min-height: 85.8vh;
+  min-height: 81.5vh;
   overflow: hidden;
   border-radius: var(--radius-xl);
   padding: clamp(0.4rem, 1.8vw, 0.8rem);

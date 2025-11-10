@@ -31,13 +31,14 @@
 .about__showcase {
   position: relative;
   width: 100%;
-  min-height: 600px;
-  margin-top: 2rem;
-  overflow: hidden;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  min-height: auto; /* allow the panel to size to its contents */
+  margin-top: 1.25rem;
+  overflow: visible;
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: var(--radius-lg);
+  padding: 0.5rem;
 }
 
 .glass-panel {
@@ -86,11 +87,12 @@
 
 .about__media {
   position: relative;
-  width: 100%;
+  width: 80%;
   height: 100%;
-  min-height: 300px;
+  min-height: 240px;
   border-radius: var(--radius-md);
   overflow: hidden;
+  margin: 0 auto;
 }
 
 .about__video {
@@ -165,10 +167,10 @@
 
 .about__media-container {
   position: relative;
-  width: 90%;
+  width: 85%; /* reduced by ~5% */
   height: 100%;
-  min-height: 300px;
-  max-height: 400px;
+  min-height: 285px; /* reduced by ~5% */
+  max-height: 380px; /* reduced by ~5% */
   border-radius: var(--radius-xl);
   overflow: hidden;
   margin: 0 auto;
@@ -424,7 +426,7 @@
   position: relative;
   width: 100%;
   height: 100%;
-  min-height: 260px;
+  min-height: 248px; /* reduced by ~5% */
   border-radius: calc(var(--radius-lg, 16px));
   overflow: hidden;
 }
@@ -446,6 +448,7 @@
   margin-top: 0.75rem;
   color: var(--color-text-secondary, rgba(0,0,0,0.7));
   line-height: 1.6;
+  font-size: 1.15rem; /* Base size + 5% increase */
 }
 
 .about-intro__name-badge {
@@ -514,14 +517,30 @@
 
 /* Innovation */
 .about-innovation {
-  margin-top: 2rem;
+  margin-top: 2.5rem;
 }
 
 .about-innovation__inner {
   display: grid;
-  grid-template-columns: 28% 72%;
+  grid-template-columns: 72% 28%; /* left: text, right: image */
   gap: 1rem;
   align-items: center;
+  padding: 1rem 1.25rem;
+  min-height: 120px;
+}
+
+.about-innovation > .section-subhead { /* space between heading and panel */
+  margin-bottom: 0.85rem;
+}
+
+.innovation__image img {
+  width: 100%;
+  max-width: 180px; /* reduce image footprint */
+  height: auto;
+  display: block;
+  border-radius: calc(var(--radius-md, 12px));
+  object-fit: cover;
+  margin-left: auto;
 }
 
 .innovation__visual {
@@ -543,15 +562,33 @@
   margin-top: 1rem;
 }
 
-.skill__card { padding: 1rem; transition: transform 0.28s ease; }
+.skill__card { padding: 1rem; transition: transform 0.28s ease; display: flex; flex-direction: column; }
 .skill__card:hover { transform: translateY(-6px); box-shadow: 0 12px 30px rgba(0,0,0,0.06); }
-.skill__icon { font-size: 1.25rem; margin-bottom: 0.5rem; }
-.skill__title { font-weight: 700; margin-bottom: 0.25rem; }
-.skill__desc { font-size: 0.95rem; opacity: 0.85; }
+.skill__head { display: flex; align-items: center; gap: 0.65rem; margin-bottom: 0.45rem; }
+.skill__icon { font-size: 1.25rem; line-height: 1; }
+.skill__title { font-weight: 700; margin: 0; }
+.skill__desc { font-size: 0.95rem; opacity: 0.85; margin: 0; }
 
 /* Personal */
-.about-personal { margin-top: 2rem; padding: 1rem; }
-.personal__quote { margin-top: 0.75rem; font-style: italic; opacity: 0.9; }
+.about-personal { margin-top: 2.5rem; }
+.about-personal > .section-subhead { margin-bottom: 0.85rem; }
+.personal__panel { padding: 1.25rem 1.5rem; display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+.personal__center { display: flex; width: 100%; justify-content: center; }
+.agile-badge {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: rgba(23,162,138,0.04);
+  border: 1px solid rgba(23,162,138,0.12);
+  padding: 0.8rem 1rem;
+  border-radius: 12px;
+  width: 100%;
+  max-width: none;
+  box-sizing: border-box; /* make width respect parent padding */
+}
+.agile-icon { font-size: 1.6rem; flex: 0 0 auto; }
+.agile-quote { font-weight: 600; text-align: center; flex: 1 1 auto; word-break: break-word; }
+.personal__quote { display: none; }
 
 /* Animations triggered by wrapper visibility */
 .about__wrapper.is-visible .about-intro__video { transform: scale(1); opacity: 0.6; transition-delay: 0.12s; }
