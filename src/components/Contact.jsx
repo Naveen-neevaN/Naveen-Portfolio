@@ -140,9 +140,11 @@ const Contact = () => {
               ) : null}
             </div>
 
-            <p className="contact__quip">
-              Because even QA and Dev need to talk before the bug report hits production 😉
-            </p>
+            <figure className="contact__quote" aria-hidden="false">
+              <blockquote>
+                <span className="contact__quote-line">Because great conversations fix bugs faster than tickets do.!<span className="contact__quote-emoji">😉</span></span>
+              </blockquote>
+            </figure>
           </form>
         </div>
       </div>

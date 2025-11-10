@@ -14,12 +14,9 @@
   inset: 0 0 auto 0;
   z-index: 1010;
   padding: 1.1rem 0;
-  transition:
-    transform var(--transition-fast),
-    background var(--transition-fast),
-    box-shadow var(--transition-fast),
-    border-color var(--transition-fast);
-  will-change: transform, background;
+  /* smooth transform + fade when hiding/showing */
+  transition: transform 0.45s cubic-bezier(0.2, 0.9, 0.2, 1), opacity 0.45s cubic-bezier(0.2, 0.9, 0.2, 1), background var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
+  will-change: transform, opacity, background;
   animation: headerReveal 0.6s ease forwards;
 }
 
@@ -55,6 +52,24 @@
 
 .site-header--hidden {
   transform: translateY(-110%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* When mobile menu is open, ensure header stays visible */
+.site-header--menu-open {
+  /* Keep header visible when the mobile menu is open, but avoid !important so
+     the hidden state can still be applied predictably by JS if needed. */
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* higher specificity hidden rule so hide/show wins when both classes are present */
+.site-header.site-header--hidden {
+  transform: translateY(-110%);
+  opacity: 0;
+  pointer-events: none;
 }
 
 .site-header__inner {
@@ -80,26 +95,43 @@
 }
 
 .site-header__brand-mark {
-  font-size: 0.85rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  padding: 0.45rem 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.05rem;
+  height: 2.05rem;
+  padding: 0.35rem;
   border-radius: 999px;
-  background: rgba(21, 143, 129, 0.12);
-  border: 1px solid rgba(21, 143, 129, 0.28);
-  color: var(--text-primary);
+  border: 1px solid rgba(21, 143, 129, 0.18);
+  background: var(--gradient-teal-gold);
+  color: white;
+  cursor: pointer;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), opacity var(--transition-fast);
 }
 
 [data-theme='dark'] .site-header__brand-mark {
-  background: rgba(21, 143, 129, 0.18);
-  border-color: rgba(212, 175, 55, 0.32);
-  color: #f5f8f8;
+  /* a slightly richer gold border in dark mode */
+  border-color: rgba(212, 175, 55, 0.28);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
 }
 
 .site-header__brand-title {
   font-size: clamp(1.1rem, 2vw, 1.35rem);
   font-weight: 600;
   letter-spacing: 0.02em;
+}
+
+.site-header__brand-mark:focus-visible,
+.site-header__brand-mark:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 12px 30px rgba(6, 60, 59, 0.16);
+}
+
+.site-header__brand-icon {
+  display: block;
+  width: 1.05rem;
+  height: 1.05rem;
+  color: currentColor;
 }
 
 .site-header__right {

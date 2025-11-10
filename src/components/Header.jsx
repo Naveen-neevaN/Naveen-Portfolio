@@ -119,7 +119,26 @@ const Header = () => {
               scrollToSection('hero')
             }}
           >
-            <span className="site-header__brand-title gradient-text">{SITE_TITLE}</span>
+            <span
+              className="site-header__brand-title gradient-text"
+              role="button"
+              tabIndex={0}
+              title="Refresh page"
+              onClick={(e) => {
+                // prevent anchor's scroll behavior and perform a full reload
+                e.stopPropagation()
+                window.location.reload()
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  window.location.reload()
+                }
+              }}
+            >
+              {SITE_TITLE}
+            </span>
           </a>
 
           <div className="site-header__right">

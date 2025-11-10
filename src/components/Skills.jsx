@@ -99,7 +99,7 @@ const Skills = () => {
             >
               <header className="skills__groupHeader">
                 <span className="skills__groupBadge">{groupTitle}</span>
-                <h3 className="skills__groupTitle gradient-text">{groupTitle}</h3>
+                <h4 className="skills__groupTitle gradient-text" style={{ fontSize: '1.7rem' }}>{groupTitle}</h4>
               </header>
 
               <div className="skills__chips">
