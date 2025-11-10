@@ -10,7 +10,7 @@ const AboutIntro = ({ videoSrc, prefersReducedMotion }) => {
         <div className="about-intro__media">
           <video
             className="about-intro__video"
-            src={videoSrc}
+            src={typeof videoSrc === 'string' ? encodeURI(videoSrc) : videoSrc}
             autoPlay={!prefersReducedMotion}
             muted
             loop={!prefersReducedMotion}
