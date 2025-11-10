@@ -3,49 +3,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 // Use native <img> to simplify loading from /public and avoid Next Image sizing issues for this static export
 import { personalInfo } from '@/data/personalInfo.js'
+import { resolveAssetPath } from '@/lib/resolveAssetPath'
 import './Hero.css'
 
 const SLIDE_DURATION_MS = 6500
-
-const resolveImageSource = (path) => {
-  if (!path) {
-    return ''
-  }
-
-  if (/^https?:\/\//i.test(path)) {
-    return encodeURI(path)
-  }
-
-  // Normalize path separators and public/ references to root-based paths
-  // Convert backslashes (Windows paths) to forward slashes and trim
-  const normalized = path.replace(/\\/g, '/').trim()
-
-  // Determine a base path for deployments (e.g., GitHub Pages serving under /RepoName)
-  let basePath = ''
-  try {
-    if (typeof window !== 'undefined' && window.location && typeof window.location.pathname === 'string') {
-      const parts = window.location.pathname.split('/').filter(Boolean)
-      if (parts.length && parts[0]) {
-        basePath = `/${parts[0]}`
-      }
-    }
-  } catch (e) {
-    basePath = ''
-  }
-
-  // Build cleaned path (remove any leading public/ segment)
-  const cleaned = normalized.replace(/^public\//, '').replace(/^\/public\//, '').replace(/^\./, '')
-  // Ensure we have a single leading slash between basePath and cleaned path
-  const raw = `${basePath}/${cleaned}`
-  const finalPath = raw.replace(/\\/g, '/').replace(/\/{2,}/g, '/')
-
-  // If the original path was an absolute URL, we already handled it above.
-  try {
-    return encodeURI(finalPath)
-  } catch (e) {
-    return finalPath
-  }
-}
 
 const Hero = () => {
   const carouselImages = personalInfo.carouselImages ?? []
@@ -142,7 +103,7 @@ const Hero = () => {
     event.preventDefault()
     const link = document.createElement('a')
     // Resolve resume URL to respect possible basePath in hosted environments
-    link.href = resolveImageSource(personalInfo.resumeUrl || '')
+    link.href = resolveAssetPath(personalInfo.resumeUrl || '')
     link.download = 'Naveen_K_Resume.pdf'
     document.body.appendChild(link)
     link.click()
@@ -222,17 +183,17 @@ const Hero = () => {
                         className={`hero__slide ${index === currentSlide ? 'is-active' : ''}`}
                         aria-hidden={index !== currentSlide}
                       >
-                            <img
-                              src={resolveImageSource(image)}
-                              alt={`Portfolio highlight ${index + 1}`}
-                              className="hero__image"
-                              loading="lazy"
-                              onError={(e) => {
-                                // mark error to fall back and log useful diagnostic info
-                                console.warn('Carousel image failed to load:', image, 'resolved->', resolveImageSource(image), e?.nativeEvent?.src || e?.target?.src)
-                                setHasCarouselError(true)
-                              }}
-                            />
+                                      <img
+                                        src={resolveAssetPath(image)}
+                                        alt={`Portfolio highlight ${index + 1}`}
+                                        className="hero__image"
+                                        loading="lazy"
+                                        onError={(e) => {
+                                          // mark error to fall back and log useful diagnostic info
+                                          console.warn('Carousel image failed to load:', image, 'resolved->', resolveAssetPath(image), e?.nativeEvent?.src || e?.target?.src)
+                                          setHasCarouselError(true)
+                                        }}
+                                      />
                       </div>
                     ))}
                   </div>

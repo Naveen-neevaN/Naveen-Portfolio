@@ -2,6 +2,7 @@
 
 import React from 'react'
 import './About.css'
+import { resolveAssetPath } from '@/lib/resolveAssetPath'
 
 const Innovation = () => {
   return (
@@ -16,7 +17,7 @@ const Innovation = () => {
         </div>
 
         <div className="innovation__image">
-          <img src={encodeURI('/about-poster.png')} alt="vibrant visual" loading="lazy" />
+          <img src={resolveAssetPath('/about-poster.png')} alt="vibrant visual" loading="lazy" />
         </div>
       </div>
     </section>
