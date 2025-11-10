@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useMemo, useRef, useState } from 'react'
-import Image from 'next/image'
+// Use native <img> to simplify loading from /public and avoid Next Image sizing issues for this static export
 import { personalInfo } from '@/data/personalInfo.js'
 import './Hero.css'
 
@@ -191,12 +191,9 @@ const Hero = () => {
                         className={`hero__slide ${index === currentSlide ? 'is-active' : ''}`}
                         aria-hidden={index !== currentSlide}
                       >
-                        <Image
+                        <img
                           src={resolveImageSource(image)}
                           alt={`Portfolio highlight ${index + 1}`}
-                          fill
-                          sizes="(min-width: 1024px) 520px, (min-width: 768px) 70vw, 92vw"
-                          priority={index === 0}
                           className="hero__image"
                           onError={() => setHasCarouselError(true)}
                         />

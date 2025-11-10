@@ -15,14 +15,16 @@
 .contact__grid {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: clamp(2rem, 5vw, 3rem);
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(1rem, 3vw, 1.5rem);
   align-items: stretch;
   margin: 0 auto;
   opacity: 0;
   transform: translateY(35px);
   transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.6s ease;
   z-index: 1;
+  max-width: 1200px;
+  width: 100%;
 }
 
 .contact__grid.is-visible {
@@ -31,77 +33,97 @@
 }
 
 .contact__card {
-  padding: clamp(2.2rem, 5vw, 2.8rem);
+  padding: clamp(0.875rem, 1.5vw, 1rem);
   display: flex;
   flex-direction: column;
-  gap: clamp(1.5rem, 4vw, 2rem);
+  gap: clamp(0.5rem, 1vw, 0.75rem);
   text-align: center;
   align-items: center;
-}
-
-/* Center the contact card content so its visual height aligns more closely with the form tile */
-.contact__card {
   justify-content: center;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(21, 143, 129, 0.15);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  height: 100%;
 }
 
 .contact__badge {
-  font-size: 0.9rem;
-  letter-spacing: 0.18em;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+  text-align: center;
+  display: block;
+  width: 100%;
 }
 
 .contact__title {
-  font-size: clamp(1.6rem, 3vw, 2rem);
-  line-height: 1.35;
+  font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+  line-height: 1.3;
   margin: 0;
+  background: linear-gradient(95deg, #158f81, #f1c969);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 600;
 }
 
 .contact__description {
   max-width: 420px;
-  line-height: 1.75;
+  line-height: 1.6;
+  font-size: 0.925rem;
+  color: var(--text-muted);
+  margin: 0 auto 0.5rem;
+  text-align: center;
 }
 
 .contact__details {
   /* Show contact metadata as separate full-width rows */
   display: grid;
   grid-template-columns: 1fr;
-  gap: 0.65rem;
+  gap: 0.5rem;
   width: 100%;
+  align-items: center;
+  justify-content: center;
+  text-align: left;
+  margin-top: 0.5rem;
 }
 
 .contact__detail {
   display: flex;
-  gap: 0.75rem;
+  gap: 0.5rem;
   align-items: center;
-  padding: 0.85rem 1.1rem;
-  border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.42);
-  border: 1px solid rgba(21, 143, 129, 0.25);
-  transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(21, 143, 129, 0.2);
+  transition: transform var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  cursor: pointer;
 }
 
-/* Location-specific layout: label above the address/link */
-.contact__detail--location {
+/* All contact details including location use the same inline layout */
+.contact__detail {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.25rem;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.contact__detail--location .contact__detail-label {
-  font-size: 0.85rem;
+.contact__detail-label {
+  font-size: 0.78rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  opacity: 0.9;
+  color: var(--text-muted);
 }
 
-.contact__detail--location .contact__detail-value {
+.contact__detail-value {
   font-weight: 600;
   color: var(--text-primary);
   text-decoration: none;
-  font-size: 0.96rem;
+  font-size: 0.875rem;
 }
 
 [data-theme='dark'] .contact__detail {
@@ -126,16 +148,23 @@
 }
 
 @media (max-width: 768px) {
-  /* On small screens ensure spacing remains comfortable */
+  .contact__grid {
+    grid-template-columns: 1fr;
+  }
+  
   .contact__details {
-    gap: 0.85rem;
+    gap: 0.5rem;
   }
 
   .contact__detail {
     width: 100%;
     justify-content: flex-start;
-    border-radius: var(--radius-md);
-    padding: 0.85rem 1.1rem;
+    border-radius: var(--radius-sm);
+    padding: 0.5rem 0.75rem;
+  }
+  
+  .contact__field textarea {
+    min-height: 60px;
   }
 }
 
@@ -158,17 +187,31 @@
   text-decoration: underline;
 }
 
+/* Custom styles for textarea */
+.contact__field textarea {
+  min-height: 60px;
+  max-height: 120px;
+  resize: vertical;
+  padding: 0.5rem 0.75rem;
+  line-height: 1.4;
+}
+
 .contact__form {
-  padding: clamp(2.2rem, 5vw, 2.8rem);
+  padding: clamp(1rem, 2vw, 1.25rem);
   display: flex;
   flex-direction: column;
-  gap: clamp(1.4rem, 3vw, 1.8rem);
+  gap: clamp(0.75rem, 1.5vw, 1rem);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(21, 143, 129, 0.15);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .contact__formRow {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(0.85rem, 2.5vw, 1.25rem);
+  gap: 0.75rem;
 }
 
 .contact__formRow--stacked {
@@ -178,26 +221,26 @@
 .contact__field {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.35rem;
 }
 
 .contact__field label {
-  font-weight: 600;
-  font-size: 0.95rem;
-  color: var(--text-primary);
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: var(--text-muted);
 }
 
 .contact__field input,
 .contact__field textarea {
   border-radius: var(--radius-sm);
-  border: 1px solid rgba(21, 143, 129, 0.25);
-  background: rgba(255, 255, 255, 0.55);
-  padding: 0.9rem 1.05rem;
-  font-size: 1rem;
+  border: 1px solid rgba(21, 143, 129, 0.2);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
   color: var(--text-primary);
   transition:
     border-color var(--transition-fast),
-    box-shadow var(--transition-fast),
+    background var(--transition-fast),
     background var(--transition-fast),
     transform var(--transition-fast);
   backdrop-filter: blur(14px);

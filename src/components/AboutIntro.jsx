@@ -1,22 +1,39 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import './About.css'
 
+const normalizeSrc = (path) => {
+  if (!path) return ''
+  if (typeof path !== 'string') return path
+  if (/^https?:\/\//i.test(path)) return encodeURI(path)
+  return encodeURI(path.replace(/^\.\/?/, '/').replace(/^public\//, '/'))
+}
+
 const AboutIntro = ({ videoSrc, prefersReducedMotion }) => {
+  const [videoError, setVideoError] = useState(false)
+  const poster = normalizeSrc('/A sharp vibrant ima.png')
+  const src = normalizeSrc(videoSrc)
+
   return (
     <section className="about-intro glass-panel" aria-labelledby="about-intro-title">
       <div className="about-intro__inner">
         <div className="about-intro__media">
-          <video
-            className="about-intro__video"
-            src={typeof videoSrc === 'string' ? encodeURI(videoSrc) : videoSrc}
-            autoPlay={!prefersReducedMotion}
-            muted
-            loop={!prefersReducedMotion}
-            playsInline
-            aria-hidden="true"
-          />
+          {!videoError ? (
+            <video
+              className="about-intro__video"
+              src={src}
+              poster={poster}
+              autoPlay={!prefersReducedMotion}
+              muted
+              loop={!prefersReducedMotion}
+              playsInline
+              aria-hidden="true"
+              onError={() => setVideoError(true)}
+            />
+          ) : (
+            <img className="about-intro__video" src={poster} alt="About visual" />
+          )}
           <div className="about-intro__media-overlay" />
         </div>
 
@@ -28,7 +45,6 @@ const AboutIntro = ({ videoSrc, prefersReducedMotion }) => {
             exceptional automation solutions while building lasting client relationships through innovative testing
             approaches.
           </p>
-          {/* name badge intentionally removed per design */}
         </div>
       </div>
     </section>

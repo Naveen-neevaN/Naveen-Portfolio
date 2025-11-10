@@ -75,17 +75,15 @@ const Contact = () => {
                 <span className="contact__detail-icon" aria-hidden="true">
                   📍
                 </span>
-                <div className="contact__detail--location">
-                  <span className="contact__detail-label">Location</span>
-                  <a
-                    className="contact__detail-value"
-                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(personalInfo.location)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {personalInfo.location}
-                  </a>
-                </div>
+                <span className="contact__detail-label">Location</span>
+                <a
+                  className="contact__detail-value"
+                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(personalInfo.location)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {personalInfo.location}
+                </a>
               </div>
             </div>
           </div>
@@ -140,7 +138,7 @@ const Contact = () => {
             <div className="contact__status" role="status" aria-live="polite">
               {status === 'success' ? (
                 <span className="contact__statusMessage contact__statusMessage--success">
-                  Thank you! I’ll be in touch shortly.
+                  Thank you! I'll be in touch shortly.
                 </span>
               ) : status === 'error' ? (
                 <span className="contact__statusMessage contact__statusMessage--error">
@@ -148,12 +146,6 @@ const Contact = () => {
                 </span>
               ) : null}
             </div>
-
-            <figure className="contact__quote" aria-hidden="false">
-              <blockquote>
-                <span className="contact__quote-line">Because great conversations fix bugs faster than tickets do.!<span className="contact__quote-emoji">😉</span></span>
-              </blockquote>
-            </figure>
           </form>
         </div>
       </div>
