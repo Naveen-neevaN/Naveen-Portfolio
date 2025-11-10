@@ -213,7 +213,9 @@ const Hero = () => {
                                         loading="lazy"
                                         onError={(e) => {
                                           // mark error to fall back and log useful diagnostic info
-                                          console.warn('Carousel image failed to load:', image, 'resolved->', resolveAssetPath(image), e?.nativeEvent?.src || e?.target?.src)
+                                          if (process.env.NODE_ENV !== 'production') {
+                                            console.warn('Carousel image failed to load:', image, 'resolved->', resolveAssetPath(image), e?.nativeEvent?.src || e?.target?.src)
+                                          }
                                           setHasCarouselError(true)
                                         }}
                                       />

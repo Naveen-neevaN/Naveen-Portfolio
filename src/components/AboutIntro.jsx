@@ -24,7 +24,9 @@ const AboutIntro = ({ videoSrc, prefersReducedMotion }) => {
               playsInline
               aria-hidden="true"
               onError={(e) => {
-                console.warn('AboutIntro video failed to load:', src, e?.nativeEvent?.src || e?.target?.src)
+                if (process.env.NODE_ENV !== 'production') {
+                  console.warn('AboutIntro video failed to load:', src, e?.nativeEvent?.src || e?.target?.src)
+                }
                 setVideoError(true)
               }}
             />
