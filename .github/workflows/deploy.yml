@@ -29,7 +29,10 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci
+        # Use `npm install` here because package.json was recently updated
+        # and the lockfile in the repo may not be in sync. `npm ci` fails
+        # when package.json and package-lock.json differ.
+        run: npm install --prefer-offline --no-audit
 
       - name: Build
         run: npm run build
