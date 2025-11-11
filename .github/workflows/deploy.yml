@@ -1,9 +1,9 @@
 name: Deploy to GitHub Pages
 
+# Only allow manual dispatch now that deploy is merged into CI. This prevents
+# automatic duplicate deploy runs on push to `main` while keeping a manual
+# deploy option if needed.
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 permissions:
