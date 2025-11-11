@@ -34,10 +34,9 @@ jobs:
         # installs you can run `npm install` locally and commit package-lock.json
         run: npm install --prefer-offline --no-audit
 
-      - name: Build and export static site
+      - name: Build static site
         run: |
           npm run build
-          npm run export
         env:
           NODE_ENV: production
 
