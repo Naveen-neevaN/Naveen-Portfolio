@@ -1,10 +1,10 @@
-name: Deploy to GitHub Pages
+name: Simple Deploy (build and publish)
 
-# Only allow manual dispatch now that deploy is merged into CI. This prevents
-# automatic duplicate deploy runs on push to `main` while keeping a manual
-# deploy option if needed.
+# Very small workflow: on push to main, install deps, build + export static
+# files (to ./out) and publish to GitHub Pages. No tests or heavy CI steps.
 on:
-  workflow_dispatch:
+  push:
+    branches: [ main ]
 
 permissions:
   contents: read
@@ -13,11 +13,12 @@ permissions:
 
 concurrency:
   group: "pages"
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -29,13 +30,14 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        # Use `npm install` here because package.json was recently updated
-        # and the lockfile in the repo may not be in sync. `npm ci` fails
-        # when package.json and package-lock.json differ.
+        # Use npm install to avoid lockfile mismatch issues. For reproducible
+        # installs you can run `npm install` locally and commit package-lock.json
         run: npm install --prefer-offline --no-audit
 
-      - name: Build
-        run: npm run build
+      - name: Build and export static site
+        run: |
+          npm run build
+          npm run export
         env:
           NODE_ENV: production
 
@@ -47,13 +49,6 @@ jobs:
         with:
           path: ./out
 
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

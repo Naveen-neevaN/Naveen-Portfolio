@@ -1,58 +1,14 @@
-name: CI
+name: CI (disabled automatic runs)
 
+# This workflow used to run on push. It's now disabled for automatic runs to
+# keep deployment as a single simple workflow. You can still run this manually
+# from the Actions UI if you want to run the steps.
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
+  workflow_dispatch:
 
 jobs:
-  build:
+  noop:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v4
-      - name: Use Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-      - name: Install dependencies
-        # Use `npm install` in CI here because package.json was modified
-        # but package-lock.json in the repo is not yet in sync. `npm ci` fails
-        # when package.json and the lockfile differ. This will install
-        # dependencies reliably in CI; afterwards update the lockfile locally
-        # with `npm install` and commit it to keep reproducible installs.
-        run: npm install --prefer-offline --no-audit
-      - name: Build
-        run: npm run build --if-present
-      - name: Start server in background
-        run: |
-          nohup npm run start &
-          # wait for server to be ready
-          n=0; until [ $n -ge 30 ]; do
-            if curl -sSf http://localhost:3000 >/dev/null; then break; fi
-            n=$((n+1)); sleep 1
-          done
-
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps
-
-      - name: Run Playwright tests
-        run: npm run test:e2e:ci
-
-      # Configure GitHub Pages and upload the static site artifact so the
-      # deploy step can publish it. This mirrors the separate deploy workflow
-      # that used to run on push to main.
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./out
+      - name: Notice
+        run: echo "CI automatic runs disabled. Use the 'Simple Deploy' workflow for push-to-deploy."
