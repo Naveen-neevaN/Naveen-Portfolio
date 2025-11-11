@@ -19,8 +19,12 @@ const Hero = () => {
   const [roleIndex, setRoleIndex] = useState(0)
   const [isDeleting, setIsDeleting] = useState(false)
   const [roleMinCh, setRoleMinCh] = useState(0)
-  const prefix = 'QA Automation – '
-  const rolesRef = useRef(['Tosca Test Lead', 'Senior Project Engineer'])
+    const prefix = 'QA Automation - '
+    const rolesRef = useRef(['Senior Project Engineer', 'Tosca Test Lead'])
+  // Refs and state to keep the prefix statically centered while the typed role animates
+  const roleContainerRef = useRef(null)
+  const prefixRef = useRef(null)
+  const [prefixWidth, setPrefixWidth] = useState(0)
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
   const [hasCarouselError, setHasCarouselError] = useState(false)
   const [failedCarouselUrls, setFailedCarouselUrls] = useState([])
@@ -98,21 +102,24 @@ const Hero = () => {
     }
 
     const currentRole = roles[roleIndex % roles.length]
-    const typingSpeed = isDeleting ? 35 : 55
-    const pauseAtEndMs = 1200
-    const pauseAtStartMs = 400
+    const typingSpeed = isDeleting ? 40 : 60
+    const pauseAtEndMs = 1000
+    const pauseAtStartMs = 500
 
     let timer
+
     if (!isDeleting && typedTitle === currentRole) {
+      // pause at end before deleting
       timer = setTimeout(() => setIsDeleting(true), pauseAtEndMs)
     } else if (isDeleting && typedTitle === '') {
+      // move to next role and start typing
       setIsDeleting(false)
       setRoleIndex((i) => (i + 1) % roles.length)
       timer = setTimeout(() => {}, pauseAtStartMs)
     } else {
       timer = setTimeout(() => {
         const nextText = isDeleting
-          ? currentRole.slice(0, typedTitle.length - 1)
+          ? currentRole.slice(0, Math.max(0, typedTitle.length - 1))
           : currentRole.slice(0, typedTitle.length + 1)
         setTypedTitle(nextText)
       }, typingSpeed)
@@ -126,6 +133,21 @@ const Hero = () => {
     const maxLen = rolesRef.current.reduce((m, s) => Math.max(m, s.length), 0)
     setRoleMinCh(maxLen + 2)
   }, [])
+
+  // Measure the prefix width so we can absolutely position the typed text to the right of the centered prefix
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const measure = () => {
+      try {
+        if (prefixRef.current) setPrefixWidth(prefixRef.current.offsetWidth)
+      } catch (e) {
+        // ignore
+      }
+    }
+    measure()
+    window.addEventListener('resize', measure)
+    return () => window.removeEventListener('resize', measure)
+  }, [isMounted])
 
   useEffect(() => {
     if (!hasCarousel || hasCarouselError || prefersReducedMotion || carouselImages.length <= 1) {
@@ -169,57 +191,16 @@ const Hero = () => {
   return (
     <section id="hero" className="hero section-padding">
       <div className="container">
-        {/* Top intro inside hero: single-line greeting rendered inside a glassy button-like element */}
-        <div className="hero__topIntro">
-          <h1 className="hero__title hero__title--singleline">
-            <span className="hero__introLabel">Hi, I&apos;m</span>
-            <button
-              type="button"
-              className="hero__introButton"
-              onClick={(e) => e.preventDefault()}
-              aria-label={`${personalInfo.name}`}
-            >
-              <span className="hero__highlight">{personalInfo.name}</span>
-            </button>
-          </h1>
-        </div>
+        {/* Main hero layout: Left column (greeting text), Right column (carousel) */}
         <div className={`hero__layout ${isMounted ? 'is-mounted' : ''}`}>
+          {/* Left Column: Large Greeting Text */}
           <div className={`hero__column hero__column--intro ${isMounted ? 'is-active' : ''}`}>
-            <div className="hero__leftTile glass-panel">
-              <div className="hero__columnContent">
-                <p className="hero__role" style={{ minWidth: `${roleMinCh + prefix.length}ch` }}>
-                  <span className="hero__rolePrefix">{prefix}</span>
-                  <span className="hero__roleTyped">{typedTitle}</span>
-                </p>
-
-                <p className="hero__bio text-muted">{heroDescription}</p>
-
-                <div className="hero__meta">
-                  <span className="hero__meta-item">
-                    <span aria-hidden="true">📍</span>
-                    {personalInfo.location}
-                  </span>
-                </div>
-
-                <div className="hero__actions">
-                  <a
-                    href="#projects"
-                    className="btn btn-primary"
-                    onClick={(event) => {
-                      event.preventDefault()
-                      scrollToSection('projects')
-                    }}
-                  >
-                    View My Work
-                  </a>
-                  <a href={personalInfo.resumeUrl} className="btn btn-outline" onClick={handleResumeDownload}>
-                    Download Resume
-                  </a>
-                </div>
-              </div>
+            <div className="hero__greetingBox">
+              <h2 className="hero__greetingText">Hi, I&apos;m<br/><span className="gradient-text">{personalInfo.name}</span></h2>
             </div>
           </div>
 
+          {/* Right Column: Modernized Carousel */}
           <div className={`hero__column hero__column--visual ${isMounted ? 'is-active' : ''}`}>
             <div className="hero__visual glass-panel carousel-glass">
               <div className="hero__visual-glow" />
@@ -325,9 +306,50 @@ const Hero = () => {
             </div>
           </div>
         </div>
+
+        {/* Role Overview Tile: Below Hero Columns */}
+        <div className={`hero__roleOverviewTile glass-panel ${isMounted ? 'is-visible' : ''}`}>
+          <div className="hero__roleOverviewContent">
+            {/* Left 70%: Role Description */}
+            <div className="hero__roleDescription">
+              <h2 className="hero__roleTitle">
+                <span className="hero__rolePrefix">{prefix}</span>
+                <span className="hero__roleTyped gradient-text">{typedTitle}</span>
+              </h2>
+              <p className="hero__roleOverviewText">{heroDescription}</p>
+            </div>
+
+            {/* Right 30%: Location Icon and Buttons */}
+            <div className="hero__roleActions">
+              <div className="hero__locationBadge">
+                <span className="hero__locationIcon">📍</span>
+                <div className="hero__locationValue">{personalInfo.location}</div>
+              </div>
+
+              <div className="hero__buttonsGroup">
+                <button
+                  className="btn btn-primary"
+                  onClick={(event) => {
+                    event.preventDefault()
+                    scrollToSection('projects')
+                  }}
+                >
+                  View Projects
+                </button>
+                <button
+                  className="btn btn-outline"
+                  onClick={handleResumeDownload}
+                >
+                  Download Resume
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   )
 }
 
 export default Hero
+

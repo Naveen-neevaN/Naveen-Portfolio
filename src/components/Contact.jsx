@@ -122,7 +122,7 @@ const Contact = () => {
                 name="message"
                 value={formData.message}
                 onChange={handleChange}
-                rows={6}
+                rows={3}
                 placeholder="Share what's on your mind—ideas, opportunities, collaboration..."
                 required
               />

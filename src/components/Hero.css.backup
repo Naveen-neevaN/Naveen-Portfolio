@@ -43,41 +43,109 @@
   overflow-x: hidden;
 }
 
-/* Left column: Introduction and Animated Robot */
-.hero__introSection {
+/* Top intro inside hero (single-line greeting) */
+.hero__topIntro {
+  display: flex;
   width: 100%;
+  justify-content: center;
+  margin-bottom: clamp(1rem, 2.4vw, 2rem); /* more breathing room between greeting and tiles */
+}
+
+.hero__introButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1rem;
+  border-radius: 999px;
+  font-family: var(--font-family-display);
+  font-weight: 700;
+  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(247,231,206,0.02));
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 8px 30px rgba(6,60,59,0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--text-primary);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
+  cursor: default;
+}
+
+.hero__introButton:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  background: linear-gradient(180deg, rgba(255,255,255,0.1), rgba(247,231,206,0.04));
+}
+
+.hero__introButton .hero__highlight {
+  /* Name should be ~40% larger than the "Hi, I'm" label and use the premium gradient */
+  font-size: calc(var(--intro-size) * 1.4);
+  line-height: 1;
+  display: inline-block;
+  position: relative;
+  padding-left: 0.4rem;
+  font-weight: 800;
+  /* use the dedicated name gradient without white tones */
+  background: var(--gradient-name);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero__introButton:hover .hero__highlight {
+  /* subtle glow/shimmer on hover for the name */
+  text-shadow: 0 10px 30px rgba(21,143,129,0.35), 0 0 18px rgba(212,175,55,0.12);
+  transform: translateY(-1px);
+}
+
+/* Glassy circular icon to the left of the name-only to add the premium accent */
+/* removed decorative gradient dot; name now appears without the dot */
+
+.hero__title--singleline {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  white-space: nowrap;
+  font-size: clamp(2rem, 4vw, 3rem);
+  /* base size variable for the intro label so we can scale the name relative to it */
+  --intro-size: clamp(1.95rem, 2.7vw, 1.575rem);
+  line-height: 1.02;
+}
+
+.hero__leftTile {
+  width: 100%;
+  /* ensure tile fills column height so it matches the visual panel */
   height: 100%;
+  padding: clamp(0.8rem, 1.8vw, 1.4rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Inner content of the left tile: tighter, balanced spacing to avoid crowding */
+/* Center all left tile content vertically and horizontally */
+.hero__leftTile .hero__columnContent {
+  width: 100%;
+  max-width: 560px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  gap: clamp(0.8rem, 1.8vw, 1.4rem);
   justify-content: center;
-  gap: clamp(1.5rem, 3vw, 2.5rem);
-  padding: clamp(1rem, 2vw, 2rem);
-}
-
-.hero__greetingBox {
-  width: 100%;
-  height: 100%;
-  display: flex;
   align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transform: scale(0.95) translateY(20px);
-  animation: fadeInScale 0.8s cubic-bezier(0.19, 1, 0.22, 1) 0.3s forwards;
-}
-
-.hero__greetingText {
-  font-size: clamp(2.5rem, 6vw, 4rem);
-  font-weight: 700;
-  line-height: 1.2;
   text-align: center;
-  color: var(--text-primary);
-  letter-spacing: -0.02em;
+  padding: 0.15rem;
 }
 
-.hero__greetingText .gradient-text {
+/* Center specific sub-elements inside the left tile */
+.hero__leftTile .hero__meta {
+  justify-content: center;
+}
+
+.hero__leftTile .hero__actions {
+  justify-content: center;
+}
+
+.hero__leftTile .hero__role {
+  white-space: normal; /* allow wrapping for long role text when centered */
   display: block;
-  margin-top: 0.3em;
 }
 
 .hero__column--visual {
@@ -154,7 +222,28 @@
   text-shadow: 0 18px 48px rgba(21, 143, 129, 0.35);
 }
 
+.hero__role {
+  font-size: clamp(1.35rem, 2.8vw, 1.75rem);
+  color: var(--text-primary);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  display: block;
+  white-space: normal;
+  background: linear-gradient(135deg, var(--emerald) 0%, var(--teal) 50%, var(--gold) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.3;
+  min-height: 1.9em;
+}
 
+.hero__rolePrefix {
+  opacity: 0.85;
+}
+
+.hero__roleTyped {
+  display: inline-block;
+}
 
 .hero__bio {
   font-size: clamp(1rem, 2vw, 1.1rem);
@@ -336,43 +425,41 @@
 }
 
 .hero__slide.is-active {
-  opacity: 1;
-  filter: blur(0) saturate(1) brightness(1);
-  transform: scale(1);
-}
-
-.hero__slide.is-active .hero__image {
   /* Carousel image: glassy, floating, rounded, with reflection and soft shadow */
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center center;
-  will-change: opacity, filter, transform;
-  transition: opacity 0.9s, transform 1s;
+  .hero__image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    will-change: opacity, filter, transform;
+    transition: opacity 0.9s, transform 1s;
+    transform: translateZ(0);
+    display: block;
+    border-radius: 40%;
+    box-shadow: 0 8px 40px 0 rgba(20, 184, 166, 0.18), 0 2px 32px 0 rgba(212, 175, 55, 0.10);
+    background: rgba(255,255,255,0.08);
+  }
+  /* Reflection effect below carousel image */
+  .hero__image::after {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -18%;
+    height: 18%;
+    border-radius: 40%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.01) 100%);
+    opacity: 0.7;
+    pointer-events: none;
+    z-index: 2;
+  }
   transform: translateZ(0);
   display: block;
-  border-radius: 40%;
-  box-shadow: 0 8px 40px 0 rgba(20, 184, 166, 0.18), 0 2px 32px 0 rgba(212, 175, 55, 0.10);
-  background: rgba(255,255,255,0.08);
-  opacity: 1;
-}
-
-/* Reflection effect below carousel image */
-.hero__slide.is-active .hero__image::after {
-  content: '';
-  display: block;
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -18%;
-  height: 18%;
-  border-radius: 40%;
-  background: linear-gradient(180deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.01) 100%);
-  opacity: 0.7;
-  pointer-events: none;
-  z-index: 2;
+  border-radius: 0; /* image is clipped by the slide which has the rounded corners */
+  box-shadow: none; /* remove framed inner shadows */
 }
 
 /* modern glassy carousel wrapper to match teal/gold/emerald theme */
@@ -505,241 +592,6 @@
   transform: scale(1.15);
 }
 
-/* Role Overview Tile (below hero columns) */
-.hero__roleOverviewTile {
-  margin-top: clamp(2rem, 4vw, 3.5rem);
-  padding: clamp(2rem, 4vw, 3rem);
-  padding: clamp(1.5rem, 3vw, 2.5rem);
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--radius-lg);
-  box-shadow: 0 12px 40px rgba(20, 184, 166, 0.06), 0 4px 18px rgba(212, 175, 55, 0.04);
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.19, 1, 0.22, 1), box-shadow 0.3s ease;
-}
-
-.hero__roleOverviewTile.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.hero__roleOverviewTile:hover {
-  box-shadow: 0 16px 48px rgba(20, 184, 166, 0.08), 0 6px 22px rgba(212, 175, 55, 0.06);
-}
-
-[data-theme='dark'] .hero__roleOverviewTile {
-  background: rgba(6, 35, 43, 0.2);
-  border-color: rgba(241, 201, 105, 0.12);
-  box-shadow: 0 12px 40px rgba(20, 184, 166, 0.04), 0 4px 18px rgba(212, 175, 55, 0.02);
-}
-
-[data-theme='dark'] .hero__roleOverviewTile:hover {
-  box-shadow: 0 16px 48px rgba(20, 184, 166, 0.06), 0 6px 22px rgba(212, 175, 55, 0.04);
-}
-
-.hero__roleOverviewContent {
-  display: grid;
-  /* shift to 60% / 40% so right column gains 20 percentage points (was 20%) */
-  grid-template-columns: 60% 40%;
-  /* tighten gap so the actions sit closer to the overview */
-  gap: clamp(0.6rem, 1.2vw, 1rem);
-  align-items: start;
-}
-
-.hero__roleDescription {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  align-items: flex-start;
-  justify-content: center; /* center the role block vertically in the left grid cell */
-  align-self: center; /* center the left column within the tile row */
-  text-align: left;
-  padding: 0.1rem 0; /* minimal vertical breathing room */
-}
-
-.hero__roleTitle {
-  /* single line role: static prefix on the left, typed role grows to the right */
-  display: flex;
-  align-items: baseline;
-  justify-content: flex-start;
-  gap: 0.5rem;
-  font-size: clamp(1.05rem, 2.4vw, 1.4rem);
-  font-weight: 700;
-  line-height: 1.1;
-  white-space: nowrap;
-  overflow: hidden; /* prevent overflow onto other elements */
-  margin: 0 0 0.25rem 0;
-}
-
-.hero__rolePrefix {
-  background: linear-gradient(135deg, var(--emerald) 0%, var(--teal) 50%, var(--gold) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  font-weight: 700;
-  flex: 0 0 auto; /* keep prefix width as needed */
-}
-
-.hero__roleTyped {
-  display: inline-block;
-  flex: 1 1 auto; /* allow typed text to take remaining space */
-  min-width: 0; /* required for flex children to ellipsis correctly */
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.hero__roleTyped::after {
-  content: '';
-  display: inline-block;
-  width: 2px;
-  height: 1.05em;
-  margin-left: 0.35rem;
-  background: currentColor;
-  opacity: 0.9;
-  animation: blink-caret 1s steps(1) infinite;
-  vertical-align: text-bottom;
-}
-
-@keyframes blink-caret {
-  0%, 49% { opacity: 1 }
-  50%, 100% { opacity: 0 }
-}
-
-.hero__roleOverviewText {
-  font-size: clamp(0.95rem, 2vw, 1.02rem);
-  line-height: 1.6;
-  color: var(--text-muted);
-}
-
-.hero__roleActions {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem; /* reduce gap between badge and buttons */
-  align-items: stretch; /* make children stretch to equal width */
-  justify-content: center; /* vertically center actions within the tile */
-  align-self: center; /* center the actions column vertically in the grid row */
-  padding: 0.25rem 0.6rem; /* tighter padding so actions sit closer to overview */
-}
-
-.hero__locationBadge {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 0.85rem; /* balanced padding */
-  background: rgba(21, 143, 129, 0.06);
-  border: 1px solid rgba(21, 143, 129, 0.16);
-  border-radius: var(--radius-md);
-  backdrop-filter: blur(6px);
-  transition: all 0.18s cubic-bezier(0.19, 1, 0.22, 1);
-  cursor: default;
-  width: 100%; /* match buttons width */
-  box-sizing: border-box;
-}
-
-.hero__locationBadge:hover {
-  background: rgba(21, 143, 129, 0.12);
-  border-color: rgba(21, 143, 129, 0.4);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(21, 143, 129, 0.1);
-}
-
-.hero__locationIcon {
-  font-size: 0.95rem; /* smaller icon */
-  line-height: 1;
-  transform-origin: center;
-}
-
-.hero__locationValue {
-  font-weight: 600;
-  color: var(--text-primary);
-  font-size: 0.9rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.hero__buttonsGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem; /* smaller gap between buttons */
-  width: 100%;
-  align-items: stretch;
-  padding: 0; /* remove extra inner padding to tighten layout */
-}
-
-.hero__buttonsGroup .btn {
-  width: 100%;
-  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
-  font-size: 0.98rem;
-  padding: 0.66rem 0.95rem; /* slightly reduced to sit closer together */
-  border-radius: 12px;
-}
-
-.hero__buttonsGroup .btn:active {
-  transform: translateY(-1px) scale(0.98);
-}
-
-.hero__buttonsGroup .btn:focus-visible {
-  outline: 2px solid var(--color-emerald-500);
-  outline-offset: 2px;
-}
-
-.hero__buttonsGroup .btn-primary {
-  /* Teal -> Gold premium glassy gradient */
-  background: linear-gradient(135deg, rgba(20,184,166,0.96) 0%, rgba(212,175,55,0.95) 100%);
-  box-shadow: 0 10px 30px rgba(20,184,166,0.12), 0 3px 10px rgba(212,175,55,0.06);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,255,255,0.08);
-  color: #052b23;
-  position: relative;
-}
-
-.hero__buttonsGroup .btn-primary:hover {
-  filter: saturate(1.03) brightness(1.02);
-  box-shadow: 0 14px 38px rgba(20,184,166,0.16), 0 5px 14px rgba(212,175,55,0.1);
-}
-
-.hero__buttonsGroup .btn-primary::after {
-  content: '';
-  position: absolute;
-  left: 10%;
-  right: 10%;
-  top: 6%;
-  height: 36%;
-  background: linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0.02));
-  border-radius: 10px;
-  pointer-events: none;
-  mix-blend-mode: overlay;
-  opacity: 0.55;
-}
-
-.hero__buttonsGroup .btn-outline {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1.5px solid rgba(20, 184, 166, 0.25);
-  backdrop-filter: blur(10px);
-  box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.1);
-}
-
-.hero__buttonsGroup .btn-outline:hover {
-  background: rgba(20, 184, 166, 0.1);
-  border-color: rgba(20, 184, 166, 0.45);
-  box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.1), 0 8px 24px rgba(20, 184, 166, 0.1);
-}
-
-/* Keyframe for robot fade-in */
-@keyframes fadeInScale {
-  from {
-    opacity: 0;
-    transform: scale(0.95) translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
 @media (max-width: 1080px) {
   .hero {
     min-height: auto;
@@ -817,32 +669,6 @@
 
   .hero__role {
     font-size: clamp(1.1rem, 2.2vw, 1.4rem);
-  }
-
-  /* Stack role overview tile on smaller screens */
-  .hero__roleOverviewContent {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-
-  .hero__roleActions {
-    align-items: flex-start;
-    flex-direction: row;
-    gap: 1rem;
-  }
-
-  .hero__locationBadge {
-    flex: 0 0 auto;
-  }
-
-  .hero__buttonsGroup {
-    flex-direction: row;
-    flex: 1;
-    gap: 0.75rem;
-  }
-
-  .hero__buttonsGroup .btn {
-    flex: 1;
   }
 }
 

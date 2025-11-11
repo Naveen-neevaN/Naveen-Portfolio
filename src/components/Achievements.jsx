@@ -4,7 +4,7 @@ import React from 'react'
 import './About.css'
 
 const statCards = [
-  { id: 1, label: '50+ Releases', subtitle: 'Production releases delivered', icon: '🚀' },
+  { id: 1, label: '50+ Releases', subtitle: 'Prod release delivered', icon: '🚀' },
   { id: 2, label: 'Zero Escalations', subtitle: 'Customer-facing stability', icon: '✅' },
   { id: 3, label: '5 Years', subtitle: 'Industry experience', icon: '⏱️' }
 ]

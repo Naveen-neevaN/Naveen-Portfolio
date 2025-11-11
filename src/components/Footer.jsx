@@ -38,7 +38,7 @@ const Footer = () => {
           <p className="footer-text" role="contentinfo">
             Let&apos;s connect and create something amazing together
           </p>
-          <p className="copyright-text">© {currentYear} Naveen K. All rights reserved</p>
+          <p className="copyright-text">© 2025 Naveen K. All rights reserved</p>
         </div>
       </div>
     </footer>
