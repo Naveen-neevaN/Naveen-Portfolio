@@ -352,6 +352,13 @@
   }
 }
 
+/* Slightly reduce header spacing on very small devices */
+@media (max-width: 420px) {
+  .site-header__inner { gap: 0.8rem; }
+  .site-header { padding: 0.6rem 0; }
+  .site-header__menuButton { width: 2.4rem; height: 2.4rem; padding: 0.5rem; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .site-header,
   .site-header__menuButton,

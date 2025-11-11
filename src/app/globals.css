@@ -428,6 +428,13 @@ section {
   }
 }
 
+/* extra small devices: tighten container and reduce default spacing */
+@media (max-width: 420px) {
+  :root { --header-height: 56px; }
+  .container { width: min(96vw, 640px); padding: 0 0.5rem; }
+  .section-heading { font-size: clamp(1.6rem, 6vw, 2.4rem); }
+}
+
 /* Focus-visible utility for keyboard accessibility */
 :focus {
   outline: none;
