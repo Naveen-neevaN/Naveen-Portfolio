@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import './Header.css'
 import { ThemeSwitch } from './ThemeSwitch'
+import MotionToggle from './MotionToggle'
 
 const SITE_TITLE = "Surf My Profile"
 
@@ -26,21 +27,28 @@ const Header = () => {
     let ticking = false
 
     const handleScroll = () => {
+      // If reduced motion is preferred, avoid hide/show animations and keep header visible
+      if (prefersReducedMotion) {
+        setIsHidden(false)
+        setIsScrolled(window.scrollY > 0)
+        return
+      }
+
       if (!ticking) {
         window.requestAnimationFrame(() => {
           const currentScrollY = window.scrollY
           const delta = currentScrollY - lastScrollY
-          
+
           // Show header at the top of the page
           if (currentScrollY < 50) {
             setIsHidden(false)
             setIsScrolled(false)
-          } 
+          }
           // Hide header when scrolling down
           else if (delta > 10) {
             setIsHidden(true)
             setIsScrolled(true)
-          } 
+          }
           // Show header when scrolling up
           else if (delta < -10) {
             setIsHidden(false)
@@ -65,20 +73,36 @@ const Header = () => {
   }, [prefersReducedMotion])
 
   useEffect(() => {
-    if (typeof window === 'undefined' || !window.matchMedia) {
-      return
+    if (typeof window === 'undefined') return
+
+    const readPref = () => {
+      try {
+        if (typeof document !== 'undefined' && document.documentElement.classList.contains('reduced-motion')) return true
+        const saved = typeof window !== 'undefined' ? localStorage.getItem('reducedMotion') : null
+        if (saved === 'true') return true
+      } catch (e) {
+        // ignore
+      }
+      if (typeof window !== 'undefined' && window.matchMedia) return window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      return false
     }
+
+    setPrefersReducedMotion(readPref())
 
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
-    const updatePreference = (event) => {
-      setPrefersReducedMotion(event.matches)
-    }
+    const updatePreference = () => setPrefersReducedMotion(readPref())
 
-    setPrefersReducedMotion(mediaQuery.matches)
     mediaQuery.addEventListener('change', updatePreference)
+    document.addEventListener('reduced-motion-change', updatePreference)
+    const handleStorage = (e) => {
+      if (e.key === 'reducedMotion') setPrefersReducedMotion(readPref())
+    }
+    window.addEventListener('storage', handleStorage)
 
     return () => {
       mediaQuery.removeEventListener('change', updatePreference)
+      document.removeEventListener('reduced-motion-change', updatePreference)
+      window.removeEventListener('storage', handleStorage)
     }
   }, [])
 
@@ -122,27 +146,9 @@ const Header = () => {
               event.preventDefault()
               scrollToSection('hero')
             }}
+            aria-label="Scroll to top"
           >
-            <span
-              className="site-header__brand-title gradient-text"
-              role="button"
-              tabIndex={0}
-              title="Refresh page"
-              onClick={(e) => {
-                // prevent anchor's scroll behavior and perform a full reload
-                e.stopPropagation()
-                window.location.reload()
-              }}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault()
-                  e.stopPropagation()
-                  window.location.reload()
-                }
-              }}
-            >
-              {SITE_TITLE}
-            </span>
+            <span className="site-header__brand-title gradient-text">{SITE_TITLE}</span>
           </a>
 
           <div className="site-header__right">
@@ -164,6 +170,9 @@ const Header = () => {
                 ))}
                 <li className="site-header__item site-header__item--switch">
                   <ThemeSwitch />
+                </li>
+                <li className="site-header__item site-header__item--switch">
+                  <MotionToggle />
                 </li>
               </ul>
             </nav>

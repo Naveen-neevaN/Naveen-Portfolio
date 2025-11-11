@@ -8,7 +8,7 @@ import Footer from '@/components/Footer.jsx'
 
 export default function Home() {
   return (
-    <main>
+    <main id="main">
       <Header />
       <Hero />
       <About />

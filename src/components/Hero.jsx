@@ -49,17 +49,45 @@ const Hero = () => {
   }, [isMounted])
 
   useEffect(() => {
-    if (typeof window === 'undefined' || !window.matchMedia) {
-      return
+    if (typeof window === 'undefined') return
+
+    // determine reduced motion preference from multiple signals:
+    // 1) explicit site-level toggle (document.documentElement class)
+    // 2) persisted localStorage key (reducedMotion)
+    // 3) system preference via matchMedia
+    const readPref = () => {
+      try {
+        if (typeof document !== 'undefined' && document.documentElement.classList.contains('reduced-motion')) return true
+        const saved = typeof window !== 'undefined' ? localStorage.getItem('reducedMotion') : null
+        if (saved === 'true') return true
+      } catch (e) {
+        // ignore
+      }
+      if (typeof window !== 'undefined' && window.matchMedia) {
+        return window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      }
+      return false
     }
 
+    setPrefersReducedMotion(readPref())
+
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
-    const handleChange = (event) => setPrefersReducedMotion(event.matches)
+    const handleMedia = (event) => setPrefersReducedMotion(readPref())
+    mediaQuery.addEventListener('change', handleMedia)
 
-    setPrefersReducedMotion(mediaQuery.matches)
-    mediaQuery.addEventListener('change', handleChange)
+    const handleDocEvent = (e) => setPrefersReducedMotion(readPref())
+    document.addEventListener('reduced-motion-change', handleDocEvent)
 
-    return () => mediaQuery.removeEventListener('change', handleChange)
+    const handleStorage = (e) => {
+      if (e.key === 'reducedMotion') setPrefersReducedMotion(readPref())
+    }
+    window.addEventListener('storage', handleStorage)
+
+    return () => {
+      mediaQuery.removeEventListener('change', handleMedia)
+      document.removeEventListener('reduced-motion-change', handleDocEvent)
+      window.removeEventListener('storage', handleStorage)
+    }
   }, [])
 
   useEffect(() => {
@@ -193,7 +221,7 @@ const Hero = () => {
           </div>
 
           <div className={`hero__column hero__column--visual ${isMounted ? 'is-active' : ''}`}>
-            <div className="hero__visual glass-panel">
+            <div className="hero__visual glass-panel carousel-glass">
               <div className="hero__visual-glow" />
               {/* SVG overlay provides a crisper gold accent and glass shape (GPU-friendly) */}
               <svg

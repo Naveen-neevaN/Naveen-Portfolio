@@ -17,7 +17,11 @@ const Innovation = () => {
         </div>
 
         <div className="innovation__image">
-          <img src={resolveAssetPath('/about-poster.png')} alt="vibrant visual" loading="lazy" />
+          <img
+            src={resolveAssetPath('/about-poster.png')}
+            alt="Poster illustrating innovation initiatives and the GenAI Accelerator"
+            loading="lazy"
+          />
         </div>
       </div>
     </section>

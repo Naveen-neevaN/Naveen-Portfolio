@@ -1,7 +1,17 @@
-* {
+/* Minimal normalize + box-model reset to improve cross-browser consistency */
+html {
+  line-height: 1.15; /* 1 */
+  -webkit-text-size-adjust: 100%; /* 2 */
+}
+
+*, *::before, *::after {
+  box-sizing: border-box; /* consistent box model */
+}
+
+/* Reset default margins and paddings to avoid cross-browser differences */
+body, h1, h2, h3, h4, p, figure, blockquote, dl, dd {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
 :root {
@@ -152,6 +162,29 @@ main {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+/* Skip link (hidden until keyboard focus) */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.skip-link:focus {
+  position: fixed;
+  left: 1rem;
+  top: 1rem;
+  width: auto;
+  height: auto;
+  padding: 0.6rem 1rem;
+  z-index: 9999;
+  background: rgba(255,255,255,0.92);
+  color: var(--text-primary);
+  border-radius: 6px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.12);
 }
 
 p {
@@ -393,5 +426,23 @@ section {
   .btn {
     width: 100%;
   }
+}
+
+/* Focus-visible utility for keyboard accessibility */
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 3px solid rgba(16,185,129,0.22);
+  outline-offset: 3px;
+}
+
+/* Reduced-motion toggle override class: when present, disable animations/transitions */
+.reduced-motion *,
+.reduced-motion *::before,
+.reduced-motion *::after {
+  transition: none !important;
+  animation: none !important;
 }
 
