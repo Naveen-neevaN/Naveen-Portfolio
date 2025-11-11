@@ -4,9 +4,24 @@ import React from 'react'
 import './About.css'
 
 const skills = [
-  { id: 'mcp', title: 'MCP Server Orchestration', desc: 'Design and manage MCP servers for scalable test execution' },
-  { id: 'cicd', title: 'CI/CD Integration', desc: 'Pipeline automation for reliable delivery' },
-  { id: 'automation', title: 'Automation Strategy', desc: 'End-to-end automation planning and governance' }
+  {
+    id: 'automation',
+    title: 'Automation Strategy',
+    desc: 'End-to-end automation planning and governance',
+    icon: '🛠️'
+  },
+  {
+    id: 'cicd',
+    title: 'CI/CD Integration',
+    desc: 'Pipeline automation for reliable delivery',
+    icon: '💡'
+  },
+  {
+    id: 'genai',
+    title: 'GenAI Orchestration',
+    desc: 'Design and manage GenAI frameworks and MCP config',
+    icon: '🔮'
+  }
 ]
 
 const TechExpertise = () => {
@@ -16,11 +31,14 @@ const TechExpertise = () => {
       <div className="skills__row">
         {skills.map((s) => (
           <div key={s.id} className="skill__card glass-panel">
-            <div className="skill__head">
-              <div className="skill__icon" aria-hidden>⚙️</div>
-              <div className="skill__title">{s.title}</div>
+            <div className="skill__iconCol" aria-hidden="true">
+              <div className="skill__icon">{s.icon}</div>
             </div>
-            <div className="skill__desc">{s.desc}</div>
+
+            <div className="skill__contentCol">
+              <div className="skill__title">{s.title}</div>
+              <div className="skill__desc">{s.desc}</div>
+            </div>
           </div>
         ))}
       </div>

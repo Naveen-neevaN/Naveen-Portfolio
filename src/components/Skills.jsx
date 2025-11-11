@@ -54,6 +54,13 @@ const Skills = () => {
       'Team Management',
       'Project Management',
       'Client Interaction & Handling',
+      'Client Communication',
+      'Leadership & Mentoring',
+      'Process Optimization',
+      'Documentation & Reporting',
+      'Strategic Planning',
+      'Quality Assurance Governance',
+      'Decision Making',
     ])
 
     const buckets = {
@@ -86,10 +93,10 @@ const Skills = () => {
     }
 
     const ordered = [
-      ['Automation / Testing Tools', buckets.automation, '🤖'],
-      ['Frontend + Backend Skills', buckets.fullstack, '💻'],
+      ['Automation / Testing Tools', buckets.automation, '🛠️'],
+      ['Frontend + Backend Skills', buckets.fullstack, '🎨'],
       ['Cloud & AI Skills', buckets.cloudai, '☁️'],
-      ['Professional & Management', buckets.professional, '👥'],
+      ['Leadership Skills', buckets.professional, '🧭'],
     ]
 
     return ordered

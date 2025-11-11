@@ -55,11 +55,32 @@ export const personalInfo = {
     // Development
     { name: 'JavaScript', category: 'frontend' },
     { name: 'TypeScript (basic)', category: 'frontend' },
+    { name: 'HTML5', category: 'frontend' },
+    { name: 'CSS3', category: 'frontend' },
+    { name: 'Node.js', category: 'frontend' },
+    { name: 'RESTful APIs', category: 'frontend' },
+    { name: 'JSON/XML', category: 'frontend' },
+    { name: 'Python', category: 'frontend' },
+    { name: 'Java', category: 'frontend' },
 
     // Others
     { name: 'Agile', category: 'other' },
     { name: 'Test Strategy', category: 'other' },
     { name: 'Test Framework Design', category: 'other' },
+    { name: 'GenAI Prompt Engineering', category: 'cloudai' },
+    { name: 'MCP Server Config', category: 'cloudai' },
+    { name: 'CI/CD Pipeline Automation', category: 'cloudai' },
+    { name: 'AI Model Integration', category: 'cloudai' },
+
+    // Professional & Management
+    { name: 'Project Management', category: 'other' },
+    { name: 'Client Communication', category: 'other' },
+    { name: 'Leadership & Mentoring', category: 'other' },
+    { name: 'Process Optimization', category: 'other' },
+    { name: 'Documentation & Reporting', category: 'other' },
+    { name: 'Strategic Planning', category: 'other' },
+    { name: 'Quality Assurance Governance', category: 'other' },
+    { name: 'Decision Making', category: 'other' },
   ],
   
   // Projects

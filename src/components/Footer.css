@@ -8,6 +8,8 @@
   align-items: center;
   box-shadow: 0 -6px 24px rgba(6,60,59,0.04);
   border-top: 1px solid rgba(244,231,206,0.06);
+  width: 100%;
+  overflow-x: hidden;
 }
 
 .footer::before {
@@ -17,6 +19,9 @@
   left: 0;
   right: 0;
   height: 1px;
+  width: calc(100% - 2rem);
+  left: 1rem;
+  right: 1rem;
   background: linear-gradient(
     90deg,
     transparent 0%,

@@ -49,22 +49,11 @@ const Contact = () => {
             </p>
 
             <div className="contact__details">
-              <div className="contact__detail">
-                <span className="contact__detail-icon" aria-hidden="true">
-                  ✉️
-                </span>
-                <span className="contact__detail-label">Email</span>
-                <a href={`mailto:${personalInfo.email}`} className="contact__detail-value">
-                  {personalInfo.email}
-                </a>
-              </div>
-
               {personalInfo.phone ? (
                 <div className="contact__detail">
                   <span className="contact__detail-icon" aria-hidden="true">
-                    📞
+                    📱
                   </span>
-                  <span className="contact__detail-label">Phone</span>
                   <a href={`tel:${personalInfo.phone}`} className="contact__detail-value">
                     {personalInfo.phone}
                   </a>
@@ -73,9 +62,17 @@ const Contact = () => {
 
               <div className="contact__detail">
                 <span className="contact__detail-icon" aria-hidden="true">
+                  ✉️
+                </span>
+                <a href={`mailto:${personalInfo.email}`} className="contact__detail-value">
+                  {personalInfo.email}
+                </a>
+              </div>
+
+              <div className="contact__detail">
+                <span className="contact__detail-icon" aria-hidden="true">
                   📍
                 </span>
-                <span className="contact__detail-label">Location</span>
                 <a
                   className="contact__detail-value"
                   href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(personalInfo.location)}`}
@@ -100,7 +97,7 @@ const Contact = () => {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  placeholder="Enter your name"
+                  placeholder="What's your name?"
                 />
               </div>
               <div className="contact__field">
@@ -113,7 +110,7 @@ const Contact = () => {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  placeholder="you@example.com"
+                  placeholder="your.email@domain.com"
                 />
               </div>
             </div>
@@ -126,10 +123,12 @@ const Contact = () => {
                 value={formData.message}
                 onChange={handleChange}
                 rows={6}
-                placeholder="Tell me a little about your project or idea..."
+                placeholder="Share what's on your mind—ideas, opportunities, collaboration..."
                 required
               />
             </div>
+
+            <div style={{ height: '1rem' }} />
 
             <button type="submit" className="btn btn-primary contact__submit" disabled={status === 'sending'}>
               {status === 'sending' ? 'Sending...' : status === 'success' ? 'Message Sent' : 'Send Message'}
