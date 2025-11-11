@@ -1,7 +1,9 @@
 .hero {
   position: relative;
-  /* slightly smaller hero to allow next section to peek on load */
-  min-height: 62vh;
+  /* slightly smaller hero to allow next section to peek on load
+     Use clamp so very large/small viewport zoom levels don't produce
+     extreme heights which cause layout shifting. */
+  min-height: clamp(340px, 62vh, 720px);
   display: flex;
   align-items: center;
   padding-top: clamp(4rem, 8vw, 6rem);
@@ -27,8 +29,11 @@
 .hero__layout {
   position: relative;
   display: grid;
-  /* 60% left tile, 40% carousel on large screens; switches to single column on smaller breakpoints */
-  grid-template-columns: 60% 40%;
+  /* Left column flexes but has a sensible minimum; right column also has
+     a minimum to avoid becoming too small when browser zoom or narrow
+     viewports occur. This prevents overlapping/misalignment at different
+     zoom levels. */
+  grid-template-columns: minmax(280px, 60%) minmax(220px, 40%);
   /* stretch columns to match heights so carousel aligns with left tile */
   align-items: stretch;
   /* tightened gap: small on narrow screens, capped to ~2cm on large screens per request */
@@ -120,7 +125,9 @@
 /* Inner content of the left tile: tighter, balanced spacing to avoid crowding */
 .hero__leftTile .hero__columnContent {
   width: 100%;
-  max-width: 620px;
+  /* reduce max-width slightly so very large zooms don't overflow or cause
+     the visual column to be pushed out of view */
+  max-width: 560px;
   display: flex;
   flex-direction: column;
   gap: clamp(0.8rem, 1.8vw, 1.4rem);
@@ -285,9 +292,11 @@
 
 .hero__visual {
   position: relative;
-  /* occupy same column height as left tile */
+  /* occupy same column height as left tile but keep sensible limits so
+     zooming doesn't produce huge visuals that push content out of place. */
   height: 100%;
-  min-height: min(420px, 60vh);
+  min-height: 280px;
+  max-height: clamp(420px, 60vh, 760px);
   overflow: hidden;
   border-radius: var(--radius-xl);
   /* frame padding creates a visible outer rim around the carousel */
