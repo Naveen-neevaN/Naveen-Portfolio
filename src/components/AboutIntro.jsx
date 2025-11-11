@@ -22,6 +22,7 @@ const AboutIntro = ({ videoSrc, prefersReducedMotion }) => {
               muted
               loop={!prefersReducedMotion}
               playsInline
+              loading="lazy"
               aria-hidden="true"
               onError={(e) => {
                 if (process.env.NODE_ENV !== 'production') {

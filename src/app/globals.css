@@ -209,43 +209,32 @@ section {
 }
 
 .section-padding {
-  /* tighter section padding to avoid large blank gaps between sections */
-  padding: clamp(2rem, 6vw, 3.5rem) 0;
+  /* refined section padding: balanced spacing without excessive gaps */
+  padding: clamp(1.8rem, 5.5vw, 3.2rem) 0;
 }
 
 .section-heading {
   font-family: var(--font-family-display);
-  font-weight: 600;
+  font-weight: 700;
   font-size: clamp(2rem, 4vw, 3rem);
   text-align: center;
-  margin-bottom: 1rem;
-  /* Use a rich Emerald -> Teal -> Gold gradient without white-ish tones */
+  margin-bottom: clamp(0.8rem, 2vw, 1.2rem);
+  /* Emerald -> Teal -> Gold gradient for luxury look */
   background: linear-gradient(135deg, var(--emerald) 0%, var(--teal) 35%, var(--gold) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  letter-spacing: 0.02em;
-}
-
-/* Animated gradient for headings and gradient-text utility */
-@keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-.gradient-text {
-  background-size: 200% 200%;
-  animation: gradientShift 5s ease-in-out infinite;
+  letter-spacing: -0.01em;
 }
 
 .section-subheading {
-  font-size: clamp(1.05rem, 2.4vw, 1.2rem);
+  font-size: clamp(0.95rem, 2.2vw, 1.1rem);
   text-align: center;
   color: var(--text-muted);
-  margin: 0 auto clamp(2.25rem, 6vw, 3rem);
-  width: min(620px, 90%);
-  line-height: 1.7;
+  margin: 0 auto clamp(2rem, 5vw, 2.8rem);
+  width: min(640px, 90%);
+  line-height: 1.75;
+  font-weight: 500;
 }
 
 .btn {
@@ -314,6 +303,7 @@ section {
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
   overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .glass-panel::before {
@@ -322,7 +312,7 @@ section {
   inset: 1px;
   border-radius: calc(var(--radius-lg) - 1px);
   background: linear-gradient(160deg, var(--glass-highlight) 0%, transparent 55%);
-  opacity: 0.8;
+  opacity: 0.6;
   pointer-events: none;
 }
 
@@ -332,15 +322,35 @@ section {
   inset: 0;
   border-radius: inherit;
   border: 1px solid transparent;
-  background: linear-gradient(140deg, rgba(241, 201, 105, 0.55), rgba(61, 205, 180, 0.35)) border-box;
+  background: linear-gradient(140deg, rgba(241, 201, 105, 0.45), rgba(61, 205, 180, 0.25)) border-box;
   mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
   mask-composite: exclude;
-  opacity: 0.4;
+  opacity: 0.3;
   pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.glass-panel:hover::after {
+  opacity: 0.5;
+}
+
+[data-theme='dark'] .glass-panel {
+  background: rgba(16, 185, 129, 0.04);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme='dark'] .glass-panel::before {
+  background: linear-gradient(160deg, rgba(20, 184, 166, 0.1) 0%, transparent 55%);
+  opacity: 0.8;
 }
 
 [data-theme='dark'] .glass-panel::after {
-  opacity: 0.65;
+  background: linear-gradient(140deg, rgba(212, 175, 55, 0.35), rgba(20, 184, 166, 0.25)) border-box;
+  opacity: 0.7;
+}
+
+[data-theme='dark'] .glass-panel:hover::after {
+  opacity: 0.85;
 }
 
 .glass-panel--light {
@@ -356,27 +366,29 @@ section {
 }
 
 .gradient-text {
-  background: var(--gradient-teal-gold);
+  background: var(--gradient-premium-blend);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  font-weight: 700;
 }
 
 .text-muted {
   color: var(--text-muted);
+  opacity: 0.88;
 }
 
 .soft-shadow {
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 8px 32px rgba(20, 184, 166, 0.08), 0 2px 16px rgba(212, 175, 55, 0.04);
 }
 
 .floating {
-  transition: transform var(--transition-slow), box-shadow var(--transition-slow);
+  transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1), box-shadow 0.4s ease;
 }
 
 .floating:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--shadow-md);
+  transform: translateY(-8px);
+  box-shadow: 0 16px 48px rgba(20, 184, 166, 0.15);
 }
 
 .stack {
@@ -410,17 +422,35 @@ section {
 
 @media (max-width: 768px) {
   .section-padding {
-    padding: clamp(3.2rem, 9vw, 4rem) 0;
+    padding: clamp(2.8rem, 8vw, 3.6rem) 0;
+  }
+
+  .section-heading {
+    font-size: clamp(1.7rem, 5.5vw, 2.6rem);
+  }
+
+  .section-subheading {
+    font-size: clamp(0.9rem, 2vw, 1rem);
+    margin: 0 auto clamp(1.6rem, 4vw, 2.2rem);
   }
 
   .container {
-    padding: 0 0.5rem;
+    padding: 0 1rem;
   }
 }
 
 @media (max-width: 540px) {
   body {
-    font-size: 0.975rem;
+    font-size: 0.95rem;
+  }
+
+  .section-heading {
+    font-size: clamp(1.5rem, 6vw, 2.2rem);
+  }
+
+  .section-subheading {
+    font-size: clamp(0.85rem, 2.5vw, 0.95rem);
+    margin: 0 auto clamp(1.4rem, 3.5vw, 1.8rem);
   }
 
   .btn {
