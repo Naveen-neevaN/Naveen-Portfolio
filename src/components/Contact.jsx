@@ -16,6 +16,8 @@ const Contact = () => {
   const [errors, setErrors] = useState({ name: '', email: '' })
   const [backendError, setBackendError] = useState('')
   const [submitAttempted, setSubmitAttempted] = useState(false)
+  const [isErrorDismissing, setIsErrorDismissing] = useState(false)
+  const [shakeKey, setShakeKey] = useState(0)
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -32,6 +34,15 @@ const Contact = () => {
     setErrors(newErrors)
     if (newErrors.name || newErrors.email) {
       setStatus('error')
+      setShakeKey(prev => prev + 1) // Force animation re-trigger
+      setIsErrorDismissing(false)
+      // Start fade-out after 2.5 seconds for validation errors too
+      setTimeout(() => setIsErrorDismissing(true), 2500)
+      // Auto-dismiss error after 3 seconds
+      setTimeout(() => {
+        setStatus('idle')
+        setIsErrorDismissing(false)
+      }, 3000)
       return
     }
 
@@ -52,10 +63,14 @@ const Contact = () => {
           console.error('storeMessage error', json)
           setBackendError(json?.error || 'Something went wrong. Please try again.')
           setStatus('error')
+          setIsErrorDismissing(false)
+          // Start fade-out after 2.5 seconds (0.5s before fully dismissed at 3s)
+          setTimeout(() => setIsErrorDismissing(true), 2500)
           // Auto-dismiss error after 3 seconds
           setTimeout(() => {
             setStatus('idle')
             setBackendError('')
+            setIsErrorDismissing(false)
           }, 3000)
         }
       })
@@ -63,10 +78,14 @@ const Contact = () => {
         console.error('network error', err)
         setBackendError('Something went wrong. Please try again.')
         setStatus('error')
+        setIsErrorDismissing(false)
+        // Start fade-out after 2.5 seconds (0.5s before fully dismissed at 3s)
+        setTimeout(() => setIsErrorDismissing(true), 2500)
         // Auto-dismiss error after 3 seconds
         setTimeout(() => {
           setStatus('idle')
           setBackendError('')
+          setIsErrorDismissing(false)
         }, 3000)
       })
   }
@@ -153,6 +172,7 @@ const Contact = () => {
               <div className="contact__field">
                 <label htmlFor="name">Name</label>
                 <input
+                  key={`name-${shakeKey}`}
                   type="text"
                   id="name"
                   name="name"
@@ -170,6 +190,7 @@ const Contact = () => {
               <div className="contact__field">
                 <label htmlFor="email">Email</label>
                 <input
+                  key={`email-${shakeKey}`}
                   type="email"
                   id="email"
                   name="email"
@@ -211,8 +232,8 @@ const Contact = () => {
                   Your message has been received successfully!
                 </span>
               ) : status === 'error' ? (
-                <span className="contact__statusMessage contact__statusMessage--error">
-                  {backendError || 'Something went wrong. Please try again.'}
+                <span className={`contact__statusMessage contact__statusMessage--error ${isErrorDismissing ? 'is-dismissing' : ''}`}>
+                  {backendError ? backendError : 'Please fill in all required fields.'}
                 </span>
               ) : null}
             </div>

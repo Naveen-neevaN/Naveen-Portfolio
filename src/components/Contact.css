@@ -415,6 +415,12 @@
 .contact__statusMessage--error {
   background: rgba(232, 76, 61, 0.18);
   color: #9a1f2d;
+  opacity: 1;
+  transition: opacity 0.5s ease-out;
+}
+
+.contact__statusMessage--error.is-dismissing {
+  opacity: 0;
 }
 
 .contact__quote {
