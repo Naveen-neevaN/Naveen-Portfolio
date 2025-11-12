@@ -203,7 +203,7 @@
 }
 
 .robot__hand--waving {
-  animation: hand-wave 0.8s ease-in-out infinite;
+  animation: hand-wave 0.64s ease-in-out infinite;
   transform-origin: left center;
 }
 

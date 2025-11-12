@@ -77,9 +77,9 @@ body, h1, h2, h3, h4, p, figure, blockquote, dl, dd {
   --radius-lg: 28px;
   --radius-xl: 36px;
 
-  --transition-base: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-fast: 0.28s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-slow: 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+  --transition-base: 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: 0.224s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.48s cubic-bezier(0.19, 1, 0.22, 1);
 
   --hero-gradient: var(--gradient-primary);
   /* header height used for scroll offsets */
@@ -111,6 +111,13 @@ body, h1, h2, h3, h4, p, figure, blockquote, dl, dd {
 
 html {
   scroll-behavior: smooth;
+  /* Hide scrollbars while keeping scroll functionality */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+html::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
 }
 
 body {

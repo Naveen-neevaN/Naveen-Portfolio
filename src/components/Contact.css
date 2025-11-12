@@ -21,7 +21,7 @@
   margin: 0 auto;
   opacity: 0;
   transform: translateY(18px);
-  transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.5s ease;
+  transition: transform 0.48s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.4s ease;
   z-index: 1;
   max-width: 1100px;
   width: 100%;
@@ -47,7 +47,7 @@
   -webkit-backdrop-filter: blur(10px);
   height: 100%;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
-  transition: all 0.28s cubic-bezier(0.19, 1, 0.22, 1);
+  transition: all 0.224s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .contact__card:hover {

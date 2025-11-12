@@ -54,7 +54,7 @@
 .social-link {
   color: #08362f;
   font-size: clamp(0.9rem, 2vw, 1.1rem);
-  transition: all 0.28s ease;
+  transition: all 0.224s ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -78,7 +78,7 @@
   bottom: 0;
   background: var(--gradient-primary);
   opacity: 0;
-  transition: opacity 0.28s ease;
+  transition: opacity 0.224s ease;
 }
 
 .social-link:hover {
