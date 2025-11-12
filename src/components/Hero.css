@@ -528,11 +528,13 @@
   align-items: baseline;
   justify-content: flex-start;
   gap: 0.5rem;
-  font-size: clamp(1.05rem, 2.4vw, 1.4rem);
+  font-size: clamp(1.15rem, 2.2vw, 1.8rem);
   font-weight: 700;
-  line-height: 1.1;
+  line-height: 1.05;
   white-space: nowrap;
-  overflow: hidden; /* prevent overflow onto other elements */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
   margin: 0 0 0.25rem 0;
 }
 
@@ -590,15 +592,17 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.5rem 0.85rem; /* balanced padding */
+  padding: 0.66rem 0.95rem;
+  font-size: 0.98rem;
   background: rgba(21, 143, 129, 0.06);
   border: 1px solid rgba(21, 143, 129, 0.16);
-  border-radius: var(--radius-md);
+  border-radius: 12px;
   backdrop-filter: blur(6px);
   transition: all 0.18s cubic-bezier(0.19, 1, 0.22, 1);
   cursor: default;
-  width: 100%; /* match buttons width */
+  width: 100%;
   box-sizing: border-box;
+  min-height: 44px;
 }
 
 .hero__locationBadge:hover {
@@ -633,11 +637,18 @@
 }
 
 .hero__buttonsGroup .btn {
-  width: auto;
-  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+  width: 100%;
   font-size: 0.98rem;
   padding: 0.66rem 0.95rem;
   border-radius: 12px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
 }
 
 .hero__buttonsGroup .btn:active {
@@ -795,7 +806,7 @@
   }
 
   .hero__role {
-    font-size: clamp(1.1rem, 2.2vw, 1.4rem);
+    font-size: clamp(1.05rem, 1.9vw, 1.5rem);
   }
 
   /* Stack role overview tile on smaller screens */
