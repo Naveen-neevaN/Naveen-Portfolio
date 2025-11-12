@@ -453,6 +453,12 @@ section {
   font-weight: 500;
 }
 
+@media (max-width: 640px) {
+  .section-subheading {
+    margin: 0 auto clamp(0.8rem, 2vw, 1rem);
+  }
+}
+
 .btn {
   display: inline-flex;
   align-items: center;

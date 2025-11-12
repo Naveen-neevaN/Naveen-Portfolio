@@ -1,9 +1,17 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import emailjs from 'emailjs-com'
 import { personalInfo } from '@/data/personalInfo.js'
 import { useScrollAnimation } from '@/hooks/useScrollAnimation.js'
 import './Contact.css'
+
+// Initialize EmailJS (free tier public key)
+const EMAILJS_PUBLIC_KEY = 'haU7Ebtc2IASj_sCO'
+const EMAILJS_SERVICE_ID = 'service_7jktasp'
+// Two templates: admin notification (you) and optional auto-reply to visitor
+const EMAILJS_TEMPLATE_ID_ADMIN = 'template_grhlujf'
+const EMAILJS_TEMPLATE_ID_AUTO = 'template_psfmd3n'
 
 const Contact = () => {
   const [ref, isVisible] = useScrollAnimation(0.2)
@@ -18,6 +26,11 @@ const Contact = () => {
   const [submitAttempted, setSubmitAttempted] = useState(false)
   const [isErrorDismissing, setIsErrorDismissing] = useState(false)
   const [shakeKey, setShakeKey] = useState(0)
+
+  useEffect(() => {
+    // Initialize EmailJS on mount
+    emailjs.init(EMAILJS_PUBLIC_KEY)
+  }, [])
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -46,40 +59,54 @@ const Contact = () => {
       return
     }
 
-    fetch('/api/storeMessage', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: formData.name, email: formData.email, message: formData.message }),
-    })
-      .then(async (res) => {
-        const json = await res.json().catch(() => ({}))
-        if (res.ok && json.ok) {
-          setStatus('success')
-          setFormData({ name: '', email: '', message: '' })
-          setErrors({ name: '', email: '' })
-          setSubmitAttempted(false)
-          setTimeout(() => setStatus('idle'), 2800)
-        } else {
-          console.error('storeMessage error', json)
-          setBackendError(json?.error || 'Something went wrong. Please try again.')
-          setStatus('error')
-          setIsErrorDismissing(false)
-          // Start fade-out after 2.5 seconds (0.5s before fully dismissed at 3s)
-          setTimeout(() => setIsErrorDismissing(true), 2500)
-          // Auto-dismiss error after 3 seconds
-          setTimeout(() => {
-            setStatus('idle')
-            setBackendError('')
-            setIsErrorDismissing(false)
-          }, 3000)
+    // Send admin notification using EmailJS
+    const adminParams = {
+      to_email: 'naveennagendiran321@gmail.com',
+      from_name: formData.name,
+      from_email: formData.email,
+      message: formData.message,
+      reply_to: formData.email,
+    }
+
+    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID_ADMIN, adminParams)
+      .then((response) => {
+        console.log('Admin email sent:', response)
+
+        // Attempt to send auto-reply to visitor (non-blocking)
+        if (EMAILJS_TEMPLATE_ID_AUTO) {
+          const autoParams = {
+            // template may use {{email}} or {{to_email}} to determine recipient
+            to_email: formData.email,
+            email: formData.email,
+            from_name: formData.name,
+            from_email: formData.email,
+            message: formData.message,
+            // make reply-to your address so visitor replies go to you
+            reply_to: 'naveennagendiran321@gmail.com',
+          }
+
+          emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID_AUTO, autoParams)
+            .then((r2) => {
+              console.log('Auto-reply sent:', r2)
+            })
+            .catch((err2) => {
+              // Auto-reply failure should not block the main success path
+              console.error('Auto-reply error:', err2)
+            })
         }
+
+        setStatus('success')
+        setFormData({ name: '', email: '', message: '' })
+        setErrors({ name: '', email: '' })
+        setSubmitAttempted(false)
+        setTimeout(() => setStatus('idle'), 2800)
       })
       .catch((err) => {
-        console.error('network error', err)
+        console.error('EmailJS error:', err)
         setBackendError('Something went wrong. Please try again.')
         setStatus('error')
         setIsErrorDismissing(false)
-        // Start fade-out after 2.5 seconds (0.5s before fully dismissed at 3s)
+        // Start fade-out after 2.5 seconds
         setTimeout(() => setIsErrorDismissing(true), 2500)
         // Auto-dismiss error after 3 seconds
         setTimeout(() => {
