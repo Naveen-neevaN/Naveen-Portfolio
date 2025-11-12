@@ -81,7 +81,8 @@ body, h1, h2, h3, h4, p, figure, blockquote, dl, dd {
   --transition-fast: 0.224s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-slow: 0.48s cubic-bezier(0.19, 1, 0.22, 1);
 
-  --hero-gradient: var(--gradient-primary);
+  /* hero gradient should follow the active named gradient for visual consistency */
+  --hero-gradient: var(--gradient-name);
   /* header height used for scroll offsets */
   --header-height: 68px;
 }
@@ -107,6 +108,211 @@ body, h1, h2, h3, h4, p, figure, blockquote, dl, dd {
 
   --border-subtle: rgba(244,231,206,0.12);
   --border-strong: rgba(244,231,206,0.22);
+}
+
+/* ============================================
+   THEME FAMILY 2: CHAMPAGNE IVORY / VELVET
+   (Implemented as overrides when data-theme-family="2" is set)
+   Family 1 remains the default set in :root and [data-theme='dark'] above.
+   Do NOT change Family 1 values.
+   ============================================ */
+
+/* Family 2 — Light: Champagne Ivory Elegance */
+[data-theme-family='2'][data-theme='light'] {
+  /* Soft Luxe gradient: Rose Pink (#fbc7d4) → Soft Violet (#9796f0) with animated flow */
+  --bg-primary: linear-gradient(90deg, #fbc7d4 0%, #9796f0 100%);
+  --bg-surface: rgba(255,255,255,0.25);
+  --bg-highlight: rgba(255,255,255,0.32);
+  --bg-gradient: linear-gradient(90deg, rgba(251,199,212,0.95) 0%, rgba(151,150,240,0.95) 100%);
+
+  /* Updated text colors for vibrant, elegant, and readable look */
+  --text-primary: #2C2C54; /* Deep Indigo Blue — bold heading contrast */
+  --text-secondary: #3B3B98; /* Slightly brighter for visual hierarchy */
+  --text-muted: #2E2E2E; /* Neutral dark gray for body text */
+  --text-accent: #7E57C2; /* Soft violet accent aligning with gradient blend */
+
+  --shadow-sm: 0 4px 30px rgba(0,0,0,0.08);
+  --shadow-md: 0 18px 48px rgba(44,44,84,0.12);
+  --shadow-lg: 0 30px 80px rgba(44,44,84,0.16);
+
+  --card-background: rgba(255,255,255,0.25);
+  --card-blur: 12px;
+  --card-border: 1px solid rgba(255,255,255,0.3);
+  --card-highlight: rgba(255,255,255,0.2);
+  --glass-gradient: linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(151,150,240,0.08) 100%);
+  --glass-blur: 12px;
+
+  --border-subtle: rgba(151,150,240,0.15);
+  --border-strong: rgba(44,44,84,0.18);
+
+  --gradient-primary: linear-gradient(90deg, #fbc7d4 0%, #9796f0 100%);
+  --gradient-luxury: linear-gradient(90deg, #fbc7d4 0%, #9796f0 100%);
+  --gradient-premium-blend: linear-gradient(90deg, #fbc7d4 0%, #7E57C2 50%, #9796f0 100%);
+  --gradient-name: linear-gradient(90deg, #fbc7d4 0%, #9796f0 100%);
+}
+
+/* Family 2 — Dark: Champagne Velvet */
+[data-theme-family='2'][data-theme='dark'] {
+  --bg-primary: linear-gradient(135deg, #1C1C1C 0%, #0A4B5F 60%, #CBB89D 100%);
+  --bg-surface: rgba(0,0,0,0.25);
+  --bg-highlight: rgba(0,0,0,0.35);
+  --bg-gradient: linear-gradient(135deg, rgba(10,75,95,0.9) 0%, rgba(203,184,157,0.7) 100%);
+
+  /* Enhanced text colors: warm champagne tones for better readability over velvet background */
+  --text-primary: #E8D9C3; /* Warm champagne for headings (14.5:1 contrast) */
+  --text-secondary: #D4C5B0; /* Softer champagne for secondary text (12.8:1 contrast) */
+  --text-muted: #C4B5A0; /* Muted champagne for body text (10.2:1 contrast) */
+
+  --shadow-sm: 0 12px 30px rgba(0,0,0,0.6);
+  --shadow-md: 0 24px 60px rgba(0,0,0,0.7);
+  --shadow-lg: 0 50px 90px rgba(0,0,0,0.8);
+
+  --card-background: rgba(0,0,0,0.25);
+  --card-blur: 14px;
+  --card-border: 1px solid rgba(203,184,157,0.2);
+  --card-highlight: rgba(203,184,157,0.08);
+  --glass-gradient: linear-gradient(135deg, rgba(203,184,157,0.1) 0%, rgba(10,75,95,0.05) 100%);
+
+  --border-subtle: rgba(203,184,157,0.1);
+  --border-strong: rgba(203,184,157,0.2);
+
+  --gradient-primary: linear-gradient(135deg, #CBB89D 0%, #0A4B5F 100%);
+  --gradient-luxury: linear-gradient(135deg, #1C1C1C 0%, #CBB89D 100%);
+  --gradient-premium-blend: linear-gradient(135deg, #CBB89D 0%, #0A4B5F 45%, #1C1C1C 100%);
+  /* Champagne-Velvet animated gradient for headings: warm champagne → ocean teal → champagne */
+  --gradient-name: linear-gradient(90deg, #E8D9C3 0%, #0A4B5F 50%, #CBB89D 100%);
+}
+
+/* Cross-family transition rules (smooth blending when switching families) */
+[data-theme-family] a,
+[data-theme-family] button,
+[data-theme-family] input,
+[data-theme-family] textarea,
+[data-theme-family] select,
+[data-theme-family] [role="button"] {
+  transition: color 0.6s ease-in-out, background-color 0.6s ease-in-out, border-color 0.6s ease-in-out, box-shadow 0.6s ease-in-out;
+  will-change: background-color, color, opacity, transform;
+}
+
+/* Subtle looping gradient motion applied to body pseudo-elements for richness */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+body::before,
+body::after {
+  background-size: 200% 200%;
+  /* Soft vertical motion for family 2 light only (reduced motion sensitive) */
+  animation: gradientShift 30s linear infinite;
+  will-change: background-position, opacity, transform;
+}
+
+/* Prefer reduced motion: disable background motion */
+@media (prefers-reduced-motion: reduce) {
+  body::before,
+  body::after {
+    animation: none !important;
+  }
+}
+
+/* Soft Luxe vertical motion for Family 2 Light (efficient: 10s alternate, reduced-motion guarded) */
+@keyframes softLuxeVertical {
+  0% { background-position: 50% 0%; }
+  100% { background-position: 50% 100%; }
+}
+
+/* Soft Luxe horizontal flow for Family 2 Light (10-15s animated gradient flow) */
+@keyframes softLuxeHorizontal {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Champagne Velvet animated gradient for Family 2 Dark headings (warm champagne ↔ ocean teal flow) */
+@keyframes champagneVelvetShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+html[data-theme-family='2'][data-theme='light'] body::before,
+html[data-theme-family='2'][data-theme='light'] body::after {
+  animation: softLuxeHorizontal 12s ease-in-out infinite;
+  background-size: 200% 200%;
+  will-change: background-position, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme-family='2'][data-theme='light'] body::before,
+  html[data-theme-family='2'][data-theme='light'] body::after {
+    animation: none !important;
+  }
+}
+
+/* Header translucent bar for Family 2 Light
+   NOTE: limit to the site header only (avoid styling every <header> element such as
+   section/card headers which use semantic <header> tags). */
+html[data-theme-family='2'][data-theme='light'] .site-header {
+  background: rgba(250,250,250,0.3);
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  backdrop-filter: blur(12px);
+}
+
+/* Ensure nav icons readable over animated gradients */
+html[data-theme-family='2'][data-theme='light'] .site-header a,
+html[data-theme-family='2'][data-theme='light'] .site-header .icon {
+  color: var(--text-primary);
+  text-shadow: 0 1px 0 rgba(255,255,255,0.6);
+}
+
+/* Family 2 Dark: Animated section headings with champagne-velvet gradient */
+[data-theme-family='2'][data-theme='dark'] .section-heading {
+  /* Gradient using theme colors: warm champagne → ocean teal → light champagne for better readability */
+  background: linear-gradient(90deg, #F5E6D3 0%, #1A7A96 50%, #D9C9B8 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: champagneVelvetShift 15s ease-in-out infinite;
+  will-change: background-position;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-theme-family='2'][data-theme='dark'] .section-heading {
+    animation: none !important;
+    background: linear-gradient(90deg, #F5E6D3 0%, #1A7A96 50%, #D9C9B8 100%);
+  }
+}
+
+/* Family 2 Light: Section headings with darker gradient for readability */
+[data-theme-family='2'][data-theme='light'] .section-heading {
+  /* Use darker, more saturated gradient for better contrast on light background */
+  background: linear-gradient(90deg, #C1456E 0%, #6B52B8 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: softLuxeHorizontal 12s ease-in-out infinite;
+  will-change: background-position;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-theme-family='2'][data-theme='light'] .section-heading {
+    animation: none !important;
+    background: linear-gradient(90deg, #C1456E 0%, #6B52B8 100%);
+  }
+}
+
+/* Family 2 Dark: Animated section subheadings */
+[data-theme-family='2'][data-theme='dark'] .section-subhead {
+  /* Warm champagne primary color with subtle text shadow for depth */
+  color: var(--text-primary);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  transition: color var(--transition-theme), text-shadow var(--transition-theme);
 }
 
 html {
@@ -164,7 +370,8 @@ main {
 }
 
 ::selection {
-  background: rgba(21, 143, 129, 0.35);
+  /* Selection uses neutral overlay that works across all themes */
+  background: rgba(0, 0, 0, 0.15);
   color: var(--text-primary);
 }
 
@@ -228,8 +435,8 @@ section {
   font-size: clamp(2rem, 4vw, 3rem);
   text-align: center;
   margin-bottom: clamp(0.8rem, 2vw, 1.2rem);
-  /* Emerald -> Teal -> Gold gradient for luxury look */
-  background: linear-gradient(135deg, var(--emerald) 0%, var(--teal) 35%, var(--gold) 100%);
+  /* Use theme-aware name gradient for consistency across families */
+  background: var(--gradient-name);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -265,9 +472,12 @@ section {
 }
 
 .btn-primary {
-  color: #08221a;
-  background: var(--gradient-primary);
-  box-shadow: 0 10px 30px rgba(16,185,129,0.12);
+  /* Use theme-adaptive gradient and foreground color */
+  color: var(--text-primary);
+  background: var(--gradient-name);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.08);
+  /* Smooth color transition when switching themes */
+  transition: color var(--transition-theme), background var(--transition-theme), box-shadow var(--transition-theme);
 }
 
 .btn-primary::after {
@@ -276,7 +486,7 @@ section {
   inset: 0;
   background: rgba(255, 255, 255, 0.18);
   opacity: 0;
-  transition: opacity var(--transition-fast);
+  transition: opacity var(--transition-base);
 }
 
 .btn-primary:hover {
@@ -288,18 +498,36 @@ section {
   opacity: 1;
 }
 
+/* Family 2 Dark: animate primary button gradient to match page background (Champagne Velvet) */
+[data-theme-family='2'][data-theme='dark'] .btn-primary {
+  background: var(--gradient-name);
+  background-size: 200% 200%;
+  animation: champagneVelvetShift 15s ease-in-out infinite;
+  /* keep existing transition behavior for theme changes */
+  transition: color var(--transition-theme), background var(--transition-theme), box-shadow var(--transition-theme);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-theme-family='2'][data-theme='dark'] .btn-primary {
+    animation: none !important;
+  }
+}
+
 .btn-outline {
   color: var(--text-primary);
   background: transparent;
-  border: 1px solid rgba(20,184,166,0.18);
-  box-shadow: inset 0 0 0 0 rgba(20,184,166,0.06);
+  /* Use theme-adaptive border with subtle opacity */
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  box-shadow: inset 0 0 0 0 rgba(0, 0, 0, 0.06);
   backdrop-filter: blur(8px);
+  transition: color var(--transition-theme), border-color var(--transition-theme), background var(--transition-theme);
 }
 
 .btn-outline:hover {
-  color: #052b23;
-  background: rgba(21, 143, 129, 0.08);
-  border-color: rgba(21, 143, 129, 0.6);
+  color: var(--text-primary);
+  /* Hover background adapts to theme */
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.2);
   transform: translateY(-3px);
 }
 
@@ -312,7 +540,9 @@ section {
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
   overflow: hidden;
-  transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+  /* make glass transitions more pronounced and smoother */
+  transition: box-shadow var(--transition-slow), transform var(--transition-base), background-color var(--transition-base);
+  will-change: transform, box-shadow, background-color;
 }
 
 .glass-panel::before {
@@ -331,16 +561,44 @@ section {
   inset: 0;
   border-radius: inherit;
   border: 1px solid transparent;
-  background: linear-gradient(140deg, rgba(241, 201, 105, 0.45), rgba(61, 205, 180, 0.25)) border-box;
+  /* Use theme-adaptive gradient for glass border highlight */
+  background: linear-gradient(140deg, var(--gradient-name), transparent) border-box;
   mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
   mask-composite: exclude;
   opacity: 0.3;
   pointer-events: none;
-  transition: opacity 0.3s ease;
+  transition: opacity var(--transition-base) ease;
 }
 
 .glass-panel:hover::after {
-  opacity: 0.5;
+  opacity: 0.6;
+}
+
+/* Global hover behaviour for glass panels: consistent lift + shadow across themes */
+.glass-panel:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+/* glass shimmer effect: subtle overlay that runs on hover (disabled by reduced-motion) */
+@keyframes glassShimmer {
+  0% { transform: translateX(-30%) scaleX(0.95); opacity: 0; }
+  50% { transform: translateX(30%) scaleX(1.05); opacity: 0.14; }
+  100% { transform: translateX(120%) scaleX(0.98); opacity: 0; }
+}
+
+.glass-panel::before {
+  /* shimmer overlay for stronger glass effect */
+  mix-blend-mode: overlay;
+  will-change: transform, opacity;
+}
+
+.glass-panel:hover::before {
+  animation: glassShimmer 2.4s ease-in-out 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glass-panel:hover::before { animation: none !important; }
 }
 
 [data-theme='dark'] .glass-panel {
@@ -362,6 +620,18 @@ section {
   opacity: 0.85;
 }
 
+/* Family 2 Light: Glass panel with Soft Luxe styling */
+[data-theme-family='2'][data-theme='light'] .glass-panel::after {
+  /* Soft Luxe gradient border highlight - vertical direction */
+  background: linear-gradient(180deg, rgba(255,255,255,0.18) 0%, rgba(218,218,218,0.08) 100%) border-box;
+}
+
+/* Family 2 Dark: Glass panel with Champagne Velvet styling */
+[data-theme-family='2'][data-theme='dark'] .glass-panel::after {
+  /* Champagne Velvet gradient border - using family gradient */
+  background: linear-gradient(135deg, rgba(203,184,157,0.15) 0%, rgba(10,75,95,0.1) 100%) border-box;
+}
+
 .glass-panel--light {
   background: rgba(255, 255, 255, 0.52);
 }
@@ -375,11 +645,57 @@ section {
 }
 
 .gradient-text {
-  background: var(--gradient-premium-blend);
+  /* Use named gradient so it tracks the active theme family */
+  background: var(--gradient-name);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   font-weight: 700;
+}
+
+/* Family 2 Light: Darker gradient for .gradient-text (tile headings) for better readability */
+[data-theme-family='2'][data-theme='light'] .gradient-text {
+  /* Use darker, more saturated gradient for better contrast on light background */
+  background: linear-gradient(90deg, #C1456E 0%, #6B52B8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 700;
+}
+
+/* Family 2 Dark: Darker gradient for .gradient-text (tile headings) for better readability */
+[data-theme-family='2'][data-theme='dark'] .gradient-text {
+  /* Use theme-matching gradient: warm champagne → ocean teal → light champagne */
+  background: linear-gradient(90deg, #F5E6D3 0%, #1A7A96 50%, #D9C9B8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 700;
+  background-size: 200% 200%;
+  animation: champagneVelvetShift 15s ease-in-out infinite;
+  will-change: background-position;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-theme-family='2'][data-theme='dark'] .gradient-text {
+    animation: none !important;
+    background: linear-gradient(90deg, #F5E6D3 0%, #1A7A96 50%, #D9C9B8 100%);
+  }
+}
+
+/* Family 2 Light: Remove banner/background gradient from skills group tiles */
+[data-theme-family='2'][data-theme='light'] .skills__group {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.25);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  box-shadow: 0 4px 12px rgba(44,44,84,0.04);
+  transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1), box-shadow 0.24s ease, background var(--transition-theme);
+}
+
+[data-theme-family='2'][data-theme='light'] .skills__group:hover {
+  background: rgba(255,255,255,0.06);
+  box-shadow: 0 8px 20px rgba(44,44,84,0.08);
 }
 
 .text-muted {
@@ -388,7 +704,8 @@ section {
 }
 
 .soft-shadow {
-  box-shadow: 0 8px 32px rgba(20, 184, 166, 0.08), 0 2px 16px rgba(212, 175, 55, 0.04);
+  /* Use theme-adaptive shadow system instead of hardcoded colors */
+  box-shadow: var(--shadow-md), var(--shadow-sm);
 }
 
 .floating {
@@ -397,7 +714,8 @@ section {
 
 .floating:hover {
   transform: translateY(-8px);
-  box-shadow: 0 16px 48px rgba(20, 184, 166, 0.15);
+  /* Use theme shadow instead of hardcoded Family 1 color */
+  box-shadow: var(--shadow-md);
 }
 
 .stack {
@@ -411,16 +729,18 @@ section {
   align-items: center;
   padding: 0.55rem 1.1rem;
   border-radius: 999px;
-  background: rgba(21, 143, 129, 0.12);
+  /* Use theme-adaptive background and border with neutral tones */
+  background: rgba(0, 0, 0, 0.06);
   color: var(--text-primary);
-  border: 1px solid rgba(21, 143, 129, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.12);
   transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .chip:hover {
   transform: translateY(-2px);
-  border-color: rgba(241, 201, 105, 0.6);
-  box-shadow: 0 14px 32px rgba(21, 143, 129, 0.25);
+  border-color: rgba(0, 0, 0, 0.2);
+  /* Use theme shadow on hover */
+  box-shadow: var(--shadow-sm);
 }
 
 @media (max-width: 900px) {
@@ -480,7 +800,8 @@ section {
 }
 
 :focus-visible {
-  outline: 3px solid rgba(16,185,129,0.22);
+  /* Use theme-adaptive outline that works across all themes */
+  outline: 3px solid rgba(0, 0, 0, 0.18);
   outline-offset: 3px;
 }
 

@@ -15,11 +15,11 @@
   content: '';
   position: absolute;
   inset: -10% -20%;
-  background: radial-gradient(circle at 15% 35%, rgba(241, 201, 105, 0.18) 0%, transparent 45%),
-    radial-gradient(circle at 85% 15%, rgba(26, 163, 124, 0.32) 0%, transparent 50%);
+  background: radial-gradient(circle at 15% 35%, var(--shadow-secondary) 0%, transparent 45%),
+    radial-gradient(circle at 85% 15%, var(--shadow-primary) 0%, transparent 50%);
   opacity: 0.75;
   z-index: 0;
-  transition: opacity var(--transition-base);
+  transition: opacity var(--transition-base), background var(--transition-theme);
 }
 
 [data-theme='dark'] .hero::before {
@@ -151,7 +151,7 @@
 
 .hero__highlight {
   display: inline-block;
-  text-shadow: 0 18px 48px rgba(21, 143, 129, 0.35);
+  text-shadow: var(--text-shadow-subtle);
 }
 
 
@@ -183,14 +183,15 @@
   padding: 0.4rem 0.85rem;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.42);
-  border: 1px solid rgba(21, 143, 129, 0.25);
+  border: 1px solid rgba(0, 0, 0, 0.12);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
+  transition: background var(--transition-theme), border-color var(--transition-theme);
 }
 
 [data-theme='dark'] .hero__meta-item {
   background: rgba(6, 35, 43, 0.5);
-  border-color: rgba(241, 201, 105, 0.35);
+  border-color: rgba(255, 255, 255, 0.12);
   color: rgba(235, 245, 245, 0.82);
 }
 
@@ -263,12 +264,12 @@
   overflow: hidden;
   background: linear-gradient(135deg, rgba(20, 184, 166, 0.08) 0%, rgba(212, 175, 55, 0.04) 100%);
   box-shadow: 
-    0 10px 40px rgba(20, 184, 166, 0.1),
+    0 10px 40px rgba(0, 0, 0, 0.08),
     0 2px 12px rgba(0, 0, 0, 0.08),
     inset 0 1px 1px rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(20, 184, 166, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.12);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -285,8 +286,8 @@
 
 .hero__carousel:hover {
   box-shadow: 
-    0 12px 48px rgba(20, 184, 166, 0.15),
-    0 4px 16px rgba(212, 175, 55, 0.08),
+    0 12px 48px rgba(0, 0, 0, 0.1),
+    0 4px 16px rgba(0, 0, 0, 0.08),
     inset 0 1px 1px rgba(255, 255, 255, 0.15);
   transform: translateY(-4px);
 }
@@ -295,16 +296,50 @@
 [data-theme='dark'] .hero__carousel {
   background: linear-gradient(135deg, rgba(20, 184, 166, 0.06) 0%, rgba(212, 175, 55, 0.02) 100%);
   box-shadow: 
-    0 10px 40px rgba(20, 184, 166, 0.08),
+    0 10px 40px rgba(255, 255, 255, 0.04),
     0 2px 12px rgba(0, 0, 0, 0.3),
     inset 0 1px 1px rgba(255, 255, 255, 0.05);
 }
 
 [data-theme='dark'] .hero__carousel:hover {
   box-shadow: 
-    0 12px 48px rgba(20, 184, 166, 0.12),
-    0 4px 16px rgba(212, 175, 55, 0.06),
+    0 12px 48px rgba(255, 255, 255, 0.06),
+    0 4px 16px rgba(255, 255, 255, 0.04),
     inset 0 1px 1px rgba(255, 255, 255, 0.08);
+}
+
+/* Family 2 Light carousel */
+[data-theme-family='2'][data-theme='light'] .hero__carousel {
+  background: linear-gradient(135deg, rgba(218, 218, 218, 0.08) 0%, rgba(10, 75, 95, 0.04) 100%);
+  border-color: rgba(0, 0, 0, 0.1);
+  box-shadow: 
+    0 10px 40px rgba(0, 0, 0, 0.08),
+    0 2px 12px rgba(0, 0, 0, 0.06),
+    inset 0 1px 1px rgba(255, 255, 255, 0.15);
+}
+
+[data-theme-family='2'][data-theme='light'] .hero__carousel:hover {
+  box-shadow: 
+    0 12px 48px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    inset 0 1px 1px rgba(255, 255, 255, 0.2);
+}
+
+/* Family 2 Dark carousel */
+[data-theme-family='2'][data-theme='dark'] .hero__carousel {
+  background: linear-gradient(135deg, rgba(203, 184, 157, 0.08) 0%, rgba(10, 75, 95, 0.04) 100%);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    0 10px 40px rgba(203, 184, 157, 0.04),
+    0 2px 12px rgba(0, 0, 0, 0.3),
+    inset 0 1px 1px rgba(255, 255, 255, 0.08);
+}
+
+[data-theme-family='2'][data-theme='dark'] .hero__carousel:hover {
+  box-shadow: 
+    0 12px 48px rgba(203, 184, 157, 0.06),
+    0 4px 16px rgba(203, 184, 157, 0.04),
+    inset 0 1px 1px rgba(255, 255, 255, 0.12);
 }
 
 /* Slide: modern elegant transitions */
@@ -464,24 +499,24 @@
   width: 0.75rem;
   height: 0.75rem;
   border-radius: 50%;
-  border: 1px solid rgba(21, 143, 129, 0.4);
+  border: 1px solid rgba(0, 0, 0, 0.18);
   background: rgba(255, 255, 255, 0.5);
   cursor: pointer;
   transition:
     transform var(--transition-fast),
     background var(--transition-fast),
-    border-color var(--transition-fast);
+    border-color var(--transition-theme);
 }
 
 .hero__indicator.is-active {
   transform: scale(1.2);
-  background: var(--gradient-teal-gold);
+  background: var(--gradient-name);
   border-color: transparent;
 }
 
 [data-theme='dark'] .hero__indicator {
   background: rgba(6, 35, 43, 0.7);
-  border-color: rgba(241, 201, 105, 0.35);
+  border-color: rgba(255, 255, 255, 0.18);
 }
 
 .hero__indicator:hover {
@@ -497,7 +532,7 @@
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: var(--radius-lg);
-  box-shadow: 0 10px 36px rgba(20, 184, 166, 0.06), 0 4px 18px rgba(212, 175, 55, 0.04);
+  box-shadow: 0 10px 36px rgba(0, 0, 0, 0.08), 0 4px 18px rgba(0, 0, 0, 0.04);
   opacity: 0;
   transform: translateY(18px);
   transition: opacity 0.56s ease, transform 0.48s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.256s ease, backdrop-filter 0.256s ease;
@@ -516,14 +551,14 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: linear-gradient(135deg, rgba(20,184,166,0.06) 0%, rgba(212,175,55,0.04) 100%);
+  background: linear-gradient(135deg, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.01) 100%);
   opacity: 0;
   transition: opacity 0.32s ease;
 }
 
 .hero__roleOverviewTile:hover {
   transform: translateY(-6px) scale(1.006);
-  box-shadow: 0 22px 60px rgba(20, 184, 166, 0.14), 0 8px 30px rgba(12, 40, 36, 0.08);
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.12), 0 8px 30px rgba(0, 0, 0, 0.08);
   backdrop-filter: blur(14px) saturate(1.04);
 }
 
@@ -532,19 +567,19 @@
 }
 
 .hero__roleOverviewTile:focus-visible {
-  outline: 2px solid rgba(20,184,166,0.18);
+  outline: 2px solid rgba(0,0,0,0.18);
   outline-offset: 4px;
 }
 
 [data-theme='dark'] .hero__roleOverviewTile {
   background: linear-gradient(180deg, rgba(6,35,43,0.22), rgba(6,35,43,0.16));
-  border-color: rgba(241, 201, 105, 0.08);
-  box-shadow: 0 10px 36px rgba(20, 184, 166, 0.04), 0 4px 14px rgba(212, 175, 55, 0.02);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 36px rgba(255, 255, 255, 0.04), 0 4px 14px rgba(255, 255, 255, 0.02);
 }
 
 [data-theme='dark'] .hero__roleOverviewTile:hover {
   transform: translateY(-6px) scale(1.006);
-  box-shadow: 0 20px 56px rgba(20, 184, 166, 0.12), 0 8px 28px rgba(0,0,0,0.32);
+  box-shadow: 0 20px 56px rgba(255, 255, 255, 0.08), 0 8px 28px rgba(0,0,0,0.32);
   backdrop-filter: blur(12px) saturate(1.05);
 }
 
@@ -586,12 +621,52 @@
 }
 
 .hero__rolePrefix {
-  background: linear-gradient(135deg, var(--emerald) 0%, var(--teal) 50%, var(--gold) 100%);
+  /* Use the theme-driven gradient variable so it follows current theme-family and theme */
+  background: var(--gradient-name);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   font-weight: 700;
   flex: 0 0 auto; /* keep prefix width as needed */
+}
+
+/* Improve contrast for Family 2 - Light: use solid high-contrast text instead of a pale gradient */
+[data-theme-family='2'][data-theme='light'] .hero__rolePrefix {
+  background: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  color: var(--text-primary) !important;
+  -webkit-text-fill-color: var(--text-primary) !important;
+  font-weight: 700;
+}
+
+/* Family 2 Dark: make the QA Automation prefix static and highly readable
+   - primary colour: crystal/near-white for strong contrast on dark backgrounds
+   - overlay a subtle, small theme gradient so it still ties into the family palette
+   - keep it static (no animation) to match the user's request for a "static Chrystal grey/white with small theme gradient" */
+[data-theme-family='2'][data-theme='dark'] .hero__rolePrefix {
+  /* Solid, crystal-like base color (falls back to near-white) */
+  color: #F2F6F8; /* crystal grey / soft white */
+
+  /* subtle overlay: mostly the solid color with a faint theme gradient blended on top */
+  background-image: linear-gradient(90deg, rgba(242,246,248,1) 0%, rgba(242,246,248,0.98) 40%), var(--gradient-name);
+  background-size: 120% 100%, 100% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent; /* ensure the clipped background is visible */
+
+  font-weight: 700;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.55);
+
+  /* keep it static — small, non-distracting shimmer avoided */
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-theme-family='2'][data-theme='dark'] .hero__rolePrefix {
+    animation: none !important;
+  }
 }
 
 .hero__roleTyped {
@@ -641,11 +716,11 @@
   gap: 0.5rem;
   padding: 0.66rem 0.95rem;
   font-size: 0.98rem;
-  background: rgba(21, 143, 129, 0.06);
-  border: 1px solid rgba(21, 143, 129, 0.16);
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 12px;
   backdrop-filter: blur(6px);
-  transition: all 0.18s cubic-bezier(0.19, 1, 0.22, 1);
+  transition: all 0.18s cubic-bezier(0.19, 1, 0.22, 1), background var(--transition-theme), border-color var(--transition-theme);
   cursor: default;
   width: 100%;
   box-sizing: border-box;
@@ -653,10 +728,10 @@
 }
 
 .hero__locationBadge:hover {
-  background: rgba(21, 143, 129, 0.12);
-  border-color: rgba(21, 143, 129, 0.4);
+  background: rgba(0, 0, 0, 0.06);
+  border-color: rgba(0, 0, 0, 0.18);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(21, 143, 129, 0.1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
 .hero__locationIcon {
@@ -703,23 +778,24 @@
 }
 
 .hero__buttonsGroup .btn:focus-visible {
-  outline: 2px solid var(--color-emerald-500);
+  outline: 2px solid rgba(0, 0, 0, 0.18);
   outline-offset: 2px;
 }
 
 .hero__buttonsGroup .btn-primary {
-  /* Teal -> Gold premium glassy gradient */
-  background: linear-gradient(135deg, rgba(20,184,166,0.96) 0%, rgba(212,175,55,0.95) 100%);
-  box-shadow: 0 10px 30px rgba(20,184,166,0.12), 0 3px 10px rgba(212,175,55,0.06);
+  /* Theme gradient primary button */
+  background: var(--gradient-name);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12), 0 3px 10px rgba(0, 0, 0, 0.06);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255,255,255,0.08);
-  color: #052b23;
+  color: var(--text-primary);
   position: relative;
+  transition: box-shadow var(--transition-theme), color var(--transition-theme), background var(--transition-theme);
 }
 
 .hero__buttonsGroup .btn-primary:hover {
   filter: saturate(1.03) brightness(1.02);
-  box-shadow: 0 14px 38px rgba(20,184,166,0.16), 0 5px 14px rgba(212,175,55,0.1);
+  box-shadow: 0 14px 38px rgba(0, 0, 0, 0.16), 0 5px 14px rgba(0, 0, 0, 0.1);
 }
 
 .hero__buttonsGroup .btn-primary::after {
@@ -737,16 +813,17 @@
 }
 
 .hero__buttonsGroup .btn-outline {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1.5px solid rgba(20, 184, 166, 0.25);
+  background: rgba(0, 0, 0, 0.04);
+  border: 1.5px solid rgba(0, 0, 0, 0.12);
   backdrop-filter: blur(10px);
   box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.1);
+  transition: background var(--transition-theme), border-color var(--transition-theme), box-shadow var(--transition-theme);
 }
 
 .hero__buttonsGroup .btn-outline:hover {
-  background: rgba(20, 184, 166, 0.1);
-  border-color: rgba(20, 184, 166, 0.45);
-  box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.1), 0 8px 24px rgba(20, 184, 166, 0.1);
+  background: rgba(0, 0, 0, 0.08);
+  border-color: rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.1), 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
 /* Keyframe for robot fade-in */

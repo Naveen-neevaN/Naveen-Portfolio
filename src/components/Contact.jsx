@@ -13,22 +13,85 @@ const Contact = () => {
     message: '',
   })
   const [status, setStatus] = useState('idle')
+  const [errors, setErrors] = useState({ name: '', email: '' })
+  const [backendError, setBackendError] = useState('')
+  const [submitAttempted, setSubmitAttempted] = useState(false)
 
   const handleSubmit = (event) => {
     event.preventDefault()
+    setSubmitAttempted(true)
     setStatus('sending')
-    setTimeout(() => {
-      setStatus('success')
-      setFormData({ name: '', email: '', message: '' })
-      setTimeout(() => setStatus('idle'), 2800)
-    }, 1000)
+    setBackendError('')
+
+    // Client-side validation: name and email mandatory
+    const newErrors = { name: '', email: '' }
+    if (!formData.name || !formData.name.trim()) newErrors.name = 'Name is required.'
+    if (!formData.email || !formData.email.trim()) newErrors.email = 'Email is required.'
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) newErrors.email = 'Please enter a valid email address.'
+
+    setErrors(newErrors)
+    if (newErrors.name || newErrors.email) {
+      setStatus('error')
+      return
+    }
+
+    fetch('/api/storeMessage', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: formData.name, email: formData.email, message: formData.message }),
+    })
+      .then(async (res) => {
+        const json = await res.json().catch(() => ({}))
+        if (res.ok && json.ok) {
+          setStatus('success')
+          setFormData({ name: '', email: '', message: '' })
+          setErrors({ name: '', email: '' })
+          setSubmitAttempted(false)
+          setTimeout(() => setStatus('idle'), 2800)
+        } else {
+          console.error('storeMessage error', json)
+          setBackendError(json?.error || 'Something went wrong. Please try again.')
+          setStatus('error')
+          // Auto-dismiss error after 3 seconds
+          setTimeout(() => {
+            setStatus('idle')
+            setBackendError('')
+          }, 3000)
+        }
+      })
+      .catch((err) => {
+        console.error('network error', err)
+        setBackendError('Something went wrong. Please try again.')
+        setStatus('error')
+        // Auto-dismiss error after 3 seconds
+        setTimeout(() => {
+          setStatus('idle')
+          setBackendError('')
+        }, 3000)
+      })
   }
 
   const handleChange = (event) => {
+    const { name, value } = event.target
     setFormData((previous) => ({
       ...previous,
-      [event.target.name]: event.target.value,
+      [name]: value,
     }))
+
+    // Real-time validation: clear error when corrected (instant disappearance)
+    setErrors((prev) => {
+      const next = { ...prev }
+      if (name === 'name') {
+        if (value && value.trim()) next.name = ''
+        else next.name = 'Name is required.'
+      }
+      if (name === 'email') {
+        if (!value || !value.trim()) next.email = 'Email is required.'
+        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) next.email = 'Please enter a valid email address.'
+        else next.email = ''
+      }
+      return next
+    })
   }
 
   return (
@@ -98,7 +161,11 @@ const Contact = () => {
                   onChange={handleChange}
                   required
                   placeholder="What's your name?"
+                  className={`${submitAttempted && errors.name ? 'has-error' : ''}`}
                 />
+                <div className={`contact__fieldError ${errors.name ? 'is-visible' : ''}`}>
+                  {errors.name}
+                </div>
               </div>
               <div className="contact__field">
                 <label htmlFor="email">Email</label>
@@ -111,7 +178,11 @@ const Contact = () => {
                   onChange={handleChange}
                   required
                   placeholder="your.email@domain.com"
+                  className={`${submitAttempted && errors.email ? 'has-error' : ''}`}
                 />
+                <div className={`contact__fieldError ${errors.email ? 'is-visible' : ''}`}>
+                  {errors.email}
+                </div>
               </div>
             </div>
 
@@ -137,11 +208,11 @@ const Contact = () => {
             <div className="contact__status" role="status" aria-live="polite">
               {status === 'success' ? (
                 <span className="contact__statusMessage contact__statusMessage--success">
-                  Thank you! I'll be in touch shortly.
+                  Your message has been received successfully!
                 </span>
               ) : status === 'error' ? (
                 <span className="contact__statusMessage contact__statusMessage--error">
-                  Something went wrong. Please try again.
+                  {backendError || 'Something went wrong. Please try again.'}
                 </span>
               ) : null}
             </div>

@@ -76,19 +76,22 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: var(--gradient-primary);
+  /* Use the site-wide named gradient so it follows the active theme family */
+  background: var(--gradient-name);
   opacity: 0;
-  transition: opacity 0.224s ease;
+  transition: opacity 0.224s ease, background-position 0.4s ease;
 }
 
 .social-link:hover {
   transform: translateY(-2px) scale(1.05);
   box-shadow: 0 14px 30px rgba(16,185,129,0.12), 0 0 18px rgba(212,175,55,0.06);
-  color: white;
 }
 
 .social-link:hover::before {
-  opacity: 1;
+  /* soft tint overlay; use background-clip:text on the inner icon instead of full cover */
+  opacity: 0.18;
+  /* move gradient slightly for motion but keep low opacity so brand mark remains visible */
+  background-position: 60% 40%;
 }
 
 .social-link i {

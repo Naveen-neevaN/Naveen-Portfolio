@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from 'react'
 import './Header.css'
 import { ThemeSwitch } from './ThemeSwitch'
-import MotionToggle from './MotionToggle'
 
 const SITE_TITLE = "Surf My Profile"
 
@@ -139,18 +138,20 @@ const Header = () => {
         ].join(' ')}
       >
         <div className="site-header__inner container">
-          <a
-            href="#hero"
-            className="site-header__brand"
-            onClick={(event) => {
-              event.preventDefault()
-              scrollToSection('hero')
+          {/* Surf button moved to the left side */}
+          <button
+            type="button"
+            className="header-btn surf-profile"
+            aria-label="Surf My Profile"
+            title="Surf My Profile"
+            onClick={() => {
+              if (typeof window !== 'undefined') window.location.reload()
             }}
-            aria-label="Scroll to top"
           >
-            <span className="site-header__brand-title gradient-text">{SITE_TITLE}</span>
-          </a>
+            Surf My Profile
+          </button>
 
+          {/* nav moved into right controls to keep links aligned right */}
           <div className="site-header__right">
             <nav className="site-header__nav" aria-label="Primary">
               <ul className={`site-header__links ${isMobileMenuOpen ? 'is-open' : ''}`}>
@@ -168,15 +169,14 @@ const Header = () => {
                     </a>
                   </li>
                 ))}
-                <li className="site-header__item site-header__item--switch">
-                  <ThemeSwitch />
-                </li>
-                <li className="site-header__item site-header__item--switch">
-                  <MotionToggle />
-                </li>
               </ul>
             </nav>
             <div className="site-header__controls">
+              {/* Theme controls (kept in header controls for consistent spacing) */}
+              <div className="header-theme-controls">
+                <ThemeSwitch />
+              </div>
+
               <button
                 type="button"
                 className="site-header__menuButton"
