@@ -73,9 +73,9 @@
   color: var(--text-primary);
 }
 
-/* Increase icon size for Cloud & AI Skills group (3rd group, index 2) */
+/* All icons now use consistent 2rem size */
 .skills__group:nth-child(3) .skills__groupIcon {
-  font-size: 2.6rem;
+  font-size: 2rem;
 }
 
 .skills__groupTitle {

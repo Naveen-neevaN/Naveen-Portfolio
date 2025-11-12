@@ -206,242 +206,212 @@
   justify-content: center;
 }
 
-/* Hero visual: glassy, floating, rounded, with soft shadow and reflection */
-/* Hero visual: no frame, no glass-panel, just floating carousel */
+/* Hero visual container: modern, clean, minimal decorations */
 .hero__visual {
   position: relative;
   height: 100%;
-  min-height: 280px;
-  max-height: clamp(420px, 60vh, 760px);
+  min-height: clamp(240px, 60vw, 480px);
+  max-height: clamp(240px, 60vw, 480px);
   overflow: hidden;
-  border-radius: 40%;
+  border-radius: 20px;
   padding: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   isolation: isolate;
-  background: none;
+  background: transparent;
   box-shadow: none;
 }
 
-/* SVG overlay (inserted in markup) provides a crisper GPU-accelerated accent line */
+/* SVG overlay removed - keep it clean */
 .hero__visual-svg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: inherit;
-  pointer-events: none;
-  z-index: 3; /* above glow but below interactive overlays */
-  mix-blend-mode: overlay;
-  opacity: 0.95;
+  display: none;
 }
 
-/* Inner shadow / subtle glass bevel rendered with a pseudo-element for depth */
+/* Removed decorative pseudo-elements */
 .hero__visual::after {
-  /* subtle decorative rim and glow behind the inner carousel to create an outer frame */
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  z-index: 2;
-  /* Layered visual: soft outer glow and a delicate gold-teal gradient ring */
-  background:
-    radial-gradient(120% 80% at 10% 10%, rgba(16,185,129,0.06), transparent 20%),
-    radial-gradient(100% 60% at 90% 90%, rgba(212,175,55,0.05), transparent 20%);
-  box-shadow: 0 10px 40px rgba(6,35,43,0.06);
-  opacity: 0.95;
+  display: none;
 }
 
-/* decorative outer rim: thin gradient stroke visible between the visual padding and inner carousel */
 .hero__visual::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  z-index: 3;
-  /* create a thin stroke inside the visual area using background-clip technique */
-  background: linear-gradient(90deg, rgba(212,175,55,0.22), rgba(16,185,129,0.18));
-  -webkit-mask: linear-gradient(#fff,#fff) content-box, linear-gradient(#000,#000);
-  mask: linear-gradient(#fff,#fff) content-box, linear-gradient(#000,#000);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  padding: var(--hero-frame);
-  opacity: 0.9;
+  display: none;
 }
 
 .hero__visual-glow {
-  position: absolute;
-  inset: -20% -10% -10% -10%;
-  background: radial-gradient(circle at 50% 20%, rgba(212,175,55,0.10) 0%, transparent 40%), radial-gradient(circle at 80% 80%, rgba(16,185,129,0.08) 0%, transparent 50%);
-  filter: blur(48px);
-  opacity: 0.45;
-  pointer-events: none;
-  z-index: 1;
+  display: none;
 }
 
 [data-theme='dark'] .hero__visual-glow {
-  opacity: 0.42;
+  display: none;
 }
 
 [data-theme='dark'] .hero__visual::after {
-  /* darker inner shadow and slightly stronger blur for depth in dark mode */
-  box-shadow: inset 0 20px 48px rgba(0, 0, 0, 0.35), inset 0 -14px 36px rgba(6, 35, 43, 0.12);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  opacity: 1;
+  display: none;
 }
 
-/* Carousel: glassy, floating, rounded, with soft shadow and reflection */
+/* Modern Carousel: clean, responsive, elegant transitions */
 .hero__carousel {
   position: relative;
   flex: 1;
   width: 100%;
   height: 100%;
-  min-width: 200px;
-  min-height: 200px;
-  border-radius: 40%;
+  aspect-ratio: 1 / 1;
+  min-width: clamp(200px, 50vw, 480px);
+  min-height: clamp(200px, 50vw, 480px);
+  border-radius: 20px;
   overflow: hidden;
-  background: rgba(255,255,255,0.08);
-  box-shadow: 0 8px 40px 0 rgba(20, 184, 166, 0.18), 0 2px 32px 0 rgba(212, 175, 55, 0.10);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: linear-gradient(135deg, rgba(20, 184, 166, 0.08) 0%, rgba(212, 175, 55, 0.04) 100%);
+  box-shadow: 
+    0 10px 40px rgba(20, 184, 166, 0.1),
+    0 2px 12px rgba(0, 0, 0, 0.08),
+    inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(20, 184, 166, 0.15);
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto;
-  transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .hero__carousel:hover {
-  box-shadow: 0 12px 48px 0 rgba(20, 184, 166, 0.28), 0 4px 40px 0 rgba(212, 175, 55, 0.18);
-  transform: scale(1.025);
+  box-shadow: 
+    0 12px 48px rgba(20, 184, 166, 0.15),
+    0 4px 16px rgba(212, 175, 55, 0.08),
+    inset 0 1px 1px rgba(255, 255, 255, 0.15);
+  transform: translateY(-4px);
 }
 
-/* Slide: ensure rounded, floating, and glassy look */
+/* Dark theme carousel */
+[data-theme='dark'] .hero__carousel {
+  background: linear-gradient(135deg, rgba(20, 184, 166, 0.06) 0%, rgba(212, 175, 55, 0.02) 100%);
+  box-shadow: 
+    0 10px 40px rgba(20, 184, 166, 0.08),
+    0 2px 12px rgba(0, 0, 0, 0.3),
+    inset 0 1px 1px rgba(255, 255, 255, 0.05);
+}
+
+[data-theme='dark'] .hero__carousel:hover {
+  box-shadow: 
+    0 12px 48px rgba(20, 184, 166, 0.12),
+    0 4px 16px rgba(212, 175, 55, 0.06),
+    inset 0 1px 1px rgba(255, 255, 255, 0.08);
+}
+
+/* Slide: modern elegant transitions */
 .hero__slide {
   position: absolute;
   inset: 0;
   opacity: 0;
   height: 100%;
   width: 100%;
-  transition: opacity 0.9s, filter 0.9s, transform 0.9s;
-  filter: blur(2px) saturate(0.98) brightness(0.98);
-  border-radius: 40%;
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 4px 32px 0 rgba(20, 184, 166, 0.10), 0 1.5px 16px 0 rgba(212, 175, 55, 0.08);
 }
 
 .hero__slide.is-active {
   opacity: 1;
-  filter: blur(0) saturate(1) brightness(1);
   transform: scale(1);
 }
 
 .hero__slide.is-active .hero__image {
-  /* Carousel image: glassy, floating, rounded, with reflection and soft shadow */
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center center;
-  will-change: opacity, filter, transform;
-  transition: opacity 0.9s, transform 1s;
-  transform: translateZ(0);
+  will-change: transform;
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: scale(1);
   display: block;
-  border-radius: 40%;
-  box-shadow: 0 8px 40px 0 rgba(20, 184, 166, 0.18), 0 2px 32px 0 rgba(212, 175, 55, 0.10);
-  background: rgba(255,255,255,0.08);
+  border-radius: 20px;
   opacity: 1;
+  filter: brightness(1) contrast(1);
 }
 
-/* Reflection effect below carousel image */
-.hero__slide.is-active .hero__image::after {
-  content: '';
-  display: block;
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -18%;
-  height: 18%;
-  border-radius: 40%;
-  background: linear-gradient(180deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.01) 100%);
-  opacity: 0.7;
-  pointer-events: none;
-  z-index: 2;
+/* Modern elegant animations: fade and subtle scale */
+.hero__slide.is-active[data-direction='left'] { 
+  animation: hero-fade-scale-left 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-/* modern glassy carousel wrapper to match teal/gold/emerald theme */
-
-
-/* Four-sided enter/exit animations. The active slide uses an enter animation
-   from the given data-direction; the previously-active slide gets an exit
-   animation (class .was-active). Anim duration matches SLIDE_ANIM_MS in JS (~700ms).
-*/
-.hero__slide.is-active[data-direction='left'] { animation: hero-enter-left 700ms cubic-bezier(.22,.9,.3,1) both; }
-.hero__slide.is-active[data-direction='right'] { animation: hero-enter-right 700ms cubic-bezier(.22,.9,.3,1) both; }
-.hero__slide.is-active[data-direction='top'] { animation: hero-enter-top 700ms cubic-bezier(.22,.9,.3,1) both; }
-.hero__slide.is-active[data-direction='bottom'] { animation: hero-enter-bottom 700ms cubic-bezier(.22,.9,.3,1) both; }
-
-.hero__slide.was-active[data-direction='left'] { animation: hero-exit-left 700ms cubic-bezier(.22,.9,.3,1) both; z-index:1 }
-.hero__slide.was-active[data-direction='right'] { animation: hero-exit-right 700ms cubic-bezier(.22,.9,.3,1) both; z-index:1 }
-.hero__slide.was-active[data-direction='top'] { animation: hero-exit-top 700ms cubic-bezier(.22,.9,.3,1) both; z-index:1 }
-.hero__slide.was-active[data-direction='bottom'] { animation: hero-exit-bottom 700ms cubic-bezier(.22,.9,.3,1) both; z-index:1 }
-
-@keyframes hero-enter-left {
-  0% { transform: translateX(-12%) scale(1.02); opacity: 0; filter: blur(6px); }
-  60% { opacity: 1; transform: translateX(3%) scale(1.01); filter: blur(2px); }
-  100% { transform: translateX(0) scale(1); opacity: 1; filter: blur(0); }
+.hero__slide.is-active[data-direction='right'] { 
+  animation: hero-fade-scale-right 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-@keyframes hero-exit-left {
-  0% { transform: translateX(0) scale(1); opacity: 1; filter: blur(0); }
-  100% { transform: translateX(12%) scale(0.98); opacity: 0; filter: blur(4px); }
+.hero__slide.is-active[data-direction='top'] { 
+  animation: hero-fade-scale-top 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-@keyframes hero-enter-right {
-  0% { transform: translateX(12%) scale(1.02); opacity: 0; filter: blur(6px); }
-  60% { opacity: 1; transform: translateX(-3%) scale(1.01); filter: blur(2px); }
-  100% { transform: translateX(0) scale(1); opacity: 1; filter: blur(0); }
+.hero__slide.is-active[data-direction='bottom'] { 
+  animation: hero-fade-scale-bottom 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-@keyframes hero-exit-right {
-  0% { transform: translateX(0) scale(1); opacity: 1; filter: blur(0); }
-  100% { transform: translateX(-12%) scale(0.98); opacity: 0; filter: blur(4px); }
+.hero__slide.was-active[data-direction='left'] { 
+  animation: hero-fade-scale-exit-left 700ms cubic-bezier(0.22, 1, 0.36, 1) both; z-index: 1;
 }
 
-@keyframes hero-enter-top {
-  0% { transform: translateY(-12%) scale(1.02); opacity: 0; filter: blur(6px); }
-  60% { opacity: 1; transform: translateY(3%) scale(1.01); filter: blur(2px); }
-  100% { transform: translateY(0) scale(1); opacity: 1; filter: blur(0); }
+.hero__slide.was-active[data-direction='right'] { 
+  animation: hero-fade-scale-exit-right 700ms cubic-bezier(0.22, 1, 0.36, 1) both; z-index: 1;
 }
 
-@keyframes hero-exit-top {
-  0% { transform: translateY(0) scale(1); opacity: 1; filter: blur(0); }
-  100% { transform: translateY(12%) scale(0.98); opacity: 0; filter: blur(4px); }
+.hero__slide.was-active[data-direction='top'] { 
+  animation: hero-fade-scale-exit-top 700ms cubic-bezier(0.22, 1, 0.36, 1) both; z-index: 1;
 }
 
-@keyframes hero-enter-bottom {
-  0% { transform: translateY(12%) scale(1.02); opacity: 0; filter: blur(6px); }
-  60% { opacity: 1; transform: translateY(-3%) scale(1.01); filter: blur(2px); }
-  100% { transform: translateY(0) scale(1); opacity: 1; filter: blur(0); }
+.hero__slide.was-active[data-direction='bottom'] { 
+  animation: hero-fade-scale-exit-bottom 700ms cubic-bezier(0.22, 1, 0.36, 1) both; z-index: 1;
 }
 
-@keyframes hero-exit-bottom {
-  0% { transform: translateY(0) scale(1); opacity: 1; filter: blur(0); }
-  100% { transform: translateY(-12%) scale(0.98); opacity: 0; filter: blur(4px); }
+/* Modern elegant keyframe animations */
+@keyframes hero-fade-scale-left {
+  0% { opacity: 0; transform: translateX(-2%) scale(0.98); }
+  100% { opacity: 1; transform: translateX(0) scale(1); }
 }
 
-/* Parallax micro-translate on the active slide when motion is allowed */
+@keyframes hero-fade-scale-exit-left {
+  0% { opacity: 1; transform: translateX(0) scale(1); }
+  100% { opacity: 0; transform: translateX(2%) scale(0.98); }
+}
+
+@keyframes hero-fade-scale-right {
+  0% { opacity: 0; transform: translateX(2%) scale(0.98); }
+  100% { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+@keyframes hero-fade-scale-exit-right {
+  0% { opacity: 1; transform: translateX(0) scale(1); }
+  100% { opacity: 0; transform: translateX(-2%) scale(0.98); }
+}
+
+@keyframes hero-fade-scale-top {
+  0% { opacity: 0; transform: translateY(-2%) scale(0.98); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes hero-fade-scale-exit-top {
+  0% { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(2%) scale(0.98); }
+}
+
+@keyframes hero-fade-scale-bottom {
+  0% { opacity: 0; transform: translateY(2%) scale(0.98); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes hero-fade-scale-exit-bottom {
+  0% { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-2%) scale(0.98); }
+}
+
+/* No parallax effect - keep it clean and simple */
 .hero__carousel[data-prefers-reduced-motion='false'] .hero__slide.is-active .hero__image {
-  transform: translateY(-3%) scale(1.02);
+  transform: scale(1);
 }
 
-/* When reduced motion is preferred, disable the parallax micro-translate */
 .hero__carousel[data-prefers-reduced-motion='true'] .hero__slide.is-active .hero__image {
   transform: none;
 }
@@ -455,27 +425,19 @@
   font-size: 0.95rem;
   line-height: 1.7;
   height: 100%;
-  border-radius: calc(var(--radius-xl) - 10px);
-  background: rgba(255, 255, 255, 0.55);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.5);
 }
 
 [data-theme='dark'] .hero__fallback {
-  background: rgba(8, 36, 43, 0.75);
+  background: rgba(8, 36, 43, 0.6);
   color: rgba(226, 235, 236, 0.7);
 }
 
 .hero__indicators {
-  position: absolute;
-  bottom: 1rem;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-  z-index: 3;
-  margin-top: 1.5rem;
-  z-index: 5;
+  display: none;
 }
+
 
 .hero__indicator {
   width: 0.75rem;
@@ -541,9 +503,10 @@
 
 .hero__roleOverviewContent {
   display: grid;
-  /* shift to 60% / 40% so right column gains 20 percentage points (was 20%) */
-  grid-template-columns: 60% 40%;
-  /* tighten gap so the actions sit closer to the overview */
+  /* Use a fluid layout where the actions column has a constrained width
+     so the description can take remaining space without squeezing the actions.
+     This prevents overflow at mid-large widths (e.g., 941px). */
+  grid-template-columns: 1fr minmax(220px, 360px);
   gap: clamp(0.6rem, 1.2vw, 1rem);
   align-items: start;
 }
@@ -662,18 +625,18 @@
 
 .hero__buttonsGroup {
   display: flex;
-  flex-direction: column;
-  gap: 0.35rem; /* smaller gap between buttons */
-  width: 100%;
-  align-items: stretch;
-  padding: 0; /* remove extra inner padding to tighten layout */
+  flex-direction: row; /* inline buttons on larger screens */
+  gap: 0.75rem;
+  width: auto;
+  align-items: center;
+  padding: 0;
 }
 
 .hero__buttonsGroup .btn {
-  width: 100%;
+  width: auto;
   transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
   font-size: 0.98rem;
-  padding: 0.66rem 0.95rem; /* slightly reduced to sit closer together */
+  padding: 0.66rem 0.95rem;
   border-radius: 12px;
 }
 
@@ -811,8 +774,24 @@
   }
 
   .hero__visual {
-    width: min(616px, 92%);
+    width: min(100%, 92vw);
     margin: 1rem auto;
+    border-radius: 20px;
+    max-height: clamp(280px, 85vw, 480px);
+  }
+
+  .hero__carousel {
+    border-radius: 20px;
+    min-height: clamp(200px, 70vw, 360px);
+    min-width: clamp(200px, 70vw, 360px);
+  }
+
+  .hero__slide {
+    border-radius: 20px;
+  }
+
+  .hero__slide.is-active .hero__image {
+    border-radius: 20px;
   }
 
   .hero__role {
@@ -857,6 +836,87 @@
     gap: clamp(2rem, 6vw, 3rem);
   }
 
+  /* Role Overview Tile - Stack to single column on tablet */
+  .hero__roleOverviewContent {
+    grid-template-columns: 1fr;
+    gap: clamp(0.8rem, 1.5vw, 1.2rem);
+  }
+
+  .hero__roleDescription {
+    align-self: start;
+    justify-content: flex-start;
+  }
+
+  .hero__roleActions {
+    align-self: start;
+    justify-content: flex-start;
+    padding: 0.25rem 0;
+  }
+
+  .hero__visual {
+    width: min(100%, 90vw);
+    max-height: clamp(240px, 60vw, 320px);
+    border-radius: 18px;
+  }
+
+
+/* Mid-size screens: ensure the role tile stacks on narrow tablets / large phones
+   (addresses cases like 617px width where two-column actions overflow). */
+@media (max-width: 680px) {
+  .hero__roleOverviewTile {
+    padding: clamp(0.9rem, 2vw, 1.2rem);
+    margin-top: clamp(0.9rem, 1.5vw, 1.2rem);
+  }
+
+  .hero__roleOverviewContent {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.6rem, 1vw, 0.9rem);
+    align-items: stretch;
+  }
+
+  .hero__roleActions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    width: 100%;
+    padding: 0;
+    align-items: stretch;
+  }
+
+  .hero__locationBadge {
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: flex-start;
+  }
+
+  .hero__buttonsGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    width: 100%;
+  }
+
+  .hero__buttonsGroup .btn {
+    width: 100%;
+    padding: 0.6rem 0.85rem;
+    font-size: 0.92rem;
+  }
+}
+  .hero__carousel {
+    border-radius: 18px;
+    min-height: clamp(180px, 55vw, 300px);
+    min-width: clamp(180px, 55vw, 300px);
+  }
+
+  .hero__slide {
+    border-radius: 18px;
+  }
+
+  .hero__slide.is-active .hero__image {
+    border-radius: 18px;
+  }
+
   .hero__actions {
     width: 100%;
     flex-direction: column;
@@ -888,7 +948,62 @@
 
 @media (max-width: 540px) {
   .hero {
-    padding-top: clamp(5rem, 10vw, 6rem);
+    padding-top: clamp(4.5rem, 8vw, 5.5rem);
+    padding-bottom: clamp(2rem, 4vw, 2.5rem);
+  }
+
+  .hero__visual {
+    width: min(100%, 90vw);
+    height: clamp(200px, 55vw, 280px);
+    min-height: clamp(200px, 55vw, 280px);
+    max-height: clamp(200px, 55vw, 280px);
+    border-radius: 16px;
+  }
+
+  .hero__carousel {
+    border-radius: 16px;
+    aspect-ratio: 1;
+    min-height: clamp(160px, 55vw, 260px);
+    min-width: clamp(160px, 55vw, 260px);
+  }
+
+  .hero__slide {
+    border-radius: 16px;
+  }
+
+  .hero__slide.is-active .hero__image {
+    border-radius: 16px;
+  }
+
+  /* Role Overview Tile - Tighten spacing for mobile */
+  .hero__roleOverviewContent {
+    grid-template-columns: 1fr;
+    gap: clamp(0.6rem, 1vw, 0.8rem);
+  }
+
+  .hero__roleDescription {
+    align-self: start;
+  }
+
+  .hero__roleTitle {
+    font-size: clamp(0.9rem, 1.8vw, 1.05rem);
+    flex-wrap: wrap;
+  }
+
+  .hero__roleActions {
+    width: 100%;
+    gap: 0.3rem;
+    padding: 0.2rem 0;
+  }
+
+  .hero__locationBadge {
+    padding: 0.4rem 0.7rem;
+    font-size: 0.85rem;
+  }
+
+  .hero__buttonsGroup .btn {
+    font-size: 0.9rem;
+    padding: 0.6rem 0.8rem;
   }
 
   .hero__title {
@@ -900,14 +1015,6 @@
     font-size: 0.95rem;
     line-height: 1.7;
     padding: 0 0.5rem;
-  }
-
-  .hero__visual {
-    width: 94%;
-    aspect-ratio: 4 / 5;
-    /* Let the visual shrink naturally on very small screens to avoid large empty blocks */
-    min-height: auto;
-    padding: 0.4rem;
   }
 
   .hero__meta {
@@ -968,6 +1075,108 @@
     padding: 0.8rem 1rem;
   }
 
+  /* Role Overview Tile - Extra compaction for small phones */
+  .hero__roleOverviewTile {
+    padding: clamp(0.7rem, 1.5vw, 0.9rem);
+    margin-top: clamp(0.8rem, 1.5vw, 1rem);
+  }
+
+  .hero__roleOverviewContent {
+    grid-template-columns: 1fr;
+    gap: clamp(0.4rem, 0.8vw, 0.6rem);
+  }
+
+  .hero__roleDescription {
+    align-self: start;
+  }
+
+  .hero__roleTitle {
+    font-size: clamp(0.8rem, 1.6vw, 0.95rem);
+    margin-bottom: 0.15rem;
+    word-break: break-word;
+  }
+
+  .hero__rolePrefix {
+    white-space: normal;
+    word-break: break-word;
+  }
+
+  .hero__roleOverviewText {
+    font-size: clamp(0.85rem, 1.6vw, 0.9rem);
+    line-height: 1.4;
+    margin: 0;
+  }
+
+  .hero__roleActions {
+    width: 100%;
+    gap: 0.2rem;
+    padding: 0.1rem 0;
+  }
+
+  .hero__locationBadge {
+    padding: 0.3rem 0.5rem;
+    font-size: 0.75rem;
+    gap: 0.3rem;
+  }
+
+  .hero__locationIcon {
+    font-size: 0.8rem;
+    width: auto;
+    height: auto;
+  }
+
+  .hero__locationValue {
+    font-size: 0.75rem;
+  }
+
+  .hero__buttonsGroup {
+    gap: 0.2rem;
+  }
+
+  .hero__buttonsGroup .btn {
+    font-size: 0.8rem;
+    padding: 0.5rem 0.6rem;
+    white-space: nowrap;
+  }
+
+  /* Small-screen stacking overrides - ensure the actions (badge + buttons)
+     present vertically and buttons sit below the icon and badge with good
+     touch target sizes. */
+  .hero__roleOverviewContent {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.35rem, 1vw, 0.6rem);
+    align-items: stretch;
+  }
+
+  .hero__roleActions {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.25rem;
+    width: 100%;
+    padding: 0;
+  }
+
+  .hero__locationBadge {
+    width: 100%;
+    justify-content: flex-start;
+    box-sizing: border-box;
+  }
+
+  .hero__buttonsGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    width: 100%;
+  }
+
+  .hero__buttonsGroup .btn {
+    width: 100%;
+    padding: 0.55rem 0.7rem;
+    font-size: 0.88rem;
+  }
+
   .hero__bio {
     max-width: 94%;
     padding: 0 0.6rem;
@@ -979,6 +1188,56 @@
   .hero__introLabel { font-size: clamp(1.15rem, 5vw, 1.25rem); }
   .hero__bio { font-size: 0.92rem; }
   .hero__meta-item { font-size: 0.8rem; padding: 0.35rem 0.65rem; }
+  
+  .hero__visual {
+    width: 100%;
+    max-height: clamp(160px, 70vw, 240px);
+    border-radius: 14px;
+  }
+
+  .hero__carousel {
+    border-radius: 14px;
+    min-height: clamp(140px, 65vw, 220px);
+    min-width: clamp(140px, 65vw, 220px);
+  }
+
+  .hero__slide {
+    border-radius: 14px;
+  }
+
+  .hero__slide.is-active .hero__image {
+    border-radius: 14px;
+  }
+
+  /* Role Overview Tile - Ultra compact for extra-small screens */
+  .hero__roleOverviewTile {
+    padding: clamp(0.6rem, 1.2vw, 0.75rem);
+    margin-top: clamp(0.6rem, 1vw, 0.8rem);
+  }
+
+  .hero__roleOverviewContent {
+    grid-template-columns: 1fr;
+    gap: clamp(0.35rem, 0.6vw, 0.5rem);
+  }
+
+  .hero__roleTitle {
+    font-size: clamp(0.8rem, 1.6vw, 0.95rem);
+  }
+
+  .hero__locationBadge {
+    padding: 0.3rem 0.5rem;
+    font-size: 0.75rem;
+  }
+
+  .hero__buttonsGroup .btn {
+    font-size: 0.75rem;
+    padding: 0.45rem 0.55rem;
+    white-space: nowrap;
+  }
+
+  .hero__buttonsGroup {
+    gap: 0.15rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -989,5 +1248,66 @@
     transition: none;
     animation: none;
     transform: none !important;
+  }
+}
+
+/* Final mobile overrides to guarantee stacked layout on very small screens
+   Placed at the end of the file to avoid earlier rules accidentally overriding.
+   Ensures the badge appears above the buttons and buttons are full-width. */
+@media (max-width: 420px) {
+  .hero__roleOverviewContent {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: clamp(0.35rem, 0.9vw, 0.7rem) !important;
+    align-items: stretch !important;
+  }
+
+  .hero__roleActions {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.25rem !important;
+    width: 100% !important;
+    padding: 0 !important;
+  }
+
+  .hero__locationBadge {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    justify-content: flex-start !important;
+  }
+
+  .hero__buttonsGroup {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.18rem !important;
+    width: 100% !important;
+  }
+
+  .hero__buttonsGroup .btn {
+    width: 100% !important;
+    padding: 0.58rem 0.7rem !important;
+    font-size: 0.88rem !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .hero__roleOverviewContent {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: clamp(0.3rem, 0.7vw, 0.55rem) !important;
+    align-items: stretch !important;
+  }
+
+  .hero__roleActions,
+  .hero__buttonsGroup {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.15rem !important;
+    width: 100% !important;
+  }
+
+  .hero__buttonsGroup .btn {
+    padding: 0.45rem 0.55rem !important;
+    font-size: 0.78rem !important;
   }
 }

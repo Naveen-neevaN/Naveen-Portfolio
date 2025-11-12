@@ -2,8 +2,8 @@
   background: var(--card-background);
   color: var(--text-primary);
   position: relative;
-  min-height: 64px;
-  padding: 8px 0;
+  min-height: 48px;
+  padding: clamp(0.4rem, 1vw, 0.6rem) 0;
   display: flex;
   align-items: center;
   box-shadow: 0 -6px 24px rgba(6,60,59,0.04);
@@ -37,8 +37,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 0.75rem 0;
-  gap: 0.6rem;
+  padding: clamp(0.4rem, 0.8vw, 0.6rem) 0;
+  gap: clamp(0.4rem, 0.8vw, 0.5rem);
   position: relative;
   z-index: 1;
 }
@@ -46,21 +46,21 @@
 .footer-social {
   display: flex;
   justify-content: center;
-  gap: 1.25rem;
+  gap: clamp(0.8rem, 2vw, 1rem);
   margin: 0;
   padding: 0;
 }
 
 .social-link {
   color: #08362f;
-  font-size: 1.2rem;
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
   transition: all 0.28s ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
+  width: clamp(32px, 6vw, 38px);
+  height: clamp(32px, 6vw, 38px);
+  border-radius: 8px;
   background: rgba(255,255,255,0.6);
   backdrop-filter: blur(10px);
   box-shadow: var(--shadow-sm);
@@ -99,23 +99,23 @@
 /* Add vertical spacing between footer elements */
 .footer-social + .footer-text,
 .footer-text + .copyright-text {
-  margin-top: 0.5rem;
+  margin-top: clamp(0.2rem, 0.5vw, 0.35rem);
 }
 
 .footer-text {
   color: #0b3a37;
-  font-size: 0.85rem;
+  font-size: clamp(0.7rem, 1.2vw, 0.8rem);
   margin: 0;
-  font-weight: 500;
+  font-weight: 400;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .copyright-text {
   color: #0b3a37;
-  font-size: 0.75rem;
+  font-size: clamp(0.65rem, 1vw, 0.7rem);
   margin: 0;
   font-weight: 400;
-  opacity: 0.9;
+  opacity: 0.85;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
@@ -128,26 +128,103 @@
 
 @media (max-width: 768px) {
   .footer {
-    min-height: 100px;
+    min-height: 48px;
+    padding: clamp(0.35rem, 0.8vw, 0.5rem) 0;
   }
-  
+
   .footer-content {
-    padding: 1.5rem 0;
-    gap: 0.75rem;
+    padding: clamp(0.35rem, 0.7vw, 0.5rem) 0;
+    gap: clamp(0.3rem, 0.6vw, 0.4rem);
+  }
+
+  .footer-social {
+    gap: clamp(0.7rem, 1.5vw, 0.9rem);
   }
 
   .social-link {
-    width: 38px;
-    height: 38px;
-    font-size: 1.1rem;
+    width: clamp(30px, 5.5vw, 36px);
+    height: clamp(30px, 5.5vw, 36px);
+    font-size: clamp(0.85rem, 1.8vw, 1rem);
+    border-radius: 8px;
   }
 
   .footer-text {
-    font-size: 0.9rem;
+    font-size: clamp(0.65rem, 1vw, 0.75rem);
   }
 
   .copyright-text {
-    font-size: 0.8rem;
+    font-size: clamp(0.6rem, 0.9vw, 0.65rem);
+  }
+}
+
+@media (max-width: 540px) {
+  .footer {
+    min-height: 44px;
+    padding: clamp(0.3rem, 0.6vw, 0.45rem) 0;
+  }
+
+  .footer-content {
+    padding: clamp(0.3rem, 0.6vw, 0.45rem) 0;
+    gap: clamp(0.25rem, 0.5vw, 0.35rem);
+  }
+
+  .footer-social {
+    gap: clamp(0.65rem, 1.2vw, 0.8rem);
+  }
+
+  .social-link {
+    width: clamp(28px, 5vw, 32px);
+    height: clamp(28px, 5vw, 32px);
+    font-size: clamp(0.8rem, 1.6vw, 0.9rem);
+    border-radius: 6px;
+  }
+
+  .social-link:hover {
+    transform: translateY(-1px) scale(1.03);
+    box-shadow: 0 8px 20px rgba(16,185,129,0.08), 0 0 12px rgba(212,175,55,0.04);
+  }
+
+  .footer-text {
+    font-size: clamp(0.6rem, 0.9vw, 0.7rem);
+  }
+
+  .copyright-text {
+    font-size: clamp(0.55rem, 0.8vw, 0.6rem);
+  }
+}
+
+@media (max-width: 360px) {
+  .footer {
+    min-height: 40px;
+    padding: clamp(0.25rem, 0.5vw, 0.4rem) 0;
+  }
+
+  .footer-content {
+    padding: clamp(0.25rem, 0.5vw, 0.4rem) 0;
+    gap: clamp(0.2rem, 0.4vw, 0.3rem);
+  }
+
+  .footer-social {
+    gap: clamp(0.6rem, 1vw, 0.75rem);
+  }
+
+  .social-link {
+    width: clamp(26px, 4.5vw, 30px);
+    height: clamp(26px, 4.5vw, 30px);
+    font-size: clamp(0.75rem, 1.5vw, 0.85rem);
+    border-radius: 6px;
+  }
+
+  .social-link:hover {
+    transform: translateY(-1px) scale(1.02);
+  }
+
+  .footer-text {
+    font-size: clamp(0.55rem, 0.8vw, 0.65rem);
+  }
+
+  .copyright-text {
+    font-size: clamp(0.5rem, 0.7vw, 0.55rem);
   }
 }
 
@@ -160,18 +237,6 @@
   }
   100% {
     background-position: 0% 50%;
-  }
-}
-
-@media (max-width: 768px) {
-  .footer-social {
-    gap: 1rem;
-  }
-
-  .social-link {
-    font-size: 1.25rem;
-    width: 36px;
-    height: 36px;
   }
 }
 
