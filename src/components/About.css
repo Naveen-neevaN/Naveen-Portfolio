@@ -628,18 +628,20 @@
 
 .about-innovation__inner {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.8rem;
+  /* Two-column layout: content takes remaining space, image column is constrained
+     so it never becomes too large. On narrow viewports we collapse to a single column. */
+  grid-template-columns: 1fr minmax(200px, 340px);
+  gap: 1.25rem; /* reduced gap to make tile more compact */
   align-items: center;
-  padding: clamp(2rem, 4vw, 3rem);
+  padding: clamp(0.9rem, 1.8vw, 1.6rem); /* tighter padding for a compact tile */
   min-height: auto;
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(212, 175, 55, 0.04) 100%);
-  border-radius: var(--radius-lg);
-  border: 1px solid rgba(20, 184, 166, 0.15);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 10px 40px rgba(20, 184, 166, 0.08);
-  transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.06) 0%, rgba(212, 175, 55, 0.03) 100%);
+  border-radius: calc(var(--radius-lg) - 4px);
+  border: 1px solid rgba(20, 184, 166, 0.12);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 8px 28px rgba(20, 184, 166, 0.06);
+  transition: all 0.32s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .about-innovation__inner:hover {
@@ -659,21 +661,41 @@
   padding: 0;
   height: auto;
   width: 100%;
+  /* contain the image inside a framed box with consistent edges */
+  box-sizing: border-box;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255,255,255,0.04);
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
 }
 
 .innovation__image img {
   width: 100%;
-  max-width: 520px;
+  max-width: 300px; /* further reduced for a compact, user-friendly size */
   height: auto;
   aspect-ratio: 16/10;
-  object-fit: contain;
+  object-fit: cover; /* keeps image visually balanced inside the framed area */
   display: block;
-  border-radius: var(--radius-lg);
-  box-shadow: 0 15px 40px rgba(20, 184, 166, 0.15), 0 0 30px rgba(212, 175, 55, 0.08);
-  transform: translateY(12px) scale(0.96);
+  border-radius: calc(var(--radius-lg) - 2px); /* crop slightly to align with container radius */
+  box-shadow: 0 8px 20px rgba(20, 184, 166, 0.10), 0 0 14px rgba(212, 175, 55, 0.04);
+  transform: translateY(6px) scale(0.995);
   opacity: 0;
-  transition: transform 700ms cubic-bezier(0.19, 1, 0.22, 1), opacity 500ms ease;
+  transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1), opacity 300ms ease;
   will-change: transform, opacity;
+}
+
+/* Very small tweak: ensure image stays visually prominent but not oversized on very wide displays */
+@media (min-width: 1400px) {
+  .innovation__image img {
+    max-width: 360px; /* modest upsize on very wide screens */
+  }
+}
+
+/* Hover/Focus alignment for the innovation tile image */
+.about-innovation__inner:hover .innovation__image img,
+.about-innovation__inner:focus-within .innovation__image img {
+  transform: translateY(0) scale(1);
+  opacity: 1;
 }
 
 .about__wrapper.is-visible .innovation__image img {
@@ -690,9 +712,9 @@
 }
 
 .innovation__content {
-  text-align: center;
-  max-width: 800px;
-  margin: 0 auto;
+  text-align: left;
+  max-width: 640px;
+  margin: 0;
 }
 
 .innovation__content p {
@@ -700,6 +722,31 @@
   line-height: 1.8;
   font-size: clamp(1rem, 1.1vw, 1.1rem);
   color: var(--text-muted);
+}
+
+/* Responsive: stack image below content on narrower viewports */
+@media (max-width: 920px) {
+  .about-innovation__inner {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+    padding: clamp(1rem, 3vw, 1.4rem);
+  }
+
+  .innovation__content {
+    text-align: center;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .innovation__image {
+    justify-content: center;
+    margin-top: 0.5rem;
+  }
+
+  .innovation__image img {
+    max-width: 100%;
+    object-fit: contain; /* avoid cropping on narrow screens */
+  }
 }
 
 /* Tech Expertise */
