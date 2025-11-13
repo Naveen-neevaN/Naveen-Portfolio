@@ -201,6 +201,46 @@ body, h1, h2, h3, h4, p, figure, blockquote, dl, dd {
   100% { background-position: 0% 50%; }
 }
 
+/* Performance helpers: promote compositing for frequently-animated panels */
+.site-header,
+.contact__card,
+.contact__form,
+.hero,
+.about-intro__media,
+.projects__card {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* Reduce painting cost by isolating complex layers when possible */
+.glass-panel {
+  contain: paint;
+  /* subtle floating glass animation for visual polish; prefers-reduced-motion will disable */
+  transition: transform var(--transition-base), opacity var(--transition-fast);
+}
+
+@keyframes glassFloat {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+  100% { transform: translateY(0); }
+}
+
+/* Apply a very lightweight, GPU-accelerated float on larger screens */
+@media (min-width: 768px) {
+  .glass-panel.glass-anim {
+    animation: glassFloat 6s ease-in-out infinite;
+    will-change: transform, opacity;
+    transform: translateZ(0);
+  }
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .glass-panel.glass-anim { animation: none !important; }
+  .skeleton-section::after { animation: none !important; }
+}
+
 body::before,
 body::after {
   background-size: 200% 200%;

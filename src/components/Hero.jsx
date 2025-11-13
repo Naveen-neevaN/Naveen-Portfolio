@@ -41,7 +41,7 @@ const Hero = () => {
     try {
       const resolved = (carouselImages || []).map((img) => ({ original: img, resolved: resolveAssetPath(img) }))
       const resumeResolved = resolveAssetPath(personalInfo.resumeUrl || '')
-      if (typeof window !== 'undefined' && window.console && resolved.length) {
+      if (process.env.NODE_ENV !== 'production' && typeof window !== 'undefined' && window.console && resolved.length) {
         console.groupCollapsed('Asset resolver diagnostics — hero')
         console.table(resolved)
         console.log('Resolved resume URL:', resumeResolved)
@@ -282,6 +282,7 @@ const Hero = () => {
                             alt={`Portfolio highlight ${index + 1}`}
                             className="hero__image"
                             loading="lazy"
+                            decoding="async"
                             onError={(e) => {
                               // mark error to fall back and capture resolved URL for diagnostics
                               const resolved = resolveAssetPath(image)
@@ -308,7 +309,7 @@ const Hero = () => {
         </div>
 
         {/* Role Overview Tile: Below Hero Columns */}
-        <div className={`hero__roleOverviewTile glass-panel ${isMounted ? 'is-visible' : ''}`}>
+        <div className={`hero__roleOverviewTile glass-panel glass-anim ${isMounted ? 'is-visible' : ''}`}>
           <div className="hero__roleOverviewContent">
             {/* Left 70%: Role Description */}
             <div className="hero__roleDescription">

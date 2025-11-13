@@ -2,10 +2,14 @@ import './globals.css'
 import { Poppins, Manrope } from 'next/font/google'
 
 export const metadata = {
-  title: 'NAVEEN K - Tosca Automation Test Lead',
+  title: 'Naveen K - Tosca Test Lead',
   description:
     'Senior Project Engineer and Tosca Automation Test Lead with 5 years of experience in BFSI applications, AI-based testing, and automation strategy',
   viewport: 'width=device-width, initial-scale=1.0, maximum-scale=1.0',
+  icons: {
+    icon: '/favicon.svg',
+    shortcut: '/favicon.svg'
+  },
 }
 
 const poppins = Poppins({

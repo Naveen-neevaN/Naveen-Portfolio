@@ -1,0 +1,19 @@
+/* Lightweight skeleton shimmer used as a low-cost loading placeholder */
+.skeleton-section {
+  position: relative;
+  padding: 1.25rem;
+  border-radius: 12px;
+  background: linear-gradient(90deg,#f3f3f3,#ececec,#f3f3f3);
+  overflow: hidden;
+}
+.skeleton-content { display:flex; flex-direction:column; gap:0.5rem }
+.skeleton-line { height:12px; border-radius:8px; background:rgba(255,255,255,0.6); opacity:0.9 }
+.skeleton-line.short { width:30% }
+.skeleton-line.medium { width:60% }
+.skeleton-line.long { width:85% }
+
+/* shimmer */
+.skeleton-section::after{
+  content:''; position:absolute; inset:0; transform:translateX(-100%); background:linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.35) 50%, transparent 100%); animation: skeleton-shimmer 1.1s linear infinite
+}
+@keyframes skeleton-shimmer { to { transform: translateX(100%); } }

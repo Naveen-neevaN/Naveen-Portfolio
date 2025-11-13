@@ -37,6 +37,7 @@ const AboutIntro = ({ videoSrc, prefersReducedMotion }) => {
               src={poster}
               alt="Poster illustrating innovation and experience"
               loading="lazy"
+              decoding="async"
             />
           )}
           <div className="about-intro__media-overlay" />

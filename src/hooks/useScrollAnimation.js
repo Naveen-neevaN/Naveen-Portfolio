@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 
 const defaultOptions = {
-  threshold: 0.18,
-  rootMargin: '0px',
+  threshold: 0.08,
+  rootMargin: '50px',
   once: true,
 }
 
@@ -17,40 +17,54 @@ export const useScrollAnimation = (options = {}) => {
   const [isVisible, setIsVisible] = useState(false)
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
   const ref = useRef(null)
+  const prefersReducedMotionRef = useRef(false)
 
+  // Memoize reduced motion check to avoid re-reads
+  const readPref = useCallback(() => {
+    try {
+      if (typeof document !== 'undefined' && document.documentElement.classList.contains('reduced-motion')) return true
+      const saved = typeof window !== 'undefined' ? localStorage.getItem('reducedMotion') : null
+      if (saved === 'true') return true
+    } catch (e) {
+      // ignore
+    }
+    if (typeof window !== 'undefined' && window.matchMedia) return window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    return false
+  }, [])
+
+  // Single setup effect for reduced motion preference
   useEffect(() => {
     if (typeof window === 'undefined') return
 
-    const readPref = () => {
-      try {
-        if (typeof document !== 'undefined' && document.documentElement.classList.contains('reduced-motion')) return true
-        const saved = typeof window !== 'undefined' ? localStorage.getItem('reducedMotion') : null
-        if (saved === 'true') return true
-      } catch (e) {
-        // ignore
-      }
-      if (typeof window !== 'undefined' && window.matchMedia) return window.matchMedia('(prefers-reduced-motion: reduce)').matches
-      return false
-    }
+    const initial = readPref()
+    setPrefersReducedMotion(initial)
+    prefersReducedMotionRef.current = initial
 
-    setPrefersReducedMotion(readPref())
+    // Debounced handler for preference changes
+    let timeoutId
+    const handleChange = () => {
+      clearTimeout(timeoutId)
+      timeoutId = setTimeout(() => {
+        const newPref = readPref()
+        if (prefersReducedMotionRef.current !== newPref) {
+          setPrefersReducedMotion(newPref)
+          prefersReducedMotionRef.current = newPref
+        }
+      }, 100)
+    }
 
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
-    const handleChange = () => setPrefersReducedMotion(readPref())
     mediaQuery.addEventListener('change', handleChange)
-    document.addEventListener('reduced-motion-change', handleChange)
-    const handleStorage = (e) => {
-      if (e.key === 'reducedMotion') setPrefersReducedMotion(readPref())
-    }
-    window.addEventListener('storage', handleStorage)
+    window.addEventListener('storage', handleChange)
 
     return () => {
+      clearTimeout(timeoutId)
       mediaQuery.removeEventListener('change', handleChange)
-      document.removeEventListener('reduced-motion-change', handleChange)
-      window.removeEventListener('storage', handleStorage)
+      window.removeEventListener('storage', handleChange)
     }
-  }, [])
+  }, [readPref])
 
+  // Intersection observer effect
   useEffect(() => {
     if (prefersReducedMotion) {
       setIsVisible(true)
@@ -67,18 +81,36 @@ export const useScrollAnimation = (options = {}) => {
       return
     }
 
+    const scheduledRef = { current: false }
+    const lastDesiredRef = { current: null }
+
     const observer = new IntersectionObserver(
       (entries) => {
+        // Determine desired visibility from batch of entries
+        let anyVisible = false
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setIsVisible(true)
-            if (once) {
-              observer.unobserve(entry.target)
-            }
-          } else if (!once) {
-            setIsVisible(false)
+            anyVisible = true
+            if (once) observer.unobserve(entry.target)
           }
         })
+
+        lastDesiredRef.current = anyVisible
+
+        if (!scheduledRef.current) {
+          scheduledRef.current = true
+          // Batch updates to the next animation frame to avoid layout thrash
+          window.requestAnimationFrame(() => {
+            const desired = lastDesiredRef.current
+            if (once) {
+              // If "once" we only ever switch from false -> true
+              setIsVisible((prev) => (prev ? prev : !!desired))
+            } else {
+              setIsVisible(!!desired)
+            }
+            scheduledRef.current = false
+          })
+        }
       },
       { threshold, rootMargin }
     )

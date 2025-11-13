@@ -21,6 +21,7 @@ const Innovation = () => {
             src={resolveAssetPath('/about-poster.png')}
             alt="Poster illustrating innovation initiatives and the GenAI Accelerator"
             loading="lazy"
+            decoding="async"
           />
         </div>
       </div>

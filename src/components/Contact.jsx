@@ -70,7 +70,7 @@ const Contact = () => {
 
     emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID_ADMIN, adminParams)
       .then((response) => {
-        console.log('Admin email sent:', response)
+        if (process.env.NODE_ENV !== 'production') console.log('Admin email sent:', response)
 
         // Attempt to send auto-reply to visitor (non-blocking)
         if (EMAILJS_TEMPLATE_ID_AUTO) {
@@ -87,7 +87,7 @@ const Contact = () => {
 
           emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID_AUTO, autoParams)
             .then((r2) => {
-              console.log('Auto-reply sent:', r2)
+              if (process.env.NODE_ENV !== 'production') console.log('Auto-reply sent:', r2)
             })
             .catch((err2) => {
               // Auto-reply failure should not block the main success path
@@ -149,7 +149,7 @@ const Contact = () => {
         </p>
 
         <div ref={ref} className={`contact__grid ${isVisible ? 'is-visible' : ''}`}>
-          <div className="contact__card glass-panel">
+          <div className="contact__card glass-panel glass-anim">
             <span className="contact__badge glass-inline">Open for opportunities</span>
             <h3 className="contact__title gradient-text">Let’s build resilient digital experiences</h3>
             <p className="contact__description text-muted">
@@ -194,7 +194,7 @@ const Contact = () => {
             </div>
           </div>
 
-          <form className="contact__form glass-panel" onSubmit={handleSubmit} noValidate>
+          <form className="contact__form glass-panel glass-anim" onSubmit={handleSubmit} noValidate>
             <div className="contact__formRow contact__formRow--stacked">
               <div className="contact__field">
                 <label htmlFor="name">Name</label>

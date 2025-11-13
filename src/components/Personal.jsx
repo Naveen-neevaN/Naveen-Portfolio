@@ -7,7 +7,7 @@ const Personal = () => {
   return (
     <section className="about-personal" aria-labelledby="personal-title">
       <h3 id="personal-title" className="section-subhead">Beyond the Code</h3>
-      <div className="personal__panel glass-panel">
+      <div className="personal__panel glass-panel glass-anim">
         <p>
           Beyond the professional realm, I'm an accomplished chess player who captained my college team and enjoy
           exploring AI-driven innovations and DevOps practices.

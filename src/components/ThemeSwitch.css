@@ -103,6 +103,19 @@
   color: var(--text-primary);
 }
 
+/* Gradient SVG icon styling */
+.family-gradient-icon {
+  width: 1.6rem;
+  height: 1.6rem;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.1));
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.theme-family-switch:hover .family-gradient-icon {
+  transform: rotate(-10deg) scale(1.08);
+}
+
 /* Focus-visible */
 .theme-switch:focus-visible, .theme-family-switch:focus-visible {
   outline: none;
@@ -114,5 +127,10 @@
     width: 2.2rem;
     height: 2.2rem;
     font-size: 1rem;
+  }
+
+  .family-gradient-icon {
+    width: 1.4rem;
+    height: 1.4rem;
   }
 }

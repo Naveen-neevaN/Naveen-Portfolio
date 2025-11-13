@@ -20,6 +20,8 @@ const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
   const scrollMeta = useRef({ lastY: 0, ticking: false })
+  const isHiddenRef = useRef(isHidden)
+  const isScrolledRef = useRef(isScrolled)
 
   useEffect(() => {
     let lastScrollY = window.scrollY
@@ -28,8 +30,15 @@ const Header = () => {
     const handleScroll = () => {
       // If reduced motion is preferred, avoid hide/show animations and keep header visible
       if (prefersReducedMotion) {
-        setIsHidden(false)
-        setIsScrolled(window.scrollY > 0)
+        if (isHiddenRef.current !== false) {
+          isHiddenRef.current = false
+          setIsHidden(false)
+        }
+        const sc = window.scrollY > 0
+        if (isScrolledRef.current !== sc) {
+          isScrolledRef.current = sc
+          setIsScrolled(sc)
+        }
         return
       }
 
@@ -40,18 +49,36 @@ const Header = () => {
 
           // Show header at the top of the page
           if (currentScrollY < 50) {
-            setIsHidden(false)
-            setIsScrolled(false)
+            if (isHiddenRef.current !== false) {
+              isHiddenRef.current = false
+              setIsHidden(false)
+            }
+            if (isScrolledRef.current !== false) {
+              isScrolledRef.current = false
+              setIsScrolled(false)
+            }
           }
           // Hide header when scrolling down
           else if (delta > 10) {
-            setIsHidden(true)
-            setIsScrolled(true)
+            if (isHiddenRef.current !== true) {
+              isHiddenRef.current = true
+              setIsHidden(true)
+            }
+            if (isScrolledRef.current !== true) {
+              isScrolledRef.current = true
+              setIsScrolled(true)
+            }
           }
           // Show header when scrolling up
           else if (delta < -10) {
-            setIsHidden(false)
-            setIsScrolled(true)
+            if (isHiddenRef.current !== false) {
+              isHiddenRef.current = false
+              setIsHidden(false)
+            }
+            if (isScrolledRef.current !== true) {
+              isScrolledRef.current = true
+              setIsScrolled(true)
+            }
           }
 
           lastScrollY = currentScrollY
