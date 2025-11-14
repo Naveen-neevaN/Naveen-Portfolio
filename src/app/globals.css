@@ -194,6 +194,19 @@ body, h1, h2, h3, h4, p, figure, blockquote, dl, dd {
   will-change: background-color, color, opacity, transform;
 }
 
+/* Remove mobile tap highlight overlay for smooth, custom button interactions */
+button,
+input[type='button'],
+input[type='submit'],
+input[type='reset'],
+[role='button'] {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
 /* Subtle looping gradient motion applied to body pseudo-elements for richness */
 @keyframes gradientShift {
   0% { background-position: 0% 50%; }

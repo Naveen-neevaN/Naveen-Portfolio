@@ -103,6 +103,7 @@ export const personalInfo = {
     { name: 'Email', url: 'mailto:naveennagendiran321@gmail.com', icon: 'FaEnvelope' },
     { name: 'GitHub', url: 'https://github.com/Naveen-neevaN', icon: 'FaGithub' },
     { name: 'Instagram', url: 'https://www.instagram.com/naveen_nagendiran/', icon: 'FaInstagram' },
+    { name: 'WhatsApp', url: 'https://wa.me/919843165568', icon: 'FaWhatsapp' },
   ],
   
   // Resume

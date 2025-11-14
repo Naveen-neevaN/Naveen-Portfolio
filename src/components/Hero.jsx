@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState, useLayoutEffect } from 'react'
 // Use native <img> to simplify loading from /public and avoid Next Image sizing issues for this static export
 import { personalInfo } from '@/data/personalInfo.js'
 import resolveAssetPath from '@/lib/resolveAssetPath'
@@ -24,6 +24,7 @@ const Hero = () => {
   // Refs and state to keep the prefix statically centered while the typed role animates
   const roleContainerRef = useRef(null)
   const prefixRef = useRef(null)
+  const headingRef = useRef(null)
   const [prefixWidth, setPrefixWidth] = useState(0)
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
   const [hasCarouselError, setHasCarouselError] = useState(false)
@@ -148,6 +149,8 @@ const Hero = () => {
     window.addEventListener('resize', measure)
     return () => window.removeEventListener('resize', measure)
   }, [isMounted])
+
+  // No JS shrink-to-fit needed; rely on CSS clamp() for responsive sizing
 
   useEffect(() => {
     if (!hasCarousel || hasCarouselError || prefersReducedMotion || carouselImages.length <= 1) {
@@ -281,7 +284,7 @@ const Hero = () => {
                             src={resolveAssetPath(image)}
                             alt={`Portfolio highlight ${index + 1}`}
                             className="hero__image"
-                            loading="lazy"
+                            loading="eager"
                             decoding="async"
                             onError={(e) => {
                               // mark error to fall back and capture resolved URL for diagnostics
@@ -313,20 +316,25 @@ const Hero = () => {
           <div className="hero__roleOverviewContent">
             {/* Left 70%: Role Description */}
             <div className="hero__roleDescription">
-              <h2 className="hero__roleTitle">
-                <span className="hero__rolePrefix">{prefix}</span>
-                <span className="hero__roleTyped gradient-text">{typedTitle}</span>
+              <h2 className="hero__roleTitle" ref={headingRef}>
+                <span className="hero__rolePrefix" ref={prefixRef}>{prefix}</span>
+                <span
+                  className="hero__roleTyped gradient-text"
+                  style={{
+                    minWidth: roleMinCh ? `${roleMinCh}ch` : 'auto',
+                    maxWidth: '100%',
+                    boxSizing: 'border-box',
+                  }}
+                  ref={roleContainerRef}
+                >
+                  {typedTitle}
+                </span>
               </h2>
               <p className="hero__roleOverviewText">{heroDescription}</p>
             </div>
 
-            {/* Right 30%: Location Icon and Buttons */}
+            {/* Right 30%: Buttons */}
             <div className="hero__roleActions">
-              <div className="hero__locationBadge">
-                <span className="hero__locationIcon">📍</span>
-                <div className="hero__locationValue">{personalInfo.location}</div>
-              </div>
-
               <div className="hero__buttonsGroup">
                 <button
                   className="btn btn-primary"

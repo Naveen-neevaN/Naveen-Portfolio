@@ -1,5 +1,5 @@
 import { personalInfo } from '@/data/personalInfo.js'
-import { FaGithub, FaLinkedin, FaTwitter, FaEnvelope, FaInstagram } from 'react-icons/fa'
+import { FaGithub, FaLinkedin, FaTwitter, FaEnvelope, FaInstagram, FaWhatsapp } from 'react-icons/fa'
 import './Footer.css'
 
 const iconMap = {
@@ -8,6 +8,7 @@ const iconMap = {
   FaTwitter,
   FaEnvelope,
   FaInstagram,
+  FaWhatsapp,
 }
 
 const Footer = () => {

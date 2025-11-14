@@ -102,7 +102,9 @@
   gap: clamp(1rem, 2vw, 1.65rem);
   opacity: 0;
   transform: translateY(30px);
-  transition: transform 0.72s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.48s ease;
+  /* Fixed, stable size to avoid responsive resizing */
+  font-size: 2rem;
+
 }
 
 .hero__column.is-active {
@@ -211,8 +213,7 @@
 .hero__visual {
   position: relative;
   height: 100%;
-  min-height: clamp(240px, 60vw, 480px);
-  max-height: clamp(240px, 60vw, 480px);
+  width: 100%;
   overflow: hidden;
   border-radius: 20px;
   padding: 0;
@@ -223,6 +224,7 @@
   isolation: isolate;
   background: transparent;
   box-shadow: none;
+  flex-shrink: 0;
 }
 
 /* SVG overlay removed - keep it clean */
@@ -258,8 +260,8 @@
   width: 100%;
   height: 100%;
   aspect-ratio: 1 / 1;
-  min-width: clamp(200px, 50vw, 480px);
-  min-height: clamp(200px, 50vw, 480px);
+  max-width: 100%;
+  max-height: 100%;
   border-radius: 20px;
   overflow: hidden;
   background: linear-gradient(135deg, rgba(20, 184, 166, 0.08) 0%, rgba(212, 175, 55, 0.04) 100%);
@@ -278,6 +280,7 @@
   /* Prevent scrollbars during image loading */
   -ms-overflow-style: none;
   scrollbar-width: none;
+  flex-shrink: 0;
 }
 
 .hero__carousel::-webkit-scrollbar {
@@ -526,7 +529,6 @@
 /* Role Overview Tile (below hero columns) */
 .hero__roleOverviewTile {
   margin-top: clamp(2rem, 4vw, 3.5rem);
-  padding: clamp(2rem, 4vw, 3rem);
   padding: clamp(1.5rem, 3vw, 2.5rem);
   background: rgba(255, 255, 255, 0.06);
   backdrop-filter: blur(10px);
@@ -538,6 +540,10 @@
   transition: opacity 0.56s ease, transform 0.48s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.256s ease, backdrop-filter 0.256s ease;
   position: relative;
   overflow: hidden;
+  /* Prevent content reflow during typing animation */
+  min-height: auto;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .hero__roleOverviewTile.is-visible {
@@ -585,12 +591,15 @@
 
 .hero__roleOverviewContent {
   display: grid;
-  /* Use a fluid layout where the actions column has a constrained width
-     so the description can take remaining space without squeezing the actions.
-     This prevents overflow at mid-large widths (e.g., 941px). */
+  /* Stable grid layout: description takes remaining space, actions have fixed width */
+  /* minmax ensures actions never shrink below 220px, never grow above 360px */
   grid-template-columns: 1fr minmax(220px, 360px);
   gap: clamp(0.6rem, 1.2vw, 1rem);
-  align-items: start;
+  align-items: center;
+  /* Prevent grid from reflow during animation */
+  width: 100%;
+  will-change: grid-template-columns;
+  transform: translateZ(0);
 }
 
 .hero__roleDescription {
@@ -602,6 +611,13 @@
   align-self: center; /* center the left column within the tile row */
   text-align: left;
   padding: 0.1rem 0; /* minimal vertical breathing room */
+  /* Prevent layout shift by ensuring stable flex basis */
+  min-width: 0;
+  flex: 1 1 auto;
+  /* Prevent the description from shrinking due to typing animation */
+  width: 100%;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .hero__roleTitle {
@@ -610,14 +626,19 @@
   align-items: baseline;
   justify-content: flex-start;
   gap: 0.5rem;
-  font-size: clamp(1.15rem, 2.2vw, 1.8rem);
+  /* Responsive sizing: reduce base size so long role titles fit and wrap naturally. */
+  font-size: clamp(1rem, 2.1vw, 1.6rem);
   font-weight: 700;
-  line-height: 1.05;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  line-height: 1.08;
+  /* Allow the prefix + typed text to wrap naturally instead of forcing ellipsis */
+  flex-wrap: wrap;
+  /* Fixed container prevents expansion/shrinking during typing animation */
+  min-height: 1.3em;
   max-width: 100%;
-  margin: 0 0 0.25rem 0;
+  margin: 0 0 0.35rem 0;
+  /* Prevent layout shift by ensuring stable dimensions */
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .hero__rolePrefix {
@@ -671,10 +692,16 @@
 
 .hero__roleTyped {
   display: inline-block;
-  flex: 1 1 auto; /* allow typed text to take remaining space */
-  min-width: 0; /* required for flex children to ellipsis correctly */
-  overflow: hidden;
-  text-overflow: ellipsis;
+  flex: 1 1 auto; /* allow typed text to grow and wrap within available space */
+  min-width: 0; /* allow proper flex shrinking on narrow screens; inline style may override */
+  overflow-wrap: anywhere; /* allow natural wrapping with long words */
+  word-break: break-word;
+  /* Remove hard ellipsis; allow wrap so full role is visible on multiple lines */
+  overflow: visible;
+  max-width: 100%;
+  /* Ensure smooth animation without jank */
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .hero__roleTyped::after {
@@ -694,8 +721,56 @@
   50%, 100% { opacity: 0 }
 }
 
+/* Enforce a fixed, uniform role heading size across all screen sizes while
+   allowing natural wrapping to avoid overflow. This override sits after the
+   responsive rules above so it takes precedence. */
+.hero__roleTitle {
+  /* Responsive single-line heading using clamp() for maximum size without overflow.
+     Scales smoothly: 13px min (narrow mobile 369px) → 15px at 400px → 18px at 640px → 22px desktop max */
+  font-size: clamp(0.8125rem, 3.5vw, 1.4rem);
+  line-height: 1.08;
+  white-space: nowrap; /* force single-line */
+  overflow: hidden; /* prevent overflow */
+  text-overflow: clip;
+  flex-wrap: nowrap;
+  max-width: 100%; /* ensure heading respects container width */
+  width: 100%; /* stretch to available width */
+}
+
+/* Ensure caret scales with the fixed font-size and doesn't clip */
+.hero__roleTyped::after {
+  height: 1em; /* match the fixed font-size */
+  margin-left: 0.35rem;
+  vertical-align: text-bottom;
+  box-sizing: content-box;
+}
+
+/* Mobile button sizing: stack buttons vertically and make them equal height/width */
+@media (max-width: 540px) {
+  .hero__buttonsGroup .btn {
+    width: 100%;
+    min-width: 0;
+    height: 48px; /* consistent touch target */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero__buttonsGroup {
+    gap: 0.6rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .hero__buttonsGroup .btn {
+    height: 48px;
+    font-size: 0.95rem;
+  }
+}
+
 .hero__roleOverviewText {
-  font-size: clamp(0.95rem, 2vw, 1.02rem);
+  /* Keep body readable; scale modestly but don't go below 0.95rem */
+  font-size: clamp(0.95rem, 1.6vw, 1.05rem);
   line-height: 1.6;
   color: var(--text-muted);
 }
@@ -703,11 +778,17 @@
 .hero__roleActions {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem; /* reduce gap between badge and buttons */
-  align-items: stretch; /* make children stretch to equal width */
+  gap: 0.6rem; /* comfortable gap between badge and buttons */
+  align-items: center; /* center buttons horizontally at desktop */
   justify-content: center; /* vertically center actions within the tile */
   align-self: center; /* center the actions column vertically in the grid row */
   padding: 0.25rem 0.6rem; /* tighter padding so actions sit closer to overview */
+  /* Constrain action column so buttons are visually stable */
+  min-width: 220px;
+  max-width: 360px;
+  width: 100%;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .hero__locationBadge {
@@ -751,19 +832,21 @@
 
 .hero__buttonsGroup {
   display: flex;
-  flex-direction: row; /* inline buttons on larger screens */
+  flex-direction: column; /* stack buttons vertically by default */
   gap: 0.75rem;
   width: auto;
-  align-items: center;
+  align-items: center; /* center fixed-width buttons on desktop */
   padding: 0;
 }
 
 .hero__buttonsGroup .btn {
-  width: 100%;
+  /* Identical visual sizing for both buttons */
+  width: 260px;
+  min-width: 260px;
   font-size: 0.98rem;
-  padding: 0.66rem 0.95rem;
+  padding: 0.7rem 1.1rem;
   border-radius: 12px;
-  min-height: 44px;
+  min-height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -937,12 +1020,27 @@
   .hero__roleOverviewContent {
     grid-template-columns: 1fr;
     gap: 1.5rem;
+    width: 100%;
+  }
+
+  .hero__roleDescription {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .hero__roleTitle {
+    max-width: 100%;
+    width: 100%;
   }
 
   .hero__roleActions {
-    align-items: flex-start;
+    width: 100%;
+    align-items: stretch;
     flex-direction: row;
     gap: 1rem;
+    min-width: auto;
+    max-width: none;
+    padding: 0;
   }
 
   .hero__locationBadge {
@@ -953,6 +1051,7 @@
     flex-direction: row;
     flex: 1;
     gap: 0.75rem;
+    width: 100%;
   }
 
   .hero__buttonsGroup .btn {
@@ -975,17 +1074,43 @@
   .hero__roleOverviewContent {
     grid-template-columns: 1fr;
     gap: clamp(0.8rem, 1.5vw, 1.2rem);
+    width: 100%;
   }
 
   .hero__roleDescription {
     align-self: start;
     justify-content: flex-start;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .hero__roleTitle {
+    width: 100%;
+    max-width: 100%;
   }
 
   .hero__roleActions {
     align-self: start;
     justify-content: flex-start;
-    padding: 0.25rem 0;
+    padding: 0;
+    width: 100%;
+    min-width: auto;
+    max-width: none;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .hero__buttonsGroup {
+    flex-direction: column;
+    gap: 0.6rem;
+    width: 100%;
+    align-items: stretch;
+  }
+
+  .hero__buttonsGroup .btn {
+    width: 100%;
+    min-width: 0;
+    font-size: 0.98rem;
   }
 
   .hero__visual {
@@ -993,7 +1118,7 @@
     max-height: clamp(240px, 60vw, 320px);
     border-radius: 18px;
   }
-
+}
 
 /* Mid-size screens: ensure the role tile stacks on narrow tablets / large phones
    (addresses cases like 617px width where two-column actions overflow). */
@@ -1008,6 +1133,17 @@
     flex-direction: column;
     gap: clamp(0.6rem, 1vw, 0.9rem);
     align-items: stretch;
+    width: 100%;
+  }
+
+  .hero__roleDescription {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .hero__roleTitle {
+    width: 100%;
+    max-width: 100%;
   }
 
   .hero__roleActions {
@@ -1017,6 +1153,8 @@
     width: 100%;
     padding: 0;
     align-items: stretch;
+    min-width: auto;
+    max-width: none;
   }
 
   .hero__locationBadge {
@@ -1037,7 +1175,7 @@
     padding: 0.6rem 0.85rem;
     font-size: 0.92rem;
   }
-}
+
   .hero__carousel {
     border-radius: 18px;
     min-height: clamp(180px, 55vw, 300px);
@@ -1112,23 +1250,32 @@
 
   /* Role Overview Tile - Tighten spacing for mobile */
   .hero__roleOverviewContent {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
     gap: clamp(0.6rem, 1vw, 0.8rem);
+    align-items: stretch;
+    width: 100%;
   }
 
   .hero__roleDescription {
     align-self: start;
+    width: 100%;
+    min-width: 0;
   }
 
   .hero__roleTitle {
-    font-size: clamp(0.9rem, 1.8vw, 1.05rem);
-    flex-wrap: wrap;
+    width: 100%;
+    max-width: 100%;
   }
 
   .hero__roleActions {
     width: 100%;
     gap: 0.3rem;
-    padding: 0.2rem 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-width: auto;
+    max-width: none;
   }
 
   .hero__locationBadge {
@@ -1136,9 +1283,16 @@
     font-size: 0.85rem;
   }
 
+  .hero__buttonsGroup {
+    flex-direction: column;
+    gap: 0.4rem;
+    width: 100%;
+  }
+
   .hero__buttonsGroup .btn {
     font-size: 0.9rem;
     padding: 0.6rem 0.8rem;
+    width: 100%;
   }
 
   .hero__title {
@@ -1217,23 +1371,34 @@
   }
 
   .hero__roleOverviewContent {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
     gap: clamp(0.4rem, 0.8vw, 0.6rem);
+    align-items: stretch;
+    width: 100%;
   }
 
   .hero__roleDescription {
     align-self: start;
+    width: 100%;
+    min-width: 0;
   }
 
   .hero__roleTitle {
-    font-size: clamp(0.8rem, 1.6vw, 0.95rem);
     margin-bottom: 0.15rem;
-    word-break: break-word;
+    width: 100%;
+    max-width: 100%;
   }
 
   .hero__rolePrefix {
     white-space: normal;
     word-break: break-word;
+    flex: 0 1 auto;
+  }
+
+  .hero__roleTyped {
+    max-width: 100%;
+    flex: 1 1 auto;
   }
 
   .hero__roleOverviewText {
@@ -1245,7 +1410,11 @@
   .hero__roleActions {
     width: 100%;
     gap: 0.2rem;
-    padding: 0.1rem 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-width: auto;
+    max-width: none;
   }
 
   .hero__locationBadge {
@@ -1262,6 +1431,18 @@
 
   .hero__locationValue {
     font-size: 0.75rem;
+  }
+
+  .hero__buttonsGroup {
+    flex-direction: column;
+    gap: 0.3rem;
+    width: 100%;
+  }
+
+  .hero__buttonsGroup .btn {
+    width: 100%;
+    padding: 0.55rem 0.7rem;
+    font-size: 0.85rem;
   }
 
   .hero__buttonsGroup {
@@ -1353,10 +1534,6 @@
   .hero__roleOverviewContent {
     grid-template-columns: 1fr;
     gap: clamp(0.35rem, 0.6vw, 0.5rem);
-  }
-
-  .hero__roleTitle {
-    font-size: clamp(0.8rem, 1.6vw, 0.95rem);
   }
 
   .hero__locationBadge {
