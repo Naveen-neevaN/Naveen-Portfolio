@@ -15,21 +15,14 @@ const Hero = () => {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [prevSlide, setPrevSlide] = useState(null)
   const [isMounted, setIsMounted] = useState(false)
-  const [typedTitle, setTypedTitle] = useState('')
-  const [roleIndex, setRoleIndex] = useState(0)
-  const [isDeleting, setIsDeleting] = useState(false)
-  const [roleMinCh, setRoleMinCh] = useState(0)
-    const prefix = 'QA Automation - '
-    const rolesRef = useRef(['Senior Project Engineer', 'Tosca Test Lead'])
-  // Refs and state to keep the prefix statically centered while the typed role animates
-  const roleContainerRef = useRef(null)
-  const prefixRef = useRef(null)
+  // Removed the large typed-role state and measurement refs — the rectangular
+  // tile now only shows a single static line below the name.
+  const rolesRef = useRef(['Senior Project Engineer', 'Tosca Test Lead'])
   const headingRef = useRef(null)
-  const [prefixWidth, setPrefixWidth] = useState(0)
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
   const [hasCarouselError, setHasCarouselError] = useState(false)
   const [failedCarouselUrls, setFailedCarouselUrls] = useState([])
-  const typingIndexRef = useRef(0)
+  
 
   const heroDescription = useMemo(() => personalInfo.bio?.replace(/\s+/g, ' ').trim() ?? '', [])
 
@@ -95,60 +88,8 @@ const Hero = () => {
     }
   }, [])
 
-  useEffect(() => {
-    const roles = rolesRef.current
-    if (prefersReducedMotion) {
-      setTypedTitle(roles[0])
-      return
-    }
-
-    const currentRole = roles[roleIndex % roles.length]
-    const typingSpeed = isDeleting ? 40 : 60
-    const pauseAtEndMs = 1000
-    const pauseAtStartMs = 500
-
-    let timer
-
-    if (!isDeleting && typedTitle === currentRole) {
-      // pause at end before deleting
-      timer = setTimeout(() => setIsDeleting(true), pauseAtEndMs)
-    } else if (isDeleting && typedTitle === '') {
-      // move to next role and start typing
-      setIsDeleting(false)
-      setRoleIndex((i) => (i + 1) % roles.length)
-      timer = setTimeout(() => {}, pauseAtStartMs)
-    } else {
-      timer = setTimeout(() => {
-        const nextText = isDeleting
-          ? currentRole.slice(0, Math.max(0, typedTitle.length - 1))
-          : currentRole.slice(0, typedTitle.length + 1)
-        setTypedTitle(nextText)
-      }, typingSpeed)
-    }
-
-    return () => clearTimeout(timer)
-  }, [typedTitle, isDeleting, roleIndex, prefersReducedMotion])
-
-  useEffect(() => {
-    // Reserve width to avoid layout shift/flicker
-    const maxLen = rolesRef.current.reduce((m, s) => Math.max(m, s.length), 0)
-    setRoleMinCh(maxLen + 2)
-  }, [])
-
-  // Measure the prefix width so we can absolutely position the typed text to the right of the centered prefix
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-    const measure = () => {
-      try {
-        if (prefixRef.current) setPrefixWidth(prefixRef.current.offsetWidth)
-      } catch (e) {
-        // ignore
-      }
-    }
-    measure()
-    window.addEventListener('resize', measure)
-    return () => window.removeEventListener('resize', measure)
-  }, [isMounted])
+  // Removed: typed-role typing effects and measurement logic. The compact
+  // name icon uses CSS animations and therefore doesn't require JS typing.
 
   // No JS shrink-to-fit needed; rely on CSS clamp() for responsive sizing
 
@@ -316,20 +257,7 @@ const Hero = () => {
           <div className="hero__roleOverviewContent">
             {/* Left 70%: Role Description */}
             <div className="hero__roleDescription">
-              <h2 className="hero__roleTitle" ref={headingRef}>
-                <span className="hero__rolePrefix" ref={prefixRef}>{prefix}</span>
-                <span
-                  className="hero__roleTyped gradient-text"
-                  style={{
-                    minWidth: roleMinCh ? `${roleMinCh}ch` : 'auto',
-                    maxWidth: '100%',
-                    boxSizing: 'border-box',
-                  }}
-                  ref={roleContainerRef}
-                >
-                  {typedTitle}
-                </span>
-              </h2>
+              {/* Title removed as requested — keep the overview text */}
               <p className="hero__roleOverviewText">{heroDescription}</p>
             </div>
 

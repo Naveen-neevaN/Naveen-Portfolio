@@ -9,21 +9,31 @@
   padding-top: clamp(4rem, 8vw, 6rem);
   padding-bottom: clamp(2.4rem, 6vw, 3.5rem);
   overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  /* Prevent scrollbars */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .hero::before {
   content: '';
   position: absolute;
   inset: -10% -20%;
-  background: radial-gradient(circle at 15% 35%, var(--shadow-secondary) 0%, transparent 45%),
-    radial-gradient(circle at 85% 15%, var(--shadow-primary) 0%, transparent 50%);
-  opacity: 0.75;
+  background: transparent;
+  opacity: 0;
   z-index: 0;
   transition: opacity var(--transition-base), background var(--transition-theme);
 }
 
 [data-theme='dark'] .hero::before {
   opacity: 0.45;
+}
+
+.hero::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
 }
 
 .hero__layout {
@@ -66,6 +76,10 @@
   animation: fadeInScale 0.64s cubic-bezier(0.19, 1, 0.22, 1) 0.24s forwards;
 }
 
+/* Ensure greeting content stacks vertically and centers so the tile sits
+   directly underneath the name on all viewports. */
+.hero__greetingBox { flex-direction: column; gap: 0.6rem; }
+
 .hero__greetingText {
   font-size: clamp(2.5rem, 6vw, 4rem);
   font-weight: 700;
@@ -78,6 +92,256 @@
 .hero__greetingText .gradient-text {
   display: block;
   margin-top: 0.3em;
+}
+
+/* Name-role pill under the greeting name */
+.hero__nameRole {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.6rem;
+}
+.nameRole__pill {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  border-radius: 18px; /* rectangle shape */
+  /* Fixed tile dimensions to avoid layout shifts. Keep a safe max for very small devices via media queries. */
+  width: 420px;
+  max-width: 420px;
+  height: 72px; /* fixed height */
+  padding: 0.7rem 1rem;
+  background: var(--gradient-name);
+  border: none;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 2;
+  box-sizing: border-box;
+  animation: fadeInScale 520ms cubic-bezier(0.19, 1, 0.22, 1) both;
+  position: relative;
+  overflow: visible; /* allow internal overflow to be controlled by child */
+  transition: box-shadow 240ms cubic-bezier(0.2,0,0.2,1), transform 200ms ease;
+  will-change: box-shadow, transform;
+  flex: 0 0 auto; /* never grow or shrink to keep layout stable */
+}
+
+.nameRole__line {
+  text-align: center;
+  line-height: 1.1;
+  color: #ffffff;
+  font-weight: 700;
+  display: block;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+/* Top line: size reduced by 30% from previous. */
+.nameRole__line--top {
+  /* Use fixed rem-based sizing to avoid viewport-driven font scaling */
+  font-size: 0.95rem;
+  letter-spacing: -0.02em;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Bottom line: displays typewriter animation */
+.nameRole__line--bottom {
+  font-size: 0.85rem;
+  height: auto;
+  min-height: 1.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.nameRole__typewriter {
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+  overflow: hidden; /* ensure typing text cannot overflow container */
+  white-space: nowrap;
+  position: relative;
+  line-height: 1.2;
+}
+
+.typewriter-item {
+  position: absolute;
+  opacity: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  transform: none;
+  animation: typewriter-fade 7s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+  color: #ffffff;
+  white-space: nowrap;
+  line-height: 1.2;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis; /* ensure long text doesn't push layout */
+}
+
+/* First item appears immediately, second appears after first's hold time */
+.typewriter-item:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.typewriter-item:nth-child(2) {
+  animation-delay: 3.5s;
+}
+
+.nameRole__pill::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0.15) 100%);
+  transform: translateX(-100%);
+  transition: transform 420ms ease;
+  pointer-events: none;
+  border-radius: 18px;
+  z-index: 1;
+}
+
+.nameRole__pill:hover::before {
+  transform: translateX(100%);
+}
+
+.nameRole__pill:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.14);
+}
+
+/* Disable hover transforms on touch/ coarse pointers to avoid overflow */
+@media (pointer: coarse), (hover: none) {
+  .nameRole__pill:hover {
+    transform: none;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+  }
+}
+
+@keyframes typewriter-fade {
+  0% { opacity: 0; }
+  5% { opacity: 1; }
+  48% { opacity: 1; }
+  53% { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nameRole__typewriter,
+  .typewriter-item {
+    animation: none !important;
+  }
+  
+  /* Show first role if motion is reduced */
+  .typewriter-item:nth-child(1) {
+    position: static;
+    transform: none;
+    opacity: 1;
+  }
+  
+  .typewriter-item:nth-child(2) {
+    display: none;
+  }
+}
+
+[data-theme='dark'] .nameRole__button .nameRole__ticker {
+  color: rgba(236,242,243,0.96);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+}
+
+/* Family 2 theme adjustments */
+[data-theme-family='2'][data-theme='light'] .nameRole__pill {
+  background: rgba(250,250,250,0.85);
+  border-color: rgba(0,0,0,0.06);
+}
+
+[data-theme-family='2'][data-theme='dark'] .nameRole__pill {
+  background: rgba(18,22,28,0.36);
+  border-color: rgba(203,184,157,0.06);
+}
+
+.nameRole__ticker {
+  display: block;
+  will-change: transform;
+  /* Reserve explicit height for two items so translations are predictable */
+  height: calc(2 * var(--role-item-h));
+  animation: nameRole-scroll 4.5s ease-in-out infinite;
+}
+
+/* Each item in the ticker must occupy the same single-line height so the
+   vertical translate moves exactly one item. Use flex to vertically align. */
+.nameRole__ticker span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--role-item-h); /* must match .nameRole__line--bottom height */
+  white-space: nowrap;
+  width: 100%;
+  padding: 0 0.4rem; /* small horizontal padding for text breathing */
+}
+
+@keyframes nameRole-scroll {
+  /* Hold each role for ~2s; animation duration 4.5s with brief transition.
+     translateY(-50%) moves by one item because container equals two items. */
+  0% { transform: translateY(0%); }
+  44.4% { transform: translateY(0%); }
+  50% { transform: translateY(-50%); }
+  94.4% { transform: translateY(-50%); }
+  100% { transform: translateY(0%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nameRole__ticker { animation: none; }
+}
+
+/* Theme adjustments */
+[data-theme='dark'] .nameRole__pill {
+  background: var(--gradient-name);
+  border: none;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+}
+
+/* Light theme 2: Use darker text for better contrast on light gradient */
+[data-theme-family='2'][data-theme='light'] .nameRole__pill {
+  background: var(--gradient-name);
+  border: none;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+[data-theme-family='2'][data-theme='light'] .nameRole__line {
+  color: #2d1b3d;
+}
+
+[data-theme-family='2'][data-theme='light'] .typewriter-item {
+  color: #2d1b3d;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme-family='2'][data-theme='dark'] .nameRole__pill {
+  background: var(--gradient-name);
+  border: none;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+}
+
+/* Safeguard on very small screens: ensure the fixed tile fits the viewport */
+@media (max-width: 480px) {
+  .nameRole__pill {
+    width: min(90vw, 420px) !important;
+    max-width: min(90vw, 420px) !important;
+    height: 64px; /* slightly reduce height for tiny screens */
+    padding: 0.55rem 0.9rem;
+  }
+
+  /* remove hover effects on tiny screens */
+  .nameRole__pill:hover { transform: none; box-shadow: 0 8px 18px rgba(0,0,0,0.12); }
+
+  /* ensure carousel doesn't cause horizontal scrolling */
+  .hero { overflow-x: hidden; }
 }
 
 .hero__column--visual {
@@ -223,8 +487,48 @@
   align-items: center;
   isolation: isolate;
   background: transparent;
-  box-shadow: none;
+  box-shadow: none !important;
   flex-shrink: 0;
+  /* Prevent scrollbars absolutely */
+  overflow-x: hidden;
+  overflow-y: hidden;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Override glass-panel styles for carousel */
+.hero__visual.glass-panel {
+  box-shadow: none !important;
+  border: none;
+  background: transparent;
+  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.hero__visual::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.hero__visual.glass-panel::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.hero__visual.glass-panel::before {
+  display: none;
+}
+
+.hero__visual.glass-panel::after {
+  display: none;
+}
+
+.hero__visual.glass-panel:hover {
+  box-shadow: none !important;
+  transform: none;
 }
 
 /* SVG overlay removed - keep it clean */
@@ -264,11 +568,10 @@
   max-height: 100%;
   border-radius: 20px;
   overflow: hidden;
-  background: linear-gradient(135deg, rgba(20, 184, 166, 0.08) 0%, rgba(212, 175, 55, 0.04) 100%);
-  box-shadow: 
-    0 10px 40px rgba(0, 0, 0, 0.08),
-    0 2px 12px rgba(0, 0, 0, 0.08),
-    inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  overflow-x: hidden;
+  overflow-y: hidden;
+  background: transparent;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(0, 0, 0, 0.12);
@@ -276,7 +579,6 @@
   align-items: center;
   justify-content: center;
   margin: 0 auto;
-  transition: all 0.32s cubic-bezier(0.22, 1, 0.36, 1);
   /* Prevent scrollbars during image loading */
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -287,62 +589,24 @@
   display: none;
 }
 
-.hero__carousel:hover {
-  box-shadow: 
-    0 12px 48px rgba(0, 0, 0, 0.1),
-    0 4px 16px rgba(0, 0, 0, 0.08),
-    inset 0 1px 1px rgba(255, 255, 255, 0.15);
-  transform: translateY(-4px);
-}
-
 /* Dark theme carousel */
 [data-theme='dark'] .hero__carousel {
-  background: linear-gradient(135deg, rgba(20, 184, 166, 0.06) 0%, rgba(212, 175, 55, 0.02) 100%);
-  box-shadow: 
-    0 10px 40px rgba(255, 255, 255, 0.04),
-    0 2px 12px rgba(0, 0, 0, 0.3),
-    inset 0 1px 1px rgba(255, 255, 255, 0.05);
-}
-
-[data-theme='dark'] .hero__carousel:hover {
-  box-shadow: 
-    0 12px 48px rgba(255, 255, 255, 0.06),
-    0 4px 16px rgba(255, 255, 255, 0.04),
-    inset 0 1px 1px rgba(255, 255, 255, 0.08);
+  background: transparent;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
 }
 
 /* Family 2 Light carousel */
 [data-theme-family='2'][data-theme='light'] .hero__carousel {
-  background: linear-gradient(135deg, rgba(218, 218, 218, 0.08) 0%, rgba(10, 75, 95, 0.04) 100%);
+  background: transparent;
   border-color: rgba(0, 0, 0, 0.1);
-  box-shadow: 
-    0 10px 40px rgba(0, 0, 0, 0.08),
-    0 2px 12px rgba(0, 0, 0, 0.06),
-    inset 0 1px 1px rgba(255, 255, 255, 0.15);
-}
-
-[data-theme-family='2'][data-theme='light'] .hero__carousel:hover {
-  box-shadow: 
-    0 12px 48px rgba(0, 0, 0, 0.12),
-    0 4px 16px rgba(0, 0, 0, 0.08),
-    inset 0 1px 1px rgba(255, 255, 255, 0.2);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
 }
 
 /* Family 2 Dark carousel */
 [data-theme-family='2'][data-theme='dark'] .hero__carousel {
-  background: linear-gradient(135deg, rgba(203, 184, 157, 0.08) 0%, rgba(10, 75, 95, 0.04) 100%);
+  background: transparent;
   border-color: rgba(255, 255, 255, 0.1);
-  box-shadow: 
-    0 10px 40px rgba(203, 184, 157, 0.04),
-    0 2px 12px rgba(0, 0, 0, 0.3),
-    inset 0 1px 1px rgba(255, 255, 255, 0.08);
-}
-
-[data-theme-family='2'][data-theme='dark'] .hero__carousel:hover {
-  box-shadow: 
-    0 12px 48px rgba(203, 184, 157, 0.06),
-    0 4px 16px rgba(203, 184, 157, 0.04),
-    inset 0 1px 1px rgba(255, 255, 255, 0.12);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
 }
 
 /* Slide: modern elegant transitions */
@@ -928,7 +1192,7 @@
   }
 
   .hero__layout {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: clamp(1.5rem, 4vw, 2.5rem);
   }
 

@@ -1,0 +1,387 @@
+.hero {
+  position: relative;
+  /* slightly smaller hero to allow next section to peek on load
+     Use clamp so very large/small viewport zoom levels don't produce
+     extreme heights which cause layout shifting. */
+  min-height: clamp(340px, 62vh, 720px);
+  display: flex;
+  align-items: center;
+  padding-top: clamp(4rem, 8vw, 6rem);
+  padding-bottom: clamp(2.4rem, 6vw, 3.5rem);
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: -10% -20%;
+  background: radial-gradient(circle at 15% 35%, var(--shadow-secondary) 0%, transparent 45%),
+    radial-gradient(circle at 85% 15%, var(--shadow-primary) 0%, transparent 50%);
+  opacity: 0.75;
+  z-index: 0;
+  transition: opacity var(--transition-base), background var(--transition-theme);
+}
+
+[data-theme='dark'] .hero::before {
+  opacity: 0.45;
+}
+
+.hero__layout {
+  position: relative;
+  display: grid;
+  /* Perfect 50:50 split between left dashboard and right carousel */
+  grid-template-columns: 1fr 1fr;
+  align-items: stretch;
+  gap: clamp(1rem, 2vw, 2.2rem);
+  z-index: 1;
+  transform: translateY(18px);
+  opacity: 0;
+  transition: opacity 0.64s ease, transform 0.64s ease;
+  margin-top: clamp(0.8rem, 1.5vw, 1.4rem);
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Left column: Introduction and Animated Robot */
+.hero__introSection {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  padding: clamp(1rem, 2vw, 2rem);
+}
+
+.hero__greetingBox {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0.95) translateY(20px);
+  animation: fadeInScale 0.64s cubic-bezier(0.19, 1, 0.22, 1) 0.24s forwards;
+}
+
+/* Ensure greeting content stacks vertically and centers so the tile sits
+   directly underneath the name on all viewports. */
+.hero__greetingBox { flex-direction: column; gap: 0.6rem; }
+
+.hero__greetingText {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.hero__greetingText .gradient-text {
+  display: block;
+  margin-top: 0.3em;
+}
+
+/* Name-role pill under the greeting name */
+.hero__nameRole {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.6rem;
+}
+
+.nameRole__pill {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  border-radius: 18px;
+  padding: clamp(0.7rem, 2vw, 1rem) clamp(1rem, 3vw, 1.6rem);
+  background: var(--gradient-name);
+  border: none;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  min-width: clamp(280px, 85vw, 380px);
+  max-width: clamp(320px, 90vw, 800px);
+  width: min(90vw, 800px);
+  z-index: 2;
+  box-sizing: border-box;
+  animation: fadeInScale 520ms cubic-bezier(0.19, 1, 0.22, 1) both;
+  position: relative;
+  overflow: hidden;
+  transition: transform 220ms cubic-bezier(0.2,0,0.2,1), box-shadow 220ms cubic-bezier(0.2,0,0.2,1);
+  will-change: transform, box-shadow;
+}
+
+.nameRole__line {
+  text-align: center;
+  line-height: 1.1;
+  color: #ffffff;
+  font-weight: 700;
+  display: block;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+/* Top line: same size as bottom line for consistency */
+.nameRole__line--top {
+  font-size: clamp(0.6rem, 1.5vw, 1.1rem);
+  letter-spacing: -0.02em;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Bottom line: displays typewriter animation */
+.nameRole__line--bottom {
+  font-size: clamp(0.6rem, 1.5vw, 1.1rem);
+  height: auto;
+  min-height: 1.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.nameRole__typewriter {
+  display: inline-block;
+  min-height: 1.3em;
+  white-space: nowrap;
+  position: relative;
+  line-height: 1.3;
+}
+
+.typewriter-item {
+  position: absolute;
+  opacity: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: typewriter-fade 7s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+  color: #ffffff;
+  white-space: nowrap;
+  line-height: 1.3;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* First item appears immediately, second appears after first's hold time */
+.typewriter-item:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.typewriter-item:nth-child(2) {
+  animation-delay: 3.5s;
+}
+
+.nameRole__pill::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0.15) 100%);
+  transform: translateX(-100%);
+  transition: transform 420ms ease;
+  pointer-events: none;
+  border-radius: 18px;
+  z-index: 1;
+}
+
+.nameRole__pill:hover::before {
+  transform: translateX(100%);
+}
+
+.nameRole__pill:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+}
+
+@keyframes typewriter-fade {
+  0% { opacity: 0; }
+  5% { opacity: 1; }
+  48% { opacity: 1; }
+  53% { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nameRole__typewriter,
+  .typewriter-item {
+    animation: none !important;
+  }
+  
+  /* Show first role if motion is reduced */
+  .typewriter-item:nth-child(1) {
+    position: static;
+    transform: none;
+    opacity: 1;
+  }
+  
+  .typewriter-item:nth-child(2) {
+    display: none;
+  }
+}
+
+[data-theme='dark'] .nameRole__button .nameRole__ticker {
+  color: rgba(236,242,243,0.96);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+}
+
+/* Family 2 theme adjustments */
+[data-theme-family='2'][data-theme='light'] .nameRole__pill {
+  background: rgba(250,250,250,0.85);
+  border-color: rgba(0,0,0,0.06);
+}
+
+[data-theme-family='2'][data-theme='dark'] .nameRole__pill {
+  background: rgba(18,22,28,0.36);
+  border-color: rgba(203,184,157,0.06);
+}
+
+.nameRole__ticker {
+  display: block;
+  will-change: transform;
+  /* Reserve explicit height for two items so translations are predictable */
+  height: calc(2 * var(--role-item-h));
+  animation: nameRole-scroll 4.5s ease-in-out infinite;
+}
+
+/* Each item in the ticker must occupy the same single-line height so the
+   vertical translate moves exactly one item. Use flex to vertically align. */
+.nameRole__ticker span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--role-item-h); /* must match .nameRole__line--bottom height */
+  white-space: nowrap;
+  width: 100%;
+  padding: 0 0.4rem; /* small horizontal padding for text breathing */
+}
+
+@keyframes nameRole-scroll {
+  /* Hold each role for ~2s; animation duration 4.5s with brief transition.
+     translateY(-50%) moves by one item because container equals two items. */
+  0% { transform: translateY(0%); }
+  44.4% { transform: translateY(0%); }
+  50% { transform: translateY(-50%); }
+  94.4% { transform: translateY(-50%); }
+  100% { transform: translateY(0%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nameRole__ticker { animation: none; }
+}
+
+/* Theme adjustments */
+[data-theme='dark'] .nameRole__pill {
+  background: var(--gradient-name);
+  border: none;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+}
+
+/* Light theme 2: Use darker text for better contrast on light gradient */
+[data-theme-family='2'][data-theme='light'] .nameRole__pill {
+  background: var(--gradient-name);
+  border: none;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+[data-theme-family='2'][data-theme='light'] .nameRole__line {
+  color: #2d1b3d;
+}
+
+[data-theme-family='2'][data-theme='light'] .typewriter-item {
+  color: #2d1b3d;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme-family='2'][data-theme='dark'] .nameRole__pill {
+  background: var(--gradient-name);
+  border: none;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+}
+
+/* Mobile responsive styles for nameRole tile */
+@media (max-width: 680px) {
+  .nameRole__pill {
+    min-width: clamp(260px, 85vw, 320px);
+    max-width: clamp(280px, 90vw, 500px);
+    width: min(88vw, 500px);
+    padding: clamp(0.6rem, 1.8vw, 0.9rem) clamp(0.9rem, 2.5vw, 1.4rem);
+  }
+
+  .nameRole__line {
+    line-height: 1.15;
+  }
+
+  .nameRole__line--top,
+  .nameRole__line--bottom {
+    font-size: clamp(0.55rem, 2vw, 0.95rem);
+  }
+
+  .nameRole__typewriter {
+    min-height: 1.25em;
+    line-height: 1.25;
+  }
+
+  .typewriter-item {
+    line-height: 1.25;
+  }
+}
+
+@media (max-width: 540px) {
+  .nameRole__pill {
+    min-width: clamp(240px, 80vw, 300px);
+    max-width: clamp(260px, 85vw, 420px);
+    width: min(85vw, 420px);
+    padding: clamp(0.55rem, 1.5vw, 0.8rem) clamp(0.8rem, 2vw, 1.2rem);
+  }
+
+  .nameRole__line {
+    line-height: 1.12;
+  }
+
+  .nameRole__line--top,
+  .nameRole__line--bottom {
+    font-size: clamp(0.5rem, 2.5vw, 0.85rem);
+  }
+
+  .nameRole__typewriter {
+    min-height: 1.2em;
+    line-height: 1.2;
+  }
+
+  .typewriter-item {
+    line-height: 1.2;
+    text-shadow: 0 1.5px 6px rgba(0, 0, 0, 0.12);
+  }
+}
+
+@media (max-width: 420px) {
+  .nameRole__pill {
+    min-width: clamp(220px, 75vw, 280px);
+    max-width: clamp(240px, 80vw, 380px);
+    width: min(80vw, 380px);
+    padding: clamp(0.5rem, 1.2vw, 0.7rem) clamp(0.7rem, 1.8vw, 1rem);
+  }
+
+  .nameRole__line {
+    line-height: 1.08;
+  }
+
+  .nameRole__line--top,
+  .nameRole__line--bottom {
+    font-size: clamp(0.45rem, 3vw, 0.8rem);
+  }
+
+  .nameRole__typewriter {
+    min-height: 1.15em;
+    line-height: 1.15;
+  }
+
+  .typewriter-item {
+    line-height: 1.15;
+    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+  }
+}
+

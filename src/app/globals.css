@@ -2,6 +2,10 @@
 html {
   line-height: 1.15; /* 1 */
   -webkit-text-size-adjust: 100%; /* 2 */
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
 }
 
 *, *::before, *::after {
@@ -12,6 +16,10 @@ html {
 body, h1, h2, h3, h4, p, figure, blockquote, dl, dd {
   margin: 0;
   padding: 0;
+}
+
+body {
+  overflow-x: hidden;
 }
 
 :root {
@@ -527,7 +535,7 @@ section {
   cursor: pointer;
   font-size: 1rem;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .btn-primary {
@@ -542,10 +550,12 @@ section {
 .btn-primary::after {
   content: '';
   position: absolute;
-  inset: 0;
+  inset: 2px;
+  border-radius: inherit;
   background: rgba(255, 255, 255, 0.18);
   opacity: 0;
   transition: opacity var(--transition-base);
+  pointer-events: none;
 }
 
 .btn-primary:hover {
