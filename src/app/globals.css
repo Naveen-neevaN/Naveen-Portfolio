@@ -88,6 +88,8 @@ body {
   --transition-base: 0.32s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-fast: 0.224s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-slow: 0.48s cubic-bezier(0.19, 1, 0.22, 1);
+  --transition-theme: 0.4s ease-in-out;
+  --transition-smooth: 0.36s cubic-bezier(0.22, 1, 0.36, 1);
 
   /* hero gradient should follow the active named gradient for visual consistency */
   --hero-gradient: var(--gradient-name);

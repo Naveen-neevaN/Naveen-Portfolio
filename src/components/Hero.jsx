@@ -8,6 +8,8 @@ import './Hero.css'
 
 const SLIDE_DURATION_MS = 6500
 const SLIDE_ANIM_MS = 700
+const ROLE_DURATION_MS = 3500
+const ROLE_ANIM_MS = 320
 
 const Hero = () => {
   const carouselImages = personalInfo.carouselImages ?? []
@@ -15,9 +17,10 @@ const Hero = () => {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [prevSlide, setPrevSlide] = useState(null)
   const [isMounted, setIsMounted] = useState(false)
-  // Removed the large typed-role state and measurement refs — the rectangular
-  // tile now only shows a single static line below the name.
+  // Role list and simple cycling state (small, non-typed transitions)
   const rolesRef = useRef(['Senior Project Engineer', 'Tosca Test Lead'])
+  const [currentRoleIndex, setCurrentRoleIndex] = useState(0)
+  const [prevRoleIndex, setPrevRoleIndex] = useState(null)
   const headingRef = useRef(null)
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
   const [hasCarouselError, setHasCarouselError] = useState(false)
@@ -34,11 +37,9 @@ const Hero = () => {
   useEffect(() => {
     try {
       const resolved = (carouselImages || []).map((img) => ({ original: img, resolved: resolveAssetPath(img) }))
-      const resumeResolved = resolveAssetPath(personalInfo.resumeUrl || '')
       if (process.env.NODE_ENV !== 'production' && typeof window !== 'undefined' && window.console && resolved.length) {
         console.groupCollapsed('Asset resolver diagnostics — hero')
         console.table(resolved)
-        console.log('Resolved resume URL:', resumeResolved)
         console.groupEnd()
       }
     } catch (err) {
@@ -112,6 +113,24 @@ const Hero = () => {
     return () => clearInterval(interval)
   }, [carouselImages.length, hasCarousel, hasCarouselError, prefersReducedMotion])
 
+  // Cycle roles independently of the carousel so the name tile feels alive
+  useEffect(() => {
+    if (prefersReducedMotion) return
+    if (!rolesRef.current || rolesRef.current.length <= 1) return
+
+    const interval = setInterval(() => {
+      setCurrentRoleIndex((prev) => {
+        const next = (prev + 1) % rolesRef.current.length
+        setPrevRoleIndex(prev)
+        // clear prev marker after the reveal animation completes
+        setTimeout(() => setPrevRoleIndex(null), ROLE_ANIM_MS + 60)
+        return next
+      })
+    }, ROLE_DURATION_MS)
+
+    return () => clearInterval(interval)
+  }, [prefersReducedMotion])
+
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId)
     if (element) {
@@ -119,16 +138,8 @@ const Hero = () => {
     }
   }
 
-  const handleResumeDownload = (event) => {
-    event.preventDefault()
-    const link = document.createElement('a')
-    // Resolve resume URL to respect possible basePath in hosted environments
-    link.href = resolveAssetPath(personalInfo.resumeUrl || '')
-    link.download = 'Naveen_K_Resume.pdf'
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-  }
+  // Navigation helper: smooth-scroll to an in-page section
+  // (used by the action buttons)
 
   const showFallback = !hasCarousel || hasCarouselError
 
@@ -140,7 +151,17 @@ const Hero = () => {
           {/* Left Column: Large Greeting Text */}
           <div className={`hero__column hero__column--intro ${isMounted ? 'is-active' : ''}`}>
             <div className="hero__greetingBox">
-              <h2 className="hero__greetingText">Hi, I&apos;m<br/><span className="gradient-text">{personalInfo.name}</span></h2>
+              <h2 className="hero__greetingText"><span className="hero__greeting-prefix">Hi, I&apos;m</span><span className="gradient-text">{personalInfo.name}</span></h2>
+              <div className="hero__roleDisplay">
+                {rolesRef.current.map((role, i) => (
+                  <span
+                    key={role}
+                    className={`hero__role ${i === currentRoleIndex ? 'is-active' : ''} ${i === prevRoleIndex ? 'was-active' : ''}`}
+                  >
+                    {role}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -275,9 +296,12 @@ const Hero = () => {
                 </button>
                 <button
                   className="btn btn-outline"
-                  onClick={handleResumeDownload}
+                  onClick={(event) => {
+                    event.preventDefault()
+                    scrollToSection('technologies')
+                  }}
                 >
-                  Download Resume
+                  View Skill Sets
                 </button>
               </div>
             </div>

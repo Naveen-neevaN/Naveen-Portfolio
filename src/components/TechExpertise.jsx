@@ -26,7 +26,7 @@ const skills = [
 
 const TechExpertise = () => {
   return (
-    <section className="about-skills" aria-labelledby="skills-title">
+    <section id="technologies" className="about-skills" aria-labelledby="skills-title">
       <h3 id="skills-title" className="section-subhead">Tech Expertise & Toolchain</h3>
       <div className="skills__row">
         {skills.map((s) => (

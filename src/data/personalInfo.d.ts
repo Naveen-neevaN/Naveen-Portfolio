@@ -29,7 +29,7 @@ export interface PersonalInfo {
   skills: Skill[]
   projects: Project[]
   socialLinks: SocialLink[]
-  resumeUrl?: string
+  // resumeUrl removed — resume download functionality eliminated
 }
 
 export const personalInfo: PersonalInfo

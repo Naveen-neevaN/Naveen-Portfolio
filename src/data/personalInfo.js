@@ -105,7 +105,4 @@ export const personalInfo = {
     { name: 'Instagram', url: 'https://www.instagram.com/naveen_nagendiran/', icon: 'FaInstagram' },
     { name: 'WhatsApp', url: 'https://wa.me/919843165568', icon: 'FaWhatsapp' },
   ],
-  
-  // Resume
-  resumeUrl: '/resume.pdf',
 };

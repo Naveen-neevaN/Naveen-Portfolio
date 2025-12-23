@@ -1,15 +1,23 @@
 import './globals.css'
 import { Poppins, Manrope } from 'next/font/google'
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || ''
+
 export const metadata = {
   title: 'Naveen K - Tosca Test Lead',
   description:
     'Senior Project Engineer and Tosca Automation Test Lead with 5 years of experience in BFSI applications, AI-based testing, and automation strategy',
-  viewport: 'width=device-width, initial-scale=1.0, maximum-scale=1.0',
   icons: {
-    icon: '/favicon.svg',
-    shortcut: '/favicon.svg'
+    icon: `${basePath}/favicon.svg`,
+    shortcut: `${basePath}/favicon.svg`,
+    apple: `${basePath}/favicon.svg`,
   },
+}
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1.0,
+  maximumScale: 1.0,
 }
 
 const poppins = Poppins({
