@@ -3,8 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import './Header.css'
 import { ThemeSwitch } from './ThemeSwitch'
-
-const SITE_TITLE = "Surf My Profile"
+import { useReducedMotion } from '@/hooks/useReducedMotion.js'
 
 const navItems = [
   { id: 'hero', label: 'Home' },
@@ -18,8 +17,7 @@ const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isHidden, setIsHidden] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
-  const scrollMeta = useRef({ lastY: 0, ticking: false })
+  const prefersReducedMotion = useReducedMotion()
   const isHiddenRef = useRef(isHidden)
   const isScrolledRef = useRef(isScrolled)
 
@@ -90,47 +88,13 @@ const Header = () => {
 
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+  }, [prefersReducedMotion])
 
   useEffect(() => {
     if (prefersReducedMotion) {
       setIsHidden(false)
     }
   }, [prefersReducedMotion])
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-
-    const readPref = () => {
-      try {
-        if (typeof document !== 'undefined' && document.documentElement.classList.contains('reduced-motion')) return true
-        const saved = typeof window !== 'undefined' ? localStorage.getItem('reducedMotion') : null
-        if (saved === 'true') return true
-      } catch (e) {
-        // ignore
-      }
-      if (typeof window !== 'undefined' && window.matchMedia) return window.matchMedia('(prefers-reduced-motion: reduce)').matches
-      return false
-    }
-
-    setPrefersReducedMotion(readPref())
-
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
-    const updatePreference = () => setPrefersReducedMotion(readPref())
-
-    mediaQuery.addEventListener('change', updatePreference)
-    document.addEventListener('reduced-motion-change', updatePreference)
-    const handleStorage = (e) => {
-      if (e.key === 'reducedMotion') setPrefersReducedMotion(readPref())
-    }
-    window.addEventListener('storage', handleStorage)
-
-    return () => {
-      mediaQuery.removeEventListener('change', updatePreference)
-      document.removeEventListener('reduced-motion-change', updatePreference)
-      window.removeEventListener('storage', handleStorage)
-    }
-  }, [])
 
   useEffect(() => {
     if (!isMobileMenuOpen) {

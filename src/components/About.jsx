@@ -1,8 +1,8 @@
 'use client'
 
-import { useMemo, useEffect, useState } from 'react'
 import { personalInfo } from '@/data/personalInfo.js'
 import { useScrollAnimation } from '@/hooks/useScrollAnimation.js'
+import { useReducedMotion } from '@/hooks/useReducedMotion.js'
 import AboutIntro from './AboutIntro'
 import Achievements from './Achievements'
 import Innovation from './Innovation'
@@ -12,16 +12,7 @@ import './About.css'
 
 const About = () => {
   const [ref, isVisible] = useScrollAnimation(0.2)
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
-
-  useEffect(() => {
-    if (typeof window === 'undefined' || !window.matchMedia) return
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
-    const update = (e) => setPrefersReducedMotion(e.matches)
-    setPrefersReducedMotion(mq.matches)
-    mq.addEventListener('change', update)
-    return () => mq.removeEventListener('change', update)
-  }, [])
+  const prefersReducedMotion = useReducedMotion()
 
   // single video from public folder (renamed to a safe filename)
   const videoPath = '/wipro-logo.mp4'

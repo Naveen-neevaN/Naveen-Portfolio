@@ -295,7 +295,7 @@
   align-items: center;
   isolation: isolate;
   background: transparent;
-  box-shadow: none !important;
+  box-shadow: none;
   flex-shrink: 0;
   /* Prevent scrollbars absolutely */
   overflow-x: hidden;
@@ -306,7 +306,7 @@
 
 /* Override glass-panel styles for carousel */
 .hero__visual.glass-panel {
-  box-shadow: none !important;
+  box-shadow: none;
   border: none;
   background: transparent;
   overflow: hidden;
@@ -335,7 +335,7 @@
 }
 
 .hero__visual.glass-panel:hover {
-  box-shadow: none !important;
+  box-shadow: none;
   transform: none;
 }
 
@@ -725,11 +725,11 @@
 
 /* Improve contrast for Family 2 - Light: use solid high-contrast text instead of a pale gradient */
 [data-theme-family='2'][data-theme='light'] .hero__rolePrefix {
-  background: none !important;
-  -webkit-background-clip: initial !important;
-  background-clip: initial !important;
-  color: var(--text-primary) !important;
-  -webkit-text-fill-color: var(--text-primary) !important;
+  background: none;
+  -webkit-background-clip: initial;
+  background-clip: initial;
+  color: var(--text-primary);
+  -webkit-text-fill-color: var(--text-primary);
   font-weight: 700;
 }
 
@@ -758,7 +758,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   [data-theme-family='2'][data-theme='dark'] .hero__rolePrefix {
-    animation: none !important;
+    animation: none;
   }
 }
 
@@ -1631,67 +1631,6 @@
   .hero__indicator {
     transition: none;
     animation: none;
-    transform: none !important;
-  }
-}
-
-/* Final mobile overrides to guarantee stacked layout on very small screens
-   Placed at the end of the file to avoid earlier rules accidentally overriding.
-   Ensures the badge appears above the buttons and buttons are full-width. */
-@media (max-width: 420px) {
-  .hero__roleOverviewContent {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: clamp(0.35rem, 0.9vw, 0.7rem) !important;
-    align-items: stretch !important;
-  }
-
-  .hero__roleActions {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 0.25rem !important;
-    width: 100% !important;
-    padding: 0 !important;
-  }
-
-  .hero__locationBadge {
-    width: 100% !important;
-    box-sizing: border-box !important;
-    justify-content: flex-start !important;
-  }
-
-  .hero__buttonsGroup {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 0.18rem !important;
-    width: 100% !important;
-  }
-
-  .hero__buttonsGroup .btn {
-    width: 100% !important;
-    padding: 0.58rem 0.7rem !important;
-    font-size: 0.88rem !important;
-  }
-}
-
-@media (max-width: 360px) {
-  .hero__roleOverviewContent {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: clamp(0.3rem, 0.7vw, 0.55rem) !important;
-    align-items: stretch !important;
-  }
-
-  .hero__roleActions,
-  .hero__buttonsGroup {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 0.15rem !important;
-    width: 100% !important;
-  }
-
-  .hero__buttonsGroup .btn {
-    padding: 0.45rem 0.55rem !important;
-    font-size: 0.78rem !important;
+    transform: none;
   }
 }

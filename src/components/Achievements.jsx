@@ -2,14 +2,11 @@
 
 import React from 'react'
 import './About.css'
-
-const statCards = [
-  { id: 1, label: '50+ Releases', subtitle: 'Prod release delivered', icon: '🚀' },
-  { id: 2, label: 'Zero Escalations', subtitle: 'Customer-facing stability', icon: '✅' },
-  { id: 3, label: '5 Years', subtitle: 'Industry experience', icon: '⏱️' }
-]
+import { personalInfo } from '@/data/personalInfo.js'
 
 const Achievements = () => {
+  const statCards = personalInfo.achievements ?? []
+
   return (
     <section className="about-achievements" aria-labelledby="achievements-title">
       <h3 id="achievements-title" className="section-subhead">Achievements & Highlights</h3>

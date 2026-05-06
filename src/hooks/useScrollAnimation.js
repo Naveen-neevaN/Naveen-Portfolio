@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
+import { REDUCED_MOTION_EVENT, readReducedMotionPreference } from '@/lib/theme.js'
 
 const defaultOptions = {
   threshold: 0.08,
@@ -22,14 +23,10 @@ export const useScrollAnimation = (options = {}) => {
   // Memoize reduced motion check to avoid re-reads
   const readPref = useCallback(() => {
     try {
-      if (typeof document !== 'undefined' && document.documentElement.classList.contains('reduced-motion')) return true
-      const saved = typeof window !== 'undefined' ? localStorage.getItem('reducedMotion') : null
-      if (saved === 'true') return true
+      return readReducedMotionPreference()
     } catch (e) {
-      // ignore
+      return false
     }
-    if (typeof window !== 'undefined' && window.matchMedia) return window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    return false
   }, [])
 
   // Single setup effect for reduced motion preference
@@ -55,11 +52,13 @@ export const useScrollAnimation = (options = {}) => {
 
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
     mediaQuery.addEventListener('change', handleChange)
+    document.addEventListener(REDUCED_MOTION_EVENT, handleChange)
     window.addEventListener('storage', handleChange)
 
     return () => {
       clearTimeout(timeoutId)
       mediaQuery.removeEventListener('change', handleChange)
+      document.removeEventListener(REDUCED_MOTION_EVENT, handleChange)
       window.removeEventListener('storage', handleChange)
     }
   }, [readPref])

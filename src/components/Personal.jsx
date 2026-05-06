@@ -2,21 +2,21 @@
 
 import React from 'react'
 import './About.css'
+import { personalInfo } from '@/data/personalInfo.js'
 
 const Personal = () => {
+  const note = personalInfo.personalNote
+
   return (
     <section className="about-personal" aria-labelledby="personal-title">
-      <h3 id="personal-title" className="section-subhead">Beyond the Code</h3>
+      <h3 id="personal-title" className="section-subhead">{note.title}</h3>
       <div className="personal__panel glass-panel glass-anim">
-        <p>
-          Beyond the professional realm, I'm an accomplished chess player who captained my college team and enjoy
-          exploring AI-driven innovations and DevOps practices.
-        </p>
+        <p>{note.description}</p>
 
         <div className="personal__center">
           <div className="agile-badge">
-            <div className="agile-icon" aria-hidden>♟️</div>
-            <div className="agile-quote">Chess taught me strategy; QA taught me patience — both made me better at debugging life.</div>
+            <div className="agile-icon" aria-hidden>{note.icon}</div>
+            <div className="agile-quote">{note.quote}</div>
           </div>
         </div>
       </div>

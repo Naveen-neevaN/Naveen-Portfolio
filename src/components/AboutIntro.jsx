@@ -3,11 +3,13 @@
 import React, { useState } from 'react'
 import './About.css'
 import resolveAssetPath from '@/lib/resolveAssetPath'
+import { personalInfo } from '@/data/personalInfo.js'
 
 const AboutIntro = ({ videoSrc, prefersReducedMotion }) => {
   const [videoError, setVideoError] = useState(false)
   const poster = resolveAssetPath('/about-poster.png')
   const src = resolveAssetPath(videoSrc)
+  const intro = personalInfo.aboutIntro
 
   return (
     <section className="about-intro glass-panel" aria-labelledby="about-intro-title">
@@ -44,10 +46,11 @@ const AboutIntro = ({ videoSrc, prefersReducedMotion }) => {
         </div>
 
         <div className="about-intro__text">
-          <h2 id="about-intro-title" className="projects__title gradient-text">Experience and Expertise
+          <h2 id="about-intro-title" className="about-card-title gradient-text">
+            {intro.title}
           </h2>
-          <p className="projects__description text-muted">
-            As a Senior Project Engineer and Tosca Automation Test Lead at Wipro Ltd, I bring a wealth of experience spanning nearly 5 years in the BFSI sector. My professional journey centers on delivering exceptional automation solutions while building lasting client relationships through innovative testing approaches.
+          <p className="about-card-description text-muted">
+            {intro.description}
           </p>
         </div>
       </div>

@@ -26,6 +26,33 @@ export interface PersonalInfo {
   carouselImages?: string[]
   bio?: string
   about?: string
+  aboutIntro?: {
+    title: string
+    description: string
+  }
+  achievements?: Array<{
+    id: string | number
+    label: string
+    subtitle: string
+    icon?: string
+  }>
+  innovation?: {
+    title: string
+    description: string
+    image?: string
+  }
+  techExpertise?: Array<{
+    id: string
+    title: string
+    desc: string
+    icon?: string
+  }>
+  personalNote?: {
+    title: string
+    description: string
+    icon?: string
+    quote: string
+  }
   skills: Skill[]
   projects: Project[]
   socialLinks: SocialLink[]

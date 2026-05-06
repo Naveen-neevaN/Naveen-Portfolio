@@ -1,9 +1,10 @@
 'use client'
 
-import { useEffect, useMemo, useRef, useState, useLayoutEffect } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 // Use native <img> to simplify loading from /public and avoid Next Image sizing issues for this static export
 import { personalInfo } from '@/data/personalInfo.js'
 import resolveAssetPath from '@/lib/resolveAssetPath'
+import { useReducedMotion } from '@/hooks/useReducedMotion.js'
 import './Hero.css'
 
 const SLIDE_DURATION_MS = 6500
@@ -21,8 +22,7 @@ const Hero = () => {
   const rolesRef = useRef(['Senior Project Engineer', 'Tosca Test Lead'])
   const [currentRoleIndex, setCurrentRoleIndex] = useState(0)
   const [prevRoleIndex, setPrevRoleIndex] = useState(null)
-  const headingRef = useRef(null)
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
+  const prefersReducedMotion = useReducedMotion()
   const [hasCarouselError, setHasCarouselError] = useState(false)
   const [failedCarouselUrls, setFailedCarouselUrls] = useState([])
   
@@ -46,48 +46,6 @@ const Hero = () => {
       if (process.env.NODE_ENV !== 'production') console.warn('Resolver diagnostics failed', err)
     }
   }, [isMounted])
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-
-    // determine reduced motion preference from multiple signals:
-    // 1) explicit site-level toggle (document.documentElement class)
-    // 2) persisted localStorage key (reducedMotion)
-    // 3) system preference via matchMedia
-    const readPref = () => {
-      try {
-        if (typeof document !== 'undefined' && document.documentElement.classList.contains('reduced-motion')) return true
-        const saved = typeof window !== 'undefined' ? localStorage.getItem('reducedMotion') : null
-        if (saved === 'true') return true
-      } catch (e) {
-        // ignore
-      }
-      if (typeof window !== 'undefined' && window.matchMedia) {
-        return window.matchMedia('(prefers-reduced-motion: reduce)').matches
-      }
-      return false
-    }
-
-    setPrefersReducedMotion(readPref())
-
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
-    const handleMedia = (event) => setPrefersReducedMotion(readPref())
-    mediaQuery.addEventListener('change', handleMedia)
-
-    const handleDocEvent = (e) => setPrefersReducedMotion(readPref())
-    document.addEventListener('reduced-motion-change', handleDocEvent)
-
-    const handleStorage = (e) => {
-      if (e.key === 'reducedMotion') setPrefersReducedMotion(readPref())
-    }
-    window.addEventListener('storage', handleStorage)
-
-    return () => {
-      mediaQuery.removeEventListener('change', handleMedia)
-      document.removeEventListener('reduced-motion-change', handleDocEvent)
-      window.removeEventListener('storage', handleStorage)
-    }
-  }, [])
 
   // Removed: typed-role typing effects and measurement logic. The compact
   // name icon uses CSS animations and therefore doesn't require JS typing.

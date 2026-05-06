@@ -2,29 +2,11 @@
 
 import React from 'react'
 import './About.css'
-
-const skills = [
-  {
-    id: 'automation',
-    title: 'Automation Strategy',
-    desc: 'End-to-end automation planning and governance',
-    icon: '🛠️'
-  },
-  {
-    id: 'cicd',
-    title: 'CI/CD Integration',
-    desc: 'Pipeline automation for reliable delivery',
-    icon: '💡'
-  },
-  {
-    id: 'genai',
-    title: 'GenAI Orchestration',
-    desc: 'Design and manage GenAI frameworks and MCP config',
-    icon: '🔮'
-  }
-]
+import { personalInfo } from '@/data/personalInfo.js'
 
 const TechExpertise = () => {
+  const skills = personalInfo.techExpertise ?? []
+
   return (
     <section id="technologies" className="about-skills" aria-labelledby="skills-title">
       <h3 id="skills-title" className="section-subhead">Tech Expertise & Toolchain</h3>

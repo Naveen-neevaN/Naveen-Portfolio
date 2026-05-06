@@ -6,12 +6,12 @@ import { personalInfo } from '@/data/personalInfo.js'
 import { useScrollAnimation } from '@/hooks/useScrollAnimation.js'
 import './Contact.css'
 
-// Initialize EmailJS (free tier public key)
-const EMAILJS_PUBLIC_KEY = 'haU7Ebtc2IASj_sCO'
-const EMAILJS_SERVICE_ID = 'service_7jktasp'
-// Two templates: admin notification (you) and optional auto-reply to visitor
-const EMAILJS_TEMPLATE_ID_ADMIN = 'template_grhlujf'
-const EMAILJS_TEMPLATE_ID_AUTO = 'template_psfmd3n'
+const emailConfig = {
+  publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY ?? '',
+  serviceId: process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID ?? '',
+  adminTemplateId: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_ADMIN ?? '',
+  autoTemplateId: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_AUTO ?? '',
+}
 
 const Contact = () => {
   const [ref, isVisible] = useScrollAnimation(0.2)
@@ -21,16 +21,35 @@ const Contact = () => {
     message: '',
   })
   const [status, setStatus] = useState('idle')
-  const [errors, setErrors] = useState({ name: '', email: '' })
+  const [errors, setErrors] = useState({ name: '', email: '', message: '' })
   const [backendError, setBackendError] = useState('')
   const [submitAttempted, setSubmitAttempted] = useState(false)
   const [isErrorDismissing, setIsErrorDismissing] = useState(false)
   const [shakeKey, setShakeKey] = useState(0)
 
   useEffect(() => {
-    // Initialize EmailJS on mount
-    emailjs.init(EMAILJS_PUBLIC_KEY)
+    if (emailConfig.publicKey) emailjs.init(emailConfig.publicKey)
   }, [])
+
+  const validateForm = (data) => {
+    const nextErrors = { name: '', email: '', message: '' }
+    if (!data.name?.trim()) nextErrors.name = 'Name is required.'
+    if (!data.email?.trim()) nextErrors.email = 'Email is required.'
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) nextErrors.email = 'Please enter a valid email address.'
+    if (!data.message?.trim()) nextErrors.message = 'Message is required.'
+    return nextErrors
+  }
+
+  const showTemporaryError = () => {
+    setStatus('error')
+    setShakeKey((prev) => prev + 1)
+    setIsErrorDismissing(false)
+    setTimeout(() => setIsErrorDismissing(true), 2500)
+    setTimeout(() => {
+      setStatus('idle')
+      setIsErrorDismissing(false)
+    }, 3000)
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -38,24 +57,16 @@ const Contact = () => {
     setStatus('sending')
     setBackendError('')
 
-    // Client-side validation: name and email mandatory
-    const newErrors = { name: '', email: '' }
-    if (!formData.name || !formData.name.trim()) newErrors.name = 'Name is required.'
-    if (!formData.email || !formData.email.trim()) newErrors.email = 'Email is required.'
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) newErrors.email = 'Please enter a valid email address.'
-
+    const newErrors = validateForm(formData)
     setErrors(newErrors)
-    if (newErrors.name || newErrors.email) {
-      setStatus('error')
-      setShakeKey(prev => prev + 1) // Force animation re-trigger
-      setIsErrorDismissing(false)
-      // Start fade-out after 2.5 seconds for validation errors too
-      setTimeout(() => setIsErrorDismissing(true), 2500)
-      // Auto-dismiss error after 3 seconds
-      setTimeout(() => {
-        setStatus('idle')
-        setIsErrorDismissing(false)
-      }, 3000)
+    if (newErrors.name || newErrors.email || newErrors.message) {
+      showTemporaryError()
+      return
+    }
+
+    if (!emailConfig.publicKey || !emailConfig.serviceId || !emailConfig.adminTemplateId) {
+      setBackendError('Email service is not configured yet.')
+      showTemporaryError()
       return
     }
 
@@ -68,12 +79,12 @@ const Contact = () => {
       reply_to: formData.email,
     }
 
-    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID_ADMIN, adminParams)
+    emailjs.send(emailConfig.serviceId, emailConfig.adminTemplateId, adminParams)
       .then((response) => {
         if (process.env.NODE_ENV !== 'production') console.log('Admin email sent:', response)
 
         // Attempt to send auto-reply to visitor (non-blocking)
-        if (EMAILJS_TEMPLATE_ID_AUTO) {
+        if (emailConfig.autoTemplateId) {
           const autoParams = {
             // template may use {{email}} or {{to_email}} to determine recipient
             to_email: formData.email,
@@ -85,7 +96,7 @@ const Contact = () => {
             reply_to: 'naveennagendiran321@gmail.com',
           }
 
-          emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID_AUTO, autoParams)
+          emailjs.send(emailConfig.serviceId, emailConfig.autoTemplateId, autoParams)
             .then((r2) => {
               if (process.env.NODE_ENV !== 'production') console.log('Auto-reply sent:', r2)
             })
@@ -97,7 +108,7 @@ const Contact = () => {
 
         setStatus('success')
         setFormData({ name: '', email: '', message: '' })
-        setErrors({ name: '', email: '' })
+        setErrors({ name: '', email: '', message: '' })
         setSubmitAttempted(false)
         setTimeout(() => setStatus('idle'), 2800)
       })
@@ -135,6 +146,10 @@ const Contact = () => {
         if (!value || !value.trim()) next.email = 'Email is required.'
         else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) next.email = 'Please enter a valid email address.'
         else next.email = ''
+      }
+      if (name === 'message') {
+        if (value && value.trim()) next.message = ''
+        else next.message = 'Message is required.'
       }
       return next
     })
@@ -237,6 +252,7 @@ const Contact = () => {
             <div className="contact__field">
               <label htmlFor="message">Message</label>
               <textarea
+                key={`message-${shakeKey}`}
                 id="message"
                 name="message"
                 value={formData.message}
@@ -244,7 +260,11 @@ const Contact = () => {
                 rows={3}
                 placeholder="Share what's on your mind—ideas, opportunities, collaboration..."
                 required
+                className={`${submitAttempted && errors.message ? 'has-error' : ''}`}
               />
+              <div className={`contact__fieldError ${errors.message ? 'is-visible' : ''}`}>
+                {errors.message}
+              </div>
             </div>
 
             <div style={{ height: '1rem' }} />

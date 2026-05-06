@@ -1,5 +1,7 @@
 import './globals.css'
 import { Poppins, Manrope } from 'next/font/google'
+import Script from 'next/script'
+import { themeInitScript } from '@/lib/theme.js'
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH || ''
 
@@ -40,6 +42,7 @@ export default function RootLayout({ children }) {
       <body>
         {/* Skip link for keyboard users */}
         <a href="#main" className="skip-link">Skip to content</a>
+        <Script id="theme-init" strategy="beforeInteractive" dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         {children}
       </body>
     </html>

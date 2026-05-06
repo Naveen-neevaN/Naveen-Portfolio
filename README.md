@@ -1,11 +1,11 @@
 # Personal Website
 
-A modern, professional personal website built with Next.js, React, and TypeScript. Deployable to GitHub Pages.
+A modern, professional personal website built with Next.js, React, and plain CSS. Deployable to GitHub Pages as a static export.
 
 ## Features
 
 - **Responsive Design**: Works beautifully on all devices
-- **Professional Styling**: Clean, modern design with smooth animations
+- **Professional Styling**: Glassmorphism UI, smooth animations, and CSS-variable themes
 - **Sections**: About, Skills, Projects, and Contact
 - **Easy Customization**: Centralized data file for easy updates
 - **GitHub Pages Ready**: Configured for static export and deployment
@@ -30,9 +30,10 @@ npm install
 ```
 
 3. Customize your information:
-   - Edit `src/data/personalInfo.ts` with your personal information
-   - Add your resume PDF to `public/resume.pdf`
-   - Update `next.config.js` with your repository name (if different from 'personal-website')
+   - Edit `src/data/personalInfo.js` with your personal information
+   - Add/replace visual assets in `public/`
+   - Configure EmailJS values in `.env.local` using `.env.example` as the template
+   - Set `NEXT_PUBLIC_BASE_PATH` when deploying to a custom subpath, if needed
 
 4. Run the development server:
 ```bash
@@ -45,37 +46,40 @@ npm run dev
 
 ### Update Personal Information
 
-Edit `src/data/personalInfo.ts` to update:
+Edit `src/data/personalInfo.js` to update:
 - Your name, title, email, phone, location
 - Bio and about sections
 - Skills list
 - Projects portfolio
 - Social media links
+- About subsection cards and carousel images
 
-### Update Repository Name in Config
+### Configure EmailJS
 
-If your GitHub repository has a different name, update `next.config.js`:
+Create `.env.local` for local development:
 
-```javascript
-basePath: process.env.NODE_ENV === 'production' ? '/your-repo-name' : '',
-assetPrefix: process.env.NODE_ENV === 'production' ? '/your-repo-name' : '',
+```bash
+NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=your_public_key
+NEXT_PUBLIC_EMAILJS_SERVICE_ID=your_service_id
+NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_ADMIN=your_admin_template_id
+NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_AUTO=your_auto_reply_template_id
 ```
 
-### Add Resume
+For GitHub Pages, add the same values as repository/environment variables used during the build.
 
-Place your resume PDF file in the `public/` directory as `resume.pdf`.
+### Base Path
+
+`next.config.js` computes `basePath` and `assetPrefix` from `NEXT_PUBLIC_BASE_PATH`. In production it defaults to `/Naveen-Portfolio`, which matches this repository's GitHub Pages URL.
 
 ## Deployment to GitHub Pages
-
-### Option 1: Using GitHub Actions (Recommended)
 
 1. Push your code to GitHub
 2. The GitHub Actions workflow (`.github/workflows/deploy.yml`) will automatically build and deploy to the `gh-pages` branch
 3. Go to your repository Settings > Pages
-4. Set the source to `gh-pages` branch
+4. Set the source to GitHub Actions
 5. Your site will be available at `https://yourusername.github.io/your-repo-name/`
 
-### Option 2: Manual Deployment
+### Manual Build
 
 1. Build the project:
 ```bash
@@ -83,15 +87,6 @@ npm run build
 ```
 
 2. The static files will be in the `out/` directory
-3. Push the `out/` directory contents to the `gh-pages` branch:
-```bash
-npm run deploy
-```
-
-Or manually:
-```bash
-git subtree push --prefix out origin gh-pages
-```
 
 ## Project Structure
 
@@ -101,7 +96,9 @@ personal-website/
 ├── src/
 │   ├── app/            # Next.js app directory
 │   ├── components/     # React components
-│   └── data/           # Data files
+│   ├── data/           # Centralized portfolio data
+│   ├── hooks/          # Shared browser hooks
+│   └── lib/            # Asset/theme utilities
 ├── .github/
 │   └── workflows/      # GitHub Actions
 └── next.config.js      # Next.js configuration
@@ -109,10 +106,13 @@ personal-website/
 
 ## Technologies Used
 
-- **Next.js 14**: React framework
-- **TypeScript**: Type safety
+- **Next.js 16**: React framework
+- **React 19**: UI library
+- **TypeScript**: Type checking support
 - **React Icons**: Icon library
-- **CSS Modules**: Component styling
+- **Plain CSS**: Global variables plus component CSS files
+- **EmailJS**: Client-side contact form delivery
+- **Playwright**: End-to-end tests
 
 ## License
 

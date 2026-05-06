@@ -20,6 +20,54 @@ export const personalInfo = {
         lie in designing robust Tosca frameworks, implementing DEX integrations, and pioneering AI-driven testing methodologies.`,
   
   about: `As a Senior Project Engineer and Tosca Automation Test Lead at Wipro Ltd, I bring a wealth of experience spanning nearly 5 years in the BFSI sector. My professional journey centers on delivering exceptional automation solutions while building lasting client relationships through innovative testing approaches. I've played a pivotal role in Wipro's GenAI Accelerator PoC initiative, where I spearheaded comprehensive tool assessments leveraging Katalon and Playwright across diverse client landscapes. My technical expertise encompasses MCP server orchestration, seamless CI/CD pipeline integration, and strategic automation planning. My track record speaks volumes: I've successfully delivered 50+ production releases with a flawless zero-escalation record, consistently exceeding stakeholder expectations through meticulous execution and proactive problem-solving. Beyond the professional realm, I'm an accomplished chess player who has competed at the district level and led my college team as captain. My passion extends to exploring cutting-edge AI-driven testing innovations and advancing DevOps practices in the automation landscape.`,
+
+  aboutIntro: {
+    title: 'Experience and Expertise',
+    description:
+      'As a Senior Project Engineer and Tosca Automation Test Lead at Wipro Ltd, I bring a wealth of experience spanning nearly 5 years in the BFSI sector. My professional journey centers on delivering exceptional automation solutions while building lasting client relationships through innovative testing approaches.',
+  },
+
+  achievements: [
+    { id: 1, label: '50+ Releases', subtitle: 'Prod release delivered', icon: '🚀' },
+    { id: 2, label: 'Zero Escalations', subtitle: 'Customer-facing stability', icon: '✅' },
+    { id: 3, label: '5 Years', subtitle: 'Industry experience', icon: '⏱️' },
+  ],
+
+  innovation: {
+    title: 'Innovation & Leadership',
+    description:
+      "I played a pivotal role in Wipro's GenAI Accelerator PoC initiative, where I led tool assessments leveraging Katalon and Playwright across diverse client environments.",
+    image: '/about-poster.png',
+  },
+
+  techExpertise: [
+    {
+      id: 'automation',
+      title: 'Automation Strategy',
+      desc: 'End-to-end automation planning and governance',
+      icon: '🛠️',
+    },
+    {
+      id: 'cicd',
+      title: 'CI/CD Integration',
+      desc: 'Pipeline automation for reliable delivery',
+      icon: '💡',
+    },
+    {
+      id: 'genai',
+      title: 'GenAI Orchestration',
+      desc: 'Design and manage GenAI frameworks and MCP config',
+      icon: '🔮',
+    },
+  ],
+
+  personalNote: {
+    title: 'Beyond the Code',
+    description:
+      "Beyond the professional realm, I'm an accomplished chess player who captained my college team and enjoy exploring AI-driven innovations and DevOps practices.",
+    icon: '♟️',
+    quote: 'Chess taught me strategy; QA taught me patience — both made me better at debugging life.',
+  },
   
   // Skills (expanded and grouped for Automation focus)
   skills: [

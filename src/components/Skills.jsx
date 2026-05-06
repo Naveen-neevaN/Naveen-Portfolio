@@ -5,13 +5,6 @@ import { personalInfo } from '@/data/personalInfo.js'
 import { useScrollAnimation } from '@/hooks/useScrollAnimation.js'
 import './Skills.css'
 
-const friendlyCategoryNames = {
-  frontend: 'Frontend',
-  backend: 'Backend',
-  tools: 'Tooling & Platforms',
-  other: 'Innovation & Focus Areas',
-}
-
 const Skills = () => {
   const [ref, isVisible] = useScrollAnimation(0.2)
 

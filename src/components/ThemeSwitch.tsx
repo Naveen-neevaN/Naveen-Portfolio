@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { applyThemeState, getInitialThemeState } from '@/lib/theme.js';
 import './ThemeSwitch.css';
 
 type Theme = 'light' | 'dark'
@@ -19,34 +20,17 @@ export const ThemeSwitch = (): JSX.Element => {
   const [theme, setTheme] = useState<Theme>('light');
   const [family, setFamily] = useState<ThemeFamily>('1');
 
-  // Apply DOM attributes
-  const apply = (t: Theme, f: ThemeFamily) => {
-    if (typeof document === 'undefined') return
-    document.documentElement.setAttribute('data-theme', t)
-    // Use data-theme-family attribute: '1' (default) or '2' (new family)
-    document.documentElement.setAttribute('data-theme-family', f)
-  }
-
   // Init from localStorage or system preference
   useEffect(() => {
     try {
-      const savedTheme = typeof window !== 'undefined' ? (localStorage.getItem('theme') as Theme | null) : null
-      const savedFamily = typeof window !== 'undefined' ? (localStorage.getItem('themeFamily') as ThemeFamily | null) : null
-
-      const prefersDark = typeof window !== 'undefined' && window.matchMedia
-        ? window.matchMedia('(prefers-color-scheme: dark)').matches
-        : false
-
-      const initialTheme: Theme = (savedTheme as Theme) || (prefersDark ? 'dark' : 'light')
-      const initialFamily: ThemeFamily = (savedFamily as ThemeFamily) || '1'
+      const { theme: initialTheme, family: initialFamily } = getInitialThemeState() as { theme: Theme, family: ThemeFamily }
 
       setTheme(initialTheme)
       setFamily(initialFamily)
-      apply(initialTheme, initialFamily)
+      applyThemeState(initialTheme, initialFamily)
     } catch (e) {
       if (process.env.NODE_ENV !== 'production') console.warn('ThemeSwitch: init failed', e)
-      // fallback
-      apply(theme, family)
+      applyThemeState(theme, family)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -56,8 +40,7 @@ export const ThemeSwitch = (): JSX.Element => {
     const newTheme: Theme = theme === 'light' ? 'dark' : 'light'
     setTheme(newTheme)
     try {
-      apply(newTheme, family)
-      if (typeof window !== 'undefined') localStorage.setItem('theme', newTheme)
+      applyThemeState(newTheme, family, { persist: true })
     } catch (e) {
       if (process.env.NODE_ENV !== 'production') console.warn('ThemeSwitch: persist theme failed', e)
     }
@@ -69,8 +52,7 @@ export const ThemeSwitch = (): JSX.Element => {
     setFamily(newFamily)
     try {
       // Keep display mode the same, just swap variable set
-      apply(theme, newFamily)
-      if (typeof window !== 'undefined') localStorage.setItem('themeFamily', newFamily)
+      applyThemeState(theme, newFamily, { persist: true })
     } catch (e) {
       if (process.env.NODE_ENV !== 'production') console.warn('ThemeSwitch: persist family failed', e)
     }
