@@ -2,7 +2,7 @@
 
 import React from 'react'
 import './About.css'
-import resolveAssetPath from '@/lib/resolveAssetPath'
+import { resolveAssetPath, resolveAssetSrcSet } from '@/lib/resolveAssetPath'
 import { personalInfo } from '@/data/personalInfo.js'
 
 const Innovation = () => {
@@ -19,9 +19,17 @@ const Innovation = () => {
         <div className="innovation__image">
           <img
             src={resolveAssetPath(innovation.image)}
+            srcSet={resolveAssetSrcSet(innovation.imageSrcSet)}
+            sizes="(max-width: 920px) 90vw, 340px"
             alt="Poster illustrating innovation initiatives and the GenAI Accelerator"
             loading="lazy"
             decoding="async"
+            onError={(event) => {
+              if (innovation.imageFallback) {
+                event.currentTarget.srcset = ''
+                event.currentTarget.src = resolveAssetPath(innovation.imageFallback)
+              }
+            }}
           />
         </div>
       </div>

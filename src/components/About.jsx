@@ -24,7 +24,7 @@ const About = () => {
         <p className="section-subheading">Engineering elevated, human-centric automation experiences across BFSI ecosystems.</p>
 
         <div ref={ref} className={`about__wrapper ${isVisible ? 'is-visible' : ''}`}>
-          <AboutIntro videoSrc={videoPath} prefersReducedMotion={prefersReducedMotion} />
+          <AboutIntro videoSrc={videoPath} prefersReducedMotion={prefersReducedMotion} shouldLoadVideo={isVisible} />
           <Achievements />
           <Innovation />
           <TechExpertise />

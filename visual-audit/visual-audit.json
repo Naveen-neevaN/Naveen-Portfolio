@@ -1,0 +1,1076 @@
+[
+  {
+    "browser": "chromium",
+    "scenario": "desktop-light",
+    "screenshot": "D:\\Nagvii's Workspace\\Naveen-Portfolio\\visual-audit\\chromium-desktop-light.png",
+    "metrics": {
+      "title": "Naveen K - Tosca Test Lead",
+      "theme": "light",
+      "family": "1",
+      "bodyScrollWidth": 1366,
+      "viewportWidth": 1366,
+      "horizontalOverflow": false,
+      "sections": [
+        {
+          "id": "hero",
+          "y": 0,
+          "h": 967
+        },
+        {
+          "id": "about",
+          "y": 967,
+          "h": 1757
+        },
+        {
+          "id": "skills",
+          "y": 2724,
+          "h": 993
+        },
+        {
+          "id": "projects",
+          "y": 3716,
+          "h": 904
+        },
+        {
+          "id": "contact",
+          "y": 4621,
+          "h": 762
+        },
+        {
+          "id": "footer",
+          "y": 5383,
+          "h": 144
+        }
+      ],
+      "boxes": [
+        {
+          "selector": ".site-header",
+          "x": 0,
+          "y": 0,
+          "w": 1366,
+          "h": 79,
+          "display": "block",
+          "gridTemplateColumns": "none",
+          "overflowX": "visible",
+          "background": "rgba(255, 255, 255, 0.08)",
+          "color": "rgb(6, 60, 59)"
+        },
+        {
+          "selector": ".hero__layout",
+          "x": 149,
+          "y": 116,
+          "w": 1068,
+          "h": 520,
+          "display": "grid",
+          "gridTemplateColumns": "520.344px 520.344px",
+          "overflowX": "hidden",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(6, 60, 59)"
+        },
+        {
+          "selector": ".hero__greetingBox",
+          "x": 149,
+          "y": 116,
+          "w": 520,
+          "h": 520,
+          "display": "flex",
+          "gridTemplateColumns": "none",
+          "overflowX": "visible",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(6, 60, 59)"
+        },
+        {
+          "selector": ".hero__carousel",
+          "x": 697,
+          "y": 116,
+          "w": 520,
+          "h": 520,
+          "display": "flex",
+          "gridTemplateColumns": "none",
+          "overflowX": "hidden",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(6, 60, 59)"
+        },
+        {
+          "selector": ".hero__roleOverviewTile",
+          "x": 149,
+          "y": 686,
+          "w": 1068,
+          "h": 220,
+          "display": "block",
+          "gridTemplateColumns": "none",
+          "overflowX": "hidden",
+          "background": "rgba(255, 255, 255, 0.06)",
+          "color": "rgb(6, 60, 59)"
+        },
+        {
+          "selector": ".about-intro__inner",
+          "x": 150,
+          "y": 1254,
+          "w": 1066,
+          "h": 350,
+          "display": "grid",
+          "gridTemplateColumns": "511.672px 554.312px",
+          "overflowX": "visible",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(6, 60, 59)"
+        },
+        {
+          "selector": ".achievements__grid",
+          "x": 149,
+          "y": 1679,
+          "w": 1068,
+          "h": 98,
+          "display": "flex",
+          "gridTemplateColumns": "none",
+          "overflowX": "visible",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(6, 60, 59)"
+        },
+        {
+          "selector": ".skills__grid",
+          "x": 149,
+          "y": 3000,
+          "w": 1068,
+          "h": 686,
+          "display": "grid",
+          "gridTemplateColumns": "516.406px 516.406px",
+          "overflowX": "visible",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(6, 60, 59)"
+        },
+        {
+          "selector": ".projects__grid",
+          "x": 149,
+          "y": 4018,
+          "w": 1068,
+          "h": 586,
+          "display": "grid",
+          "gridTemplateColumns": "511.594px 511.609px 0px",
+          "overflowX": "visible",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(6, 60, 59)"
+        },
+        {
+          "selector": ".contact__grid",
+          "x": 149,
+          "y": 4895,
+          "w": 1068,
+          "h": 455,
+          "display": "grid",
+          "gridTemplateColumns": "526px 526px",
+          "overflowX": "visible",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(6, 60, 59)"
+        },
+        {
+          "selector": ".footer",
+          "x": 0,
+          "y": 5383,
+          "w": 1366,
+          "h": 144,
+          "display": "flex",
+          "gridTemplateColumns": "none",
+          "overflowX": "hidden",
+          "background": "rgba(255, 255, 255, 0.08)",
+          "color": "rgb(6, 60, 59)"
+        }
+      ]
+    }
+  },
+  {
+    "browser": "chromium",
+    "scenario": "mobile-light",
+    "screenshot": "D:\\Nagvii's Workspace\\Naveen-Portfolio\\visual-audit\\chromium-mobile-light.png",
+    "metrics": {
+      "title": "Naveen K - Tosca Test Lead",
+      "theme": "light",
+      "family": "1",
+      "bodyScrollWidth": 390,
+      "viewportWidth": 390,
+      "horizontalOverflow": false,
+      "sections": [
+        {
+          "id": "hero",
+          "y": 0,
+          "h": 784
+        },
+        {
+          "id": "about",
+          "y": 784,
+          "h": 2805
+        },
+        {
+          "id": "skills",
+          "y": 3590,
+          "h": 1598
+        },
+        {
+          "id": "projects",
+          "y": 5188,
+          "h": 1922
+        },
+        {
+          "id": "contact",
+          "y": 7110,
+          "h": 1078
+        },
+        {
+          "id": "footer",
+          "y": 8187,
+          "h": 93
+        }
+      ],
+      "boxes": [
+        {
+          "selector": ".site-header",
+          "x": 0,
+          "y": 0,
+          "w": 390,
+          "h": 59,
+          "display": "block",
+          "gridTemplateColumns": "none",
+          "overflowX": "visible",
+          "background": "rgba(255, 255, 255, 0.08)",
+          "color": "rgb(6, 60, 59)"
+        },
+        {
+          "selector": ".hero__layout",
+          "x": 16,
+          "y": 77,
+          "w": 358,
+          "h": 378,
+          "display": "grid",
+          "gridTemplateColumns": "358.391px",
+          "overflowX": "hidden",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(6, 60, 59)"
+        },
+        {
+          "selector": ".hero__greetingBox",
+          "x": 16,
+          "y": 77,
+          "w": 358,
+          "h": 126,
+          "display": "flex",
+          "gridTemplateColumns": "none",
+          "overflowX": "visible",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(6, 60, 59)"
+        },
+        {
+          "selector": ".hero__carousel",
+          "x": 29,
+          "y": 231,
+          "w": 333,
+          "h": 215,
+          "display": "flex",
+          "gridTemplateColumns": "none",
+          "overflowX": "hidden",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(6, 60, 59)"
+        },
+        {
+          "selector": ".hero__roleOverviewTile",
+          "x": 16,
+          "y": 468,
+          "w": 358,
+          "h": 284,
+          "display": "block",
+          "gridTemplateColumns": "none",
+          "overflowX": "hidden",
+          "background": "rgba(255, 255, 255, 0.06)",
+          "color": "rgb(6, 60, 59)"
+        },
+        {
+          "selector": ".about-intro__inner",
+          "x": 17,
+          "y": 1009,
+          "w": 356,
+          "h": 523,
+          "display": "grid",
+          "gridTemplateColumns": "356.391px",
+          "overflowX": "visible",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(6, 60, 59)"
+        },
+        {
+          "selector": ".achievements__grid",
+          "x": 16,
+          "y": 1589,
+          "w": 358,
+          "h": 461,
+          "display": "flex",
+          "gridTemplateColumns": "1fr",
+          "overflowX": "visible",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(6, 60, 59)"
+        },
+        {
+          "selector": ".skills__grid",
+          "x": 16,
+          "y": 3810,
+          "w": 358,
+          "h": 1353,
+          "display": "grid",
+          "gridTemplateColumns": "358.391px",
+          "overflowX": "visible",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(6, 60, 59)"
+        },
+        {
+          "selector": ".projects__grid",
+          "x": 16,
+          "y": 5434,
+          "w": 358,
+          "h": 1666,
+          "display": "grid",
+          "gridTemplateColumns": "358.391px",
+          "overflowX": "visible",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(6, 60, 59)"
+        },
+        {
+          "selector": ".contact__grid",
+          "x": 16,
+          "y": 7297,
+          "w": 358,
+          "h": 863,
+          "display": "grid",
+          "gridTemplateColumns": "358.391px",
+          "overflowX": "visible",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(6, 60, 59)"
+        },
+        {
+          "selector": ".footer",
+          "x": 0,
+          "y": 8187,
+          "w": 390,
+          "h": 93,
+          "display": "flex",
+          "gridTemplateColumns": "none",
+          "overflowX": "hidden",
+          "background": "rgba(255, 255, 255, 0.08)",
+          "color": "rgb(6, 60, 59)"
+        }
+      ]
+    }
+  },
+  {
+    "browser": "chromium",
+    "scenario": "desktop-dark-family2",
+    "screenshot": "D:\\Nagvii's Workspace\\Naveen-Portfolio\\visual-audit\\chromium-desktop-dark-family2.png",
+    "metrics": {
+      "title": "Naveen K - Tosca Test Lead",
+      "theme": "dark",
+      "family": "2",
+      "bodyScrollWidth": 1366,
+      "viewportWidth": 1366,
+      "horizontalOverflow": false,
+      "sections": [
+        {
+          "id": "hero",
+          "y": 0,
+          "h": 967
+        },
+        {
+          "id": "about",
+          "y": 967,
+          "h": 1757
+        },
+        {
+          "id": "skills",
+          "y": 2724,
+          "h": 993
+        },
+        {
+          "id": "projects",
+          "y": 3716,
+          "h": 904
+        },
+        {
+          "id": "contact",
+          "y": 4621,
+          "h": 762
+        },
+        {
+          "id": "footer",
+          "y": 5383,
+          "h": 144
+        }
+      ],
+      "boxes": [
+        {
+          "selector": ".site-header",
+          "x": 0,
+          "y": 0,
+          "w": 1366,
+          "h": 79,
+          "display": "block",
+          "gridTemplateColumns": "none",
+          "overflowX": "visible",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(232, 217, 195)"
+        },
+        {
+          "selector": ".hero__layout",
+          "x": 149,
+          "y": 116,
+          "w": 1068,
+          "h": 520,
+          "display": "grid",
+          "gridTemplateColumns": "520.344px 520.344px",
+          "overflowX": "hidden",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(232, 217, 195)"
+        },
+        {
+          "selector": ".hero__greetingBox",
+          "x": 149,
+          "y": 116,
+          "w": 520,
+          "h": 520,
+          "display": "flex",
+          "gridTemplateColumns": "none",
+          "overflowX": "visible",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(232, 217, 195)"
+        },
+        {
+          "selector": ".hero__carousel",
+          "x": 697,
+          "y": 116,
+          "w": 520,
+          "h": 520,
+          "display": "flex",
+          "gridTemplateColumns": "none",
+          "overflowX": "hidden",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(232, 217, 195)"
+        },
+        {
+          "selector": ".hero__roleOverviewTile",
+          "x": 149,
+          "y": 685,
+          "w": 1068,
+          "h": 220,
+          "display": "block",
+          "gridTemplateColumns": "none",
+          "overflowX": "hidden",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(232, 217, 195)"
+        },
+        {
+          "selector": ".about-intro__inner",
+          "x": 150,
+          "y": 1254,
+          "w": 1066,
+          "h": 350,
+          "display": "grid",
+          "gridTemplateColumns": "511.672px 554.312px",
+          "overflowX": "visible",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(232, 217, 195)"
+        },
+        {
+          "selector": ".achievements__grid",
+          "x": 149,
+          "y": 1679,
+          "w": 1068,
+          "h": 98,
+          "display": "flex",
+          "gridTemplateColumns": "none",
+          "overflowX": "visible",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(232, 217, 195)"
+        },
+        {
+          "selector": ".skills__grid",
+          "x": 149,
+          "y": 3000,
+          "w": 1068,
+          "h": 686,
+          "display": "grid",
+          "gridTemplateColumns": "516.406px 516.406px",
+          "overflowX": "visible",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(232, 217, 195)"
+        },
+        {
+          "selector": ".projects__grid",
+          "x": 149,
+          "y": 4018,
+          "w": 1068,
+          "h": 586,
+          "display": "grid",
+          "gridTemplateColumns": "511.594px 511.609px 0px",
+          "overflowX": "visible",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(232, 217, 195)"
+        },
+        {
+          "selector": ".contact__grid",
+          "x": 149,
+          "y": 4895,
+          "w": 1068,
+          "h": 455,
+          "display": "grid",
+          "gridTemplateColumns": "526px 526px",
+          "overflowX": "visible",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(232, 217, 195)"
+        },
+        {
+          "selector": ".footer",
+          "x": 0,
+          "y": 5383,
+          "w": 1366,
+          "h": 144,
+          "display": "flex",
+          "gridTemplateColumns": "none",
+          "overflowX": "hidden",
+          "background": "rgba(0, 0, 0, 0.25)",
+          "color": "rgb(232, 217, 195)"
+        }
+      ]
+    }
+  },
+  {
+    "browser": "webkit",
+    "scenario": "desktop-light",
+    "screenshot": "D:\\Nagvii's Workspace\\Naveen-Portfolio\\visual-audit\\webkit-desktop-light.png",
+    "metrics": {
+      "title": "Naveen K - Tosca Test Lead",
+      "theme": "light",
+      "family": "1",
+      "bodyScrollWidth": 1366,
+      "viewportWidth": 1366,
+      "horizontalOverflow": false,
+      "sections": [
+        {
+          "id": "hero",
+          "y": 0,
+          "h": 963
+        },
+        {
+          "id": "about",
+          "y": 963,
+          "h": 1751
+        },
+        {
+          "id": "skills",
+          "y": 2714,
+          "h": 988
+        },
+        {
+          "id": "projects",
+          "y": 3702,
+          "h": 896
+        },
+        {
+          "id": "contact",
+          "y": 4598,
+          "h": 760
+        },
+        {
+          "id": "footer",
+          "y": 5358,
+          "h": 144
+        }
+      ],
+      "boxes": [
+        {
+          "selector": ".site-header",
+          "x": 0,
+          "y": 0,
+          "w": 1366,
+          "h": 79,
+          "display": "block",
+          "gridTemplateColumns": "none",
+          "overflowX": "visible",
+          "background": "rgba(255, 255, 255, 0.08)",
+          "color": "rgb(6, 60, 59)"
+        },
+        {
+          "selector": ".hero__layout",
+          "x": 149,
+          "y": 116,
+          "w": 1068,
+          "h": 520,
+          "display": "grid",
+          "gridTemplateColumns": "520.34375px 520.34375px",
+          "overflowX": "hidden",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(6, 60, 59)"
+        },
+        {
+          "selector": ".hero__greetingBox",
+          "x": 149,
+          "y": 116,
+          "w": 520,
+          "h": 520,
+          "display": "flex",
+          "gridTemplateColumns": "none",
+          "overflowX": "visible",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(6, 60, 59)"
+        },
+        {
+          "selector": ".hero__carousel",
+          "x": 697,
+          "y": 116,
+          "w": 520,
+          "h": 520,
+          "display": "flex",
+          "gridTemplateColumns": "none",
+          "overflowX": "hidden",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(6, 60, 59)"
+        },
+        {
+          "selector": ".hero__roleOverviewTile",
+          "x": 149,
+          "y": 687,
+          "w": 1068,
+          "h": 215,
+          "display": "block",
+          "gridTemplateColumns": "none",
+          "overflowX": "hidden",
+          "background": "rgba(255, 255, 255, 0.06)",
+          "color": "rgb(6, 60, 59)"
+        },
+        {
+          "selector": ".about-intro__inner",
+          "x": 150,
+          "y": 1248,
+          "w": 1066,
+          "h": 350,
+          "display": "grid",
+          "gridTemplateColumns": "511.671875px 554.3125px",
+          "overflowX": "visible",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(6, 60, 59)"
+        },
+        {
+          "selector": ".achievements__grid",
+          "x": 149,
+          "y": 1673,
+          "w": 1068,
+          "h": 98,
+          "display": "flex",
+          "gridTemplateColumns": "none",
+          "overflowX": "visible",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(6, 60, 59)"
+        },
+        {
+          "selector": ".skills__grid",
+          "x": 149,
+          "y": 2988,
+          "w": 1068,
+          "h": 683,
+          "display": "grid",
+          "gridTemplateColumns": "516.40625px 516.40625px",
+          "overflowX": "visible",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(6, 60, 59)"
+        },
+        {
+          "selector": ".projects__grid",
+          "x": 149,
+          "y": 4002,
+          "w": 1068,
+          "h": 580,
+          "display": "grid",
+          "gridTemplateColumns": "511.59375px 511.609375px 0px",
+          "overflowX": "visible",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(6, 60, 59)"
+        },
+        {
+          "selector": ".contact__grid",
+          "x": 149,
+          "y": 4871,
+          "w": 1068,
+          "h": 455,
+          "display": "grid",
+          "gridTemplateColumns": "526px 526px",
+          "overflowX": "visible",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(6, 60, 59)"
+        },
+        {
+          "selector": ".footer",
+          "x": 0,
+          "y": 5358,
+          "w": 1366,
+          "h": 144,
+          "display": "flex",
+          "gridTemplateColumns": "none",
+          "overflowX": "hidden",
+          "background": "rgba(255, 255, 255, 0.08)",
+          "color": "rgb(6, 60, 59)"
+        }
+      ]
+    }
+  },
+  {
+    "browser": "webkit",
+    "scenario": "mobile-light",
+    "screenshot": "D:\\Nagvii's Workspace\\Naveen-Portfolio\\visual-audit\\webkit-mobile-light.png",
+    "metrics": {
+      "title": "Naveen K - Tosca Test Lead",
+      "theme": "light",
+      "family": "1",
+      "bodyScrollWidth": 390,
+      "viewportWidth": 390,
+      "horizontalOverflow": false,
+      "sections": [
+        {
+          "id": "hero",
+          "y": 0,
+          "h": 784
+        },
+        {
+          "id": "about",
+          "y": 784,
+          "h": 2758
+        },
+        {
+          "id": "skills",
+          "y": 3542,
+          "h": 1586
+        },
+        {
+          "id": "projects",
+          "y": 5128,
+          "h": 1907
+        },
+        {
+          "id": "contact",
+          "y": 7034,
+          "h": 1070
+        },
+        {
+          "id": "footer",
+          "y": 8105,
+          "h": 92
+        }
+      ],
+      "boxes": [
+        {
+          "selector": ".site-header",
+          "x": 0,
+          "y": 0,
+          "w": 390,
+          "h": 59,
+          "display": "block",
+          "gridTemplateColumns": "none",
+          "overflowX": "visible",
+          "background": "rgba(255, 255, 255, 0.08)",
+          "color": "rgb(6, 60, 59)"
+        },
+        {
+          "selector": ".hero__layout",
+          "x": 16,
+          "y": 77,
+          "w": 358,
+          "h": 378,
+          "display": "grid",
+          "gridTemplateColumns": "358.390625px",
+          "overflowX": "hidden",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(6, 60, 59)"
+        },
+        {
+          "selector": ".hero__greetingBox",
+          "x": 16,
+          "y": 77,
+          "w": 358,
+          "h": 125,
+          "display": "flex",
+          "gridTemplateColumns": "none",
+          "overflowX": "visible",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(6, 60, 59)"
+        },
+        {
+          "selector": ".hero__carousel",
+          "x": 29,
+          "y": 231,
+          "w": 333,
+          "h": 215,
+          "display": "flex",
+          "gridTemplateColumns": "none",
+          "overflowX": "hidden",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(6, 60, 59)"
+        },
+        {
+          "selector": ".hero__roleOverviewTile",
+          "x": 16,
+          "y": 468,
+          "w": 358,
+          "h": 284,
+          "display": "block",
+          "gridTemplateColumns": "none",
+          "overflowX": "hidden",
+          "background": "rgba(255, 255, 255, 0.06)",
+          "color": "rgb(6, 60, 59)"
+        },
+        {
+          "selector": ".about-intro__inner",
+          "x": 17,
+          "y": 1006,
+          "w": 356,
+          "h": 489,
+          "display": "grid",
+          "gridTemplateColumns": "356.390625px",
+          "overflowX": "visible",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(6, 60, 59)"
+        },
+        {
+          "selector": ".achievements__grid",
+          "x": 16,
+          "y": 1551,
+          "w": 358,
+          "h": 460,
+          "display": "flex",
+          "gridTemplateColumns": "1fr",
+          "overflowX": "visible",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(6, 60, 59)"
+        },
+        {
+          "selector": ".skills__grid",
+          "x": 16,
+          "y": 3760,
+          "w": 358,
+          "h": 1344,
+          "display": "grid",
+          "gridTemplateColumns": "358.390625px",
+          "overflowX": "visible",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(6, 60, 59)"
+        },
+        {
+          "selector": ".projects__grid",
+          "x": 16,
+          "y": 5371,
+          "w": 358,
+          "h": 1653,
+          "display": "grid",
+          "gridTemplateColumns": "358.390625px",
+          "overflowX": "visible",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(6, 60, 59)"
+        },
+        {
+          "selector": ".contact__grid",
+          "x": 16,
+          "y": 7220,
+          "w": 358,
+          "h": 857,
+          "display": "grid",
+          "gridTemplateColumns": "358.390625px",
+          "overflowX": "visible",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(6, 60, 59)"
+        },
+        {
+          "selector": ".footer",
+          "x": 0,
+          "y": 8105,
+          "w": 390,
+          "h": 92,
+          "display": "flex",
+          "gridTemplateColumns": "none",
+          "overflowX": "hidden",
+          "background": "rgba(255, 255, 255, 0.08)",
+          "color": "rgb(6, 60, 59)"
+        }
+      ]
+    }
+  },
+  {
+    "browser": "webkit",
+    "scenario": "desktop-dark-family2",
+    "screenshot": "D:\\Nagvii's Workspace\\Naveen-Portfolio\\visual-audit\\webkit-desktop-dark-family2.png",
+    "metrics": {
+      "title": "Naveen K - Tosca Test Lead",
+      "theme": "dark",
+      "family": "2",
+      "bodyScrollWidth": 1366,
+      "viewportWidth": 1366,
+      "horizontalOverflow": false,
+      "sections": [
+        {
+          "id": "hero",
+          "y": 0,
+          "h": 963
+        },
+        {
+          "id": "about",
+          "y": 963,
+          "h": 1751
+        },
+        {
+          "id": "skills",
+          "y": 2714,
+          "h": 988
+        },
+        {
+          "id": "projects",
+          "y": 3702,
+          "h": 896
+        },
+        {
+          "id": "contact",
+          "y": 4598,
+          "h": 760
+        },
+        {
+          "id": "footer",
+          "y": 5358,
+          "h": 144
+        }
+      ],
+      "boxes": [
+        {
+          "selector": ".site-header",
+          "x": 0,
+          "y": 0,
+          "w": 1366,
+          "h": 79,
+          "display": "block",
+          "gridTemplateColumns": "none",
+          "overflowX": "visible",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(232, 217, 195)"
+        },
+        {
+          "selector": ".hero__layout",
+          "x": 149,
+          "y": 116,
+          "w": 1068,
+          "h": 520,
+          "display": "grid",
+          "gridTemplateColumns": "520.34375px 520.34375px",
+          "overflowX": "hidden",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(232, 217, 195)"
+        },
+        {
+          "selector": ".hero__greetingBox",
+          "x": 149,
+          "y": 116,
+          "w": 520,
+          "h": 520,
+          "display": "flex",
+          "gridTemplateColumns": "none",
+          "overflowX": "visible",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(232, 217, 195)"
+        },
+        {
+          "selector": ".hero__carousel",
+          "x": 697,
+          "y": 116,
+          "w": 520,
+          "h": 520,
+          "display": "flex",
+          "gridTemplateColumns": "none",
+          "overflowX": "hidden",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(232, 217, 195)"
+        },
+        {
+          "selector": ".hero__roleOverviewTile",
+          "x": 149,
+          "y": 689,
+          "w": 1068,
+          "h": 215,
+          "display": "block",
+          "gridTemplateColumns": "none",
+          "overflowX": "hidden",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(232, 217, 195)"
+        },
+        {
+          "selector": ".about-intro__inner",
+          "x": 150,
+          "y": 1248,
+          "w": 1066,
+          "h": 350,
+          "display": "grid",
+          "gridTemplateColumns": "511.671875px 554.3125px",
+          "overflowX": "visible",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(232, 217, 195)"
+        },
+        {
+          "selector": ".achievements__grid",
+          "x": 149,
+          "y": 1673,
+          "w": 1068,
+          "h": 98,
+          "display": "flex",
+          "gridTemplateColumns": "none",
+          "overflowX": "visible",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(232, 217, 195)"
+        },
+        {
+          "selector": ".skills__grid",
+          "x": 149,
+          "y": 2988,
+          "w": 1068,
+          "h": 683,
+          "display": "grid",
+          "gridTemplateColumns": "516.40625px 516.40625px",
+          "overflowX": "visible",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(232, 217, 195)"
+        },
+        {
+          "selector": ".projects__grid",
+          "x": 149,
+          "y": 4002,
+          "w": 1068,
+          "h": 580,
+          "display": "grid",
+          "gridTemplateColumns": "511.59375px 511.609375px 0px",
+          "overflowX": "visible",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(232, 217, 195)"
+        },
+        {
+          "selector": ".contact__grid",
+          "x": 149,
+          "y": 4871,
+          "w": 1068,
+          "h": 455,
+          "display": "grid",
+          "gridTemplateColumns": "526px 526px",
+          "overflowX": "visible",
+          "background": "rgba(0, 0, 0, 0)",
+          "color": "rgb(232, 217, 195)"
+        },
+        {
+          "selector": ".footer",
+          "x": 0,
+          "y": 5358,
+          "w": 1366,
+          "h": 144,
+          "display": "flex",
+          "gridTemplateColumns": "none",
+          "overflowX": "hidden",
+          "background": "rgba(0, 0, 0, 0.25)",
+          "color": "rgb(232, 217, 195)"
+        }
+      ]
+    }
+  }
+]

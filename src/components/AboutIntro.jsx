@@ -2,12 +2,13 @@
 
 import React, { useState } from 'react'
 import './About.css'
-import resolveAssetPath from '@/lib/resolveAssetPath'
+import { resolveAssetPath, resolveAssetSrcSet } from '@/lib/resolveAssetPath'
 import { personalInfo } from '@/data/personalInfo.js'
 
-const AboutIntro = ({ videoSrc, prefersReducedMotion }) => {
+const AboutIntro = ({ videoSrc, prefersReducedMotion, shouldLoadVideo }) => {
   const [videoError, setVideoError] = useState(false)
-  const poster = resolveAssetPath('/about-poster.png')
+  const poster = resolveAssetPath('/images/optimized/about-poster-960.jpg')
+  const posterSrcSet = resolveAssetSrcSet('/images/optimized/about-poster-640.jpg 640w, /images/optimized/about-poster-960.jpg 960w')
   const src = resolveAssetPath(videoSrc)
   const intro = personalInfo.aboutIntro
 
@@ -18,13 +19,13 @@ const AboutIntro = ({ videoSrc, prefersReducedMotion }) => {
           {!videoError ? (
             <video
               className="about-intro__video"
-              src={src}
+              src={shouldLoadVideo ? src : undefined}
               poster={poster}
               autoPlay={!prefersReducedMotion}
               muted
               loop={!prefersReducedMotion}
               playsInline
-              loading="lazy"
+              preload="none"
               aria-hidden="true"
               onError={(e) => {
                 if (process.env.NODE_ENV !== 'production') {
@@ -37,6 +38,8 @@ const AboutIntro = ({ videoSrc, prefersReducedMotion }) => {
             <img
               className="about-intro__video"
               src={poster}
+              srcSet={posterSrcSet}
+              sizes="(max-width: 768px) 95vw, 520px"
               alt="Poster illustrating innovation and experience"
               loading="lazy"
               decoding="async"

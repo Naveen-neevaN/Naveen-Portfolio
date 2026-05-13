@@ -26,7 +26,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'npm'
 
       - name: Install dependencies
@@ -36,9 +36,10 @@ jobs:
 
       - name: Build static site
         run: |
-          npm run build
+          NEXT_PUBLIC_BUILD_TIME="$(date -u +%Y-%m-%dT%H:%M:%SZ)" npm run build
         env:
           NODE_ENV: production
+          NEXT_PUBLIC_BUILD_ID: ${{ github.sha }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v4

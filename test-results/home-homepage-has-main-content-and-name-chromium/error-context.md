@@ -1,0 +1,258 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - link "Skip to content" [ref=e2] [cursor=pointer]:
+    - /url: "#main"
+  - main [ref=e3]:
+    - generic [ref=e5]:
+      - button "Surf My Profile" [ref=e6] [cursor=pointer]
+      - generic [ref=e7]:
+        - navigation "Primary" [ref=e8]:
+          - list [ref=e9]:
+            - listitem [ref=e10]:
+              - link "Home" [ref=e11] [cursor=pointer]:
+                - /url: "#hero"
+            - listitem [ref=e12]:
+              - link "About" [ref=e13] [cursor=pointer]:
+                - /url: "#about"
+            - listitem [ref=e14]:
+              - link "Skills" [ref=e15] [cursor=pointer]:
+                - /url: "#skills"
+            - listitem [ref=e16]:
+              - link "Projects" [ref=e17] [cursor=pointer]:
+                - /url: "#projects"
+            - listitem [ref=e18]:
+              - link "Contact" [ref=e19] [cursor=pointer]:
+                - /url: "#contact"
+        - generic [ref=e22]:
+          - button "Switch to dark theme" [ref=e23] [cursor=pointer]: 🌙
+          - button "Switch to theme family 2" [ref=e24] [cursor=pointer]:
+            - img [ref=e25]
+    - generic [ref=e28]:
+      - generic [ref=e29]:
+        - generic [ref=e31]:
+          - heading "Hi, I'm Naveen K" [level=2] [ref=e32]:
+            - generic [ref=e33]: Hi, I'm
+            - generic [ref=e34]: Naveen K
+          - generic:
+            - generic [ref=e35]: Senior Project Engineer
+            - generic [ref=e36]: Senior Project Engineer
+            - generic [ref=e37]: Tosca Test Lead
+        - generic [ref=e40]:
+          - img "Portfolio highlight 1" [ref=e42]
+          - img [ref=e44]
+          - img [ref=e46]
+      - generic [ref=e48]:
+        - paragraph [ref=e50]: A seasoned Tosca Automation Test Lead with 5 years of specialized expertise in BFSI domain applications. I excel at orchestrating automation initiatives and fostering meaningful client partnerships. My core strengths lie in designing robust Tosca frameworks, implementing DEX integrations, and pioneering AI-driven testing methodologies.
+        - generic [ref=e52]:
+          - button "View Projects" [ref=e53] [cursor=pointer]
+          - button "View Skill Sets" [ref=e54] [cursor=pointer]
+    - generic [ref=e56]:
+      - heading "About Me" [level=2] [ref=e57]
+      - paragraph [ref=e58]: Engineering elevated, human-centric automation experiences across BFSI ecosystems.
+      - generic [ref=e59]:
+        - region "Experience and Expertise" [ref=e60]:
+          - generic [ref=e64]:
+            - heading "Experience and Expertise" [level=2] [ref=e65]
+            - paragraph [ref=e66]: As a Senior Project Engineer and Tosca Automation Test Lead at Wipro Ltd, I bring a wealth of experience spanning nearly 5 years in the BFSI sector. My professional journey centers on delivering exceptional automation solutions while building lasting client relationships through innovative testing approaches.
+        - region "Achievements & Highlights" [ref=e67]:
+          - heading "Achievements & Highlights" [level=3] [ref=e68]
+          - generic [ref=e69]:
+            - generic [ref=e70]:
+              - generic [ref=e71]: 🚀
+              - generic [ref=e72]:
+                - generic [ref=e73]: 50+ Releases
+                - generic [ref=e74]: Prod release delivered
+            - generic [ref=e75]:
+              - generic [ref=e76]: ✅
+              - generic [ref=e77]:
+                - generic [ref=e78]: Zero Escalations
+                - generic [ref=e79]: Customer-facing stability
+            - generic [ref=e80]:
+              - generic [ref=e81]: ⏱️
+              - generic [ref=e82]:
+                - generic [ref=e83]: 5 Years
+                - generic [ref=e84]: Industry experience
+        - region "Innovation & Leadership" [ref=e85]:
+          - heading "Innovation & Leadership" [level=3] [ref=e86]
+          - generic [ref=e87]:
+            - paragraph [ref=e89]: I played a pivotal role in Wipro's GenAI Accelerator PoC initiative, where I led tool assessments leveraging Katalon and Playwright across diverse client environments.
+            - img "Poster illustrating innovation initiatives and the GenAI Accelerator" [ref=e91]
+        - region "Tech Expertise & Toolchain" [ref=e92]:
+          - heading "Tech Expertise & Toolchain" [level=3] [ref=e93]
+          - generic [ref=e94]:
+            - generic [ref=e95]:
+              - generic [ref=e97]: 🛠️
+              - generic [ref=e98]:
+                - generic [ref=e99]: Automation Strategy
+                - generic [ref=e100]: End-to-end automation planning and governance
+            - generic [ref=e101]:
+              - generic [ref=e103]: 💡
+              - generic [ref=e104]:
+                - generic [ref=e105]: CI/CD Integration
+                - generic [ref=e106]: Pipeline automation for reliable delivery
+            - generic [ref=e107]:
+              - generic [ref=e109]: 🔮
+              - generic [ref=e110]:
+                - generic [ref=e111]: GenAI Orchestration
+                - generic [ref=e112]: Design and manage GenAI frameworks and MCP config
+        - region "Beyond the Code" [ref=e113]:
+          - heading "Beyond the Code" [level=3] [ref=e114]
+          - generic [ref=e115]:
+            - paragraph [ref=e116]: Beyond the professional realm, I'm an accomplished chess player who captained my college team and enjoy exploring AI-driven innovations and DevOps practices.
+            - generic [ref=e118]:
+              - generic [ref=e119]: ♟️
+              - generic [ref=e120]: Chess taught me strategy; QA taught me patience — both made me better at debugging life.
+        - link "Let's build smarter systems together" [ref=e123] [cursor=pointer]:
+          - /url: "#contact"
+    - generic [ref=e125]:
+      - heading "Technologies and Tools" [level=2] [ref=e126]
+      - paragraph [ref=e127]: Modern automation ecosystems, AI accelerators, and quality engineering toolchains I partner with daily.
+      - generic [ref=e128]:
+        - article [ref=e129]:
+          - generic [ref=e130]:
+            - generic [ref=e131]: 🛠️
+            - heading "Automation / Testing Tools" [level=4] [ref=e132]
+          - generic [ref=e133]:
+            - generic [ref=e134]: Tosca
+            - generic [ref=e135]: Selenium (Java)
+            - generic [ref=e136]: Selenium (Python)
+            - generic [ref=e137]: Playwright
+            - generic [ref=e138]: Katalon
+            - generic [ref=e139]: Jenkins
+            - generic [ref=e140]: Jira
+            - generic [ref=e141]: Git
+            - generic [ref=e142]: Bitbucket
+            - generic [ref=e143]: Postman
+            - generic [ref=e144]: Azure (basic)
+            - generic [ref=e145]: SailPoint
+        - article [ref=e146]:
+          - generic [ref=e147]:
+            - generic [ref=e148]: 🎨
+            - heading "Frontend + Backend Skills" [level=4] [ref=e149]
+          - generic [ref=e150]:
+            - generic [ref=e151]: MySQL
+            - generic [ref=e152]: JavaScript
+            - generic [ref=e153]: TypeScript (basic)
+            - generic [ref=e154]: HTML5
+            - generic [ref=e155]: CSS3
+            - generic [ref=e156]: Node.js
+            - generic [ref=e157]: RESTful APIs
+            - generic [ref=e158]: JSON/XML
+            - generic [ref=e159]: Python
+            - generic [ref=e160]: Java
+        - article [ref=e161]:
+          - generic [ref=e162]:
+            - generic [ref=e163]: ☁️
+            - heading "Cloud & AI Skills" [level=4] [ref=e164]
+          - generic [ref=e165]:
+            - generic [ref=e166]: AWS
+            - generic [ref=e167]: Google Vertex AI
+            - generic [ref=e168]: Agile
+            - generic [ref=e169]: Test Strategy
+            - generic [ref=e170]: Test Framework Design
+            - generic [ref=e171]: GenAI Prompt Engineering
+            - generic [ref=e172]: MCP Server Config
+            - generic [ref=e173]: CI/CD Pipeline Automation
+            - generic [ref=e174]: AI Model Integration
+        - article [ref=e175]:
+          - generic [ref=e176]:
+            - generic [ref=e177]: 🧭
+            - heading "Leadership Skills" [level=4] [ref=e178]
+          - generic [ref=e179]:
+            - generic [ref=e180]: Project Management
+            - generic [ref=e181]: Client Communication
+            - generic [ref=e182]: Leadership & Mentoring
+            - generic [ref=e183]: Process Optimization
+            - generic [ref=e184]: Documentation & Reporting
+            - generic [ref=e185]: Strategic Planning
+            - generic [ref=e186]: Quality Assurance Governance
+            - generic [ref=e187]: Decision Making
+    - generic [ref=e189]:
+      - heading "Some of My Recent Work" [level=2] [ref=e190]
+      - paragraph [ref=e191]: Impactful automation programs and enterprise accelerators delivered in high-stakes environments.
+      - generic [ref=e192]:
+        - article [ref=e193]:
+          - generic [ref=e194]:
+            - generic [ref=e195]: Featured Project
+            - heading "Banking Domain – QA Automation" [level=3] [ref=e196]
+            - paragraph [ref=e197]: Orchestrated comprehensive Tosca QA automation framework during a critical banking merger initiative. As the primary QA representative for First Access (SailPoint), I maintained an impeccable zero-escalation track record. Successfully transformed manual test suites into fully automated Tosca workflows, dramatically reducing regression cycle times while ensuring 50+ production releases with unwavering stability and reliability.
+          - generic [ref=e199]:
+            - generic [ref=e200]: Tosca
+            - generic [ref=e201]: DEX
+            - generic [ref=e202]: Vision AI
+            - generic [ref=e203]: Jenkins
+            - generic [ref=e204]: Jira
+        - article [ref=e205]:
+          - generic [ref=e206]:
+            - generic [ref=e207]: Featured Project
+            - heading "GenAI-Powered Automation PoC | Wipro Accelerator" [level=3] [ref=e208]
+            - paragraph [ref=e209]: Pioneered an innovative AI-driven proof-of-concept that evaluated Tosca, Katalon, and Playwright for enterprise-level QA transformation. Demonstrated revolutionary AI-assisted test case generation capabilities tailored for BFSI clients. Achieved remarkable efficiency gains by deploying automation infrastructure on MCP servers, resulting in substantial runtime reductions. Delivered compelling presentations that secured production-level pilot program approval.
+          - generic [ref=e211]:
+            - generic [ref=e212]: Wipro GenAI Accelerator
+            - generic [ref=e213]: Katalon
+            - generic [ref=e214]: Playwright
+            - generic [ref=e215]: Tosca
+            - generic [ref=e216]: MCP Servers
+            - generic [ref=e217]: Google Vertex AI
+    - generic [ref=e219]:
+      - heading "Get In Touch" [level=2] [ref=e220]
+      - paragraph [ref=e221]: Let’s collaborate to build reliable, automated, and high-quality digital solutions.
+      - generic [ref=e222]:
+        - generic [ref=e223]:
+          - generic [ref=e224]: Open for opportunities
+          - heading "Let’s build resilient digital experiences" [level=3] [ref=e225]
+          - paragraph [ref=e226]: I partner with global teams to architect QA accelerators, orchestrate Tosca automation, and cultivate seamless delivery pipelines.
+          - generic [ref=e227]:
+            - generic [ref=e228]:
+              - generic [ref=e229]: 📱
+              - link "+91 9843165568" [ref=e230] [cursor=pointer]:
+                - /url: tel:+91 9843165568
+            - generic [ref=e231]:
+              - generic [ref=e232]: ✉️
+              - link "naveennagendiran321@gmail.com" [ref=e233] [cursor=pointer]:
+                - /url: mailto:naveennagendiran321@gmail.com
+            - generic [ref=e234]:
+              - generic [ref=e235]: 📍
+              - link "Tiruchirappalli, Tamil Nadu, India" [ref=e236] [cursor=pointer]:
+                - /url: https://www.google.com/maps/search/?api=1&query=Tiruchirappalli%2C%20Tamil%20Nadu%2C%20India
+        - generic [ref=e237]:
+          - generic [ref=e238]:
+            - generic [ref=e239]:
+              - generic [ref=e240]: Name
+              - textbox "Name" [ref=e241]:
+                - /placeholder: What's your name?
+            - generic [ref=e242]:
+              - generic [ref=e243]: Email
+              - textbox "Email" [ref=e244]:
+                - /placeholder: your.email@domain.com
+          - generic [ref=e245]:
+            - generic [ref=e246]: Message
+            - textbox "Message" [ref=e247]:
+              - /placeholder: Share what's on your mind—ideas, opportunities, collaboration...
+          - button "Send Message" [ref=e248] [cursor=pointer]
+          - status [ref=e249]
+    - generic [ref=e252]:
+      - navigation "Social media links" [ref=e253]:
+        - link "Connect on LinkedIn" [ref=e254] [cursor=pointer]:
+          - /url: https://www.linkedin.com/in/naveen-k-2580411b2
+          - img [ref=e255]
+        - link "Connect on Email" [ref=e257] [cursor=pointer]:
+          - /url: mailto:naveennagendiran321@gmail.com
+          - img [ref=e258]
+        - link "Connect on GitHub" [ref=e260] [cursor=pointer]:
+          - /url: https://github.com/Naveen-neevaN
+          - img [ref=e261]
+        - link "Connect on Instagram" [ref=e263] [cursor=pointer]:
+          - /url: https://www.instagram.com/naveen_nagendiran/
+          - img [ref=e264]
+        - link "Connect on WhatsApp" [ref=e266] [cursor=pointer]:
+          - /url: https://wa.me/919843165568
+          - img [ref=e267]
+      - contentinfo [ref=e269]: Let's connect and create something amazing together
+      - paragraph [ref=e270]: © 2026 Naveen K. All rights reserved
+  - button "Open Next.js Dev Tools" [ref=e276] [cursor=pointer]:
+    - img [ref=e277]
+  - alert [ref=e280]
+```

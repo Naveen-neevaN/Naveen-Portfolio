@@ -17,13 +17,19 @@ export interface Skill {
   category?: string
 }
 
+export interface ResponsiveAsset {
+  src: string
+  srcSet?: string
+  fallback?: string
+}
+
 export interface PersonalInfo {
   name: string
   title?: string
   email?: string
   phone?: string
   location?: string
-  carouselImages?: string[]
+  carouselImages?: Array<string | ResponsiveAsset>
   bio?: string
   about?: string
   aboutIntro?: {
@@ -40,6 +46,8 @@ export interface PersonalInfo {
     title: string
     description: string
     image?: string
+    imageSrcSet?: string
+    imageFallback?: string
   }
   techExpertise?: Array<{
     id: string

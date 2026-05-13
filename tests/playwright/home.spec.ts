@@ -1,12 +1,14 @@
 import { test, expect } from '@playwright/test'
 
 test.beforeEach(async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.goto('http://localhost:3000')
 })
 
 test('homepage has main content and name', async ({ page }) => {
   await expect(page.getByRole('main')).toBeVisible()
-  await expect(page.getByText(/Naveen/i)).toBeVisible()
+  await expect(page.locator('.hero__title .gradient-text')).toHaveText('Naveen K')
+  await expect(page.locator('.footer')).toHaveAttribute('data-build-id', /.+/)
 })
 
 test('theme switch toggles light and dark modes', async ({ page }) => {
@@ -31,6 +33,10 @@ test('mobile navigation opens and scrolls to contact', async ({ page }) => {
   await page.getByRole('button', { name: /toggle navigation/i }).click()
   await expect(page.getByRole('link', { name: 'Contact' })).toBeVisible()
 
+  await page.keyboard.press('Escape')
+  await expect(page.locator('.site-header__links')).not.toHaveClass(/is-open/)
+
+  await page.getByRole('button', { name: /toggle navigation/i }).click()
   await page.getByRole('link', { name: 'Contact' }).click()
   await expect(page.locator('#contact')).toBeInViewport()
 })
@@ -45,7 +51,7 @@ test('contact form validates all required fields', async ({ page }) => {
 })
 
 test('carousel falls back when public images fail', async ({ page }) => {
-  await page.route('**/images/carousel/**', (route) => route.abort())
+  await page.route(/\/images\/(?:optimized\/)?carousel\//, (route) => route.abort())
   await page.reload({ waitUntil: 'networkidle' })
 
   await expect(page.getByText(/Carousel failed to load images/i)).toBeVisible()

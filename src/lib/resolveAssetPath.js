@@ -60,7 +60,21 @@ function resolveAssetPath(path) {
 	}
 }
 
+function resolveAssetSrcSet(srcSet) {
+	if (!srcSet || typeof srcSet !== 'string') return undefined
+
+	return srcSet
+		.split(',')
+		.map((part) => {
+			const [src, descriptor] = part.trim().split(/\s+/)
+			if (!src) return ''
+			return descriptor ? `${resolveAssetPath(src)} ${descriptor}` : resolveAssetPath(src)
+		})
+		.filter(Boolean)
+		.join(', ')
+}
+
 export default resolveAssetPath
-export { resolveAssetPath }
+export { resolveAssetPath, resolveAssetSrcSet }
 
 

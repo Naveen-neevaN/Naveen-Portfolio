@@ -242,6 +242,10 @@
   gap: 1rem;
 }
 
+.header-theme-controls[inert] {
+  pointer-events: none;
+}
+
 /* Shared header button styles for consistency */
 .header-btn {
   display: inline-flex;

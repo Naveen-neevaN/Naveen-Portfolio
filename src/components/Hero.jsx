@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 // Use native <img> to simplify loading from /public and avoid Next Image sizing issues for this static export
 import { personalInfo } from '@/data/personalInfo.js'
-import resolveAssetPath from '@/lib/resolveAssetPath'
+import { resolveAssetPath, resolveAssetSrcSet } from '@/lib/resolveAssetPath'
 import { useReducedMotion } from '@/hooks/useReducedMotion.js'
 import './Hero.css'
 
@@ -28,6 +28,10 @@ const Hero = () => {
   
 
   const heroDescription = useMemo(() => personalInfo.bio?.replace(/\s+/g, ' ').trim() ?? '', [])
+  const currentRole = rolesRef.current[currentRoleIndex] ?? rolesRef.current[0]
+  const getImageSrc = (image) => (typeof image === 'string' ? image : image.src)
+  const getImageFallback = (image) => (typeof image === 'string' ? image : image.fallback || image.src)
+  const getImageSrcSet = (image) => (typeof image === 'string' ? undefined : image.srcSet)
 
   useEffect(() => {
     setIsMounted(true)
@@ -110,11 +114,13 @@ const Hero = () => {
           <div className={`hero__column hero__column--intro ${isMounted ? 'is-active' : ''}`}>
             <div className="hero__greetingBox">
               <h2 className="hero__greetingText"><span className="hero__greeting-prefix">Hi, I&apos;m</span><span className="gradient-text">{personalInfo.name}</span></h2>
-              <div className="hero__roleDisplay">
+              <div className="hero__roleDisplay" aria-live="polite" aria-atomic="true">
+                <span className="sr-only">{currentRole}</span>
                 {rolesRef.current.map((role, i) => (
                   <span
                     key={role}
                     className={`hero__role ${i === currentRoleIndex ? 'is-active' : ''} ${i === prevRoleIndex ? 'was-active' : ''}`}
+                    aria-hidden="true"
                   >
                     {role}
                   </span>
@@ -195,27 +201,36 @@ const Hero = () => {
 
                       return (
                         <div
-                          key={image}
+                          key={getImageSrc(image)}
                           className={`hero__slide ${isActive ? 'is-active' : ''} ${isPrev ? 'was-active' : ''}`}
                           data-direction={dir}
                           aria-hidden={!isActive}
                         >
                           <img
-                            src={resolveAssetPath(image)}
+                            src={resolveAssetPath(getImageSrc(image))}
+                            srcSet={resolveAssetSrcSet(getImageSrcSet(image))}
+                            sizes="(max-width: 540px) 90vw, (max-width: 1080px) 70vw, 520px"
                             alt={`Portfolio highlight ${index + 1}`}
                             className="hero__image"
-                            loading="eager"
+                            loading={index === 0 ? 'eager' : 'lazy'}
+                            fetchPriority={index === 0 ? 'high' : 'low'}
                             decoding="async"
                             onError={(e) => {
                               // mark error to fall back and capture resolved URL for diagnostics
-                              const resolved = resolveAssetPath(image)
+                              const fallback = resolveAssetPath(getImageFallback(image))
+                              const resolved = resolveAssetPath(getImageSrc(image))
+                              if (e.currentTarget.src !== fallback) {
+                                e.currentTarget.srcset = ''
+                                e.currentTarget.src = fallback
+                                return
+                              }
                               if (process.env.NODE_ENV !== 'production') {
-                                console.warn('Carousel image failed to load:', image, 'resolved->', resolved, e?.nativeEvent?.src || e?.target?.src)
+                                console.warn('Carousel image failed to load:', getImageSrc(image), 'resolved->', resolved, e?.nativeEvent?.src || e?.target?.src)
                               }
                               setFailedCarouselUrls((s) => {
                                 const exists = s.find((x) => x.resolved === resolved)
                                 if (exists) return s
-                                return [...s, { original: image, resolved }]
+                                return [...s, { original: getImageSrc(image), resolved }]
                               })
                               setHasCarouselError(true)
                             }}

@@ -110,6 +110,17 @@ const Header = () => {
     }
   }, [isMobileMenuOpen])
 
+  useEffect(() => {
+    if (!isMobileMenuOpen) return
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') setIsMobileMenuOpen(false)
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [isMobileMenuOpen])
+
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId)
     if (element) {
@@ -145,7 +156,7 @@ const Header = () => {
           {/* nav moved into right controls to keep links aligned right */}
           <div className="site-header__right">
             <nav className="site-header__nav" aria-label="Primary">
-              <ul className={`site-header__links ${isMobileMenuOpen ? 'is-open' : ''}`}>
+              <ul id="primary-navigation" className={`site-header__links ${isMobileMenuOpen ? 'is-open' : ''}`}>
                 {navItems.map((item) => (
                   <li key={item.id} className="site-header__item">
                     <a
@@ -164,7 +175,7 @@ const Header = () => {
             </nav>
             <div className="site-header__controls">
               {/* Theme controls (kept in header controls for consistent spacing) */}
-              <div className="header-theme-controls">
+              <div className="header-theme-controls" inert={isMobileMenuOpen ? '' : undefined}>
                 <ThemeSwitch />
               </div>
 
@@ -173,6 +184,7 @@ const Header = () => {
                 className="site-header__menuButton"
                 aria-label="Toggle navigation"
                 aria-expanded={isMobileMenuOpen}
+                aria-controls="primary-navigation"
                 onClick={() => setIsMobileMenuOpen((open) => !open)}
               >
                 <span />

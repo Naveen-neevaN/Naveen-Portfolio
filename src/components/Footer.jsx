@@ -13,9 +13,11 @@ const iconMap = {
 
 const Footer = () => {
   const currentYear = new Date().getFullYear()
+  const buildId = process.env.NEXT_PUBLIC_BUILD_ID || 'local'
+  const buildTime = process.env.NEXT_PUBLIC_BUILD_TIME || ''
 
   return (
-    <footer className="footer">
+    <footer className="footer" data-build-id={buildId} data-build-time={buildTime}>
       <div className="container">
         <div className="footer-content">
           <div className="footer-social" role="navigation" aria-label="Social media links">

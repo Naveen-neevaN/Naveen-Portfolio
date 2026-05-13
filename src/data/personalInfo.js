@@ -9,9 +9,24 @@ export const personalInfo = {
   
   // Carousel Images
   carouselImages: [
-    './images/carousel/image1.jpg',
-    './images/carousel/image2.jpg',
-    './images/carousel/image3.jpg',
+    {
+      src: './images/optimized/carousel/image1-960.jpg',
+      srcSet:
+        './images/optimized/carousel/image1-480.jpg 480w, ./images/optimized/carousel/image1-768.jpg 768w, ./images/optimized/carousel/image1-960.jpg 960w',
+      fallback: './images/carousel/image1.jpg',
+    },
+    {
+      src: './images/optimized/carousel/image2-960.jpg',
+      srcSet:
+        './images/optimized/carousel/image2-480.jpg 480w, ./images/optimized/carousel/image2-768.jpg 768w, ./images/optimized/carousel/image2-960.jpg 960w',
+      fallback: './images/carousel/image2.jpg',
+    },
+    {
+      src: './images/optimized/carousel/image3-960.jpg',
+      srcSet:
+        './images/optimized/carousel/image3-480.jpg 480w, ./images/optimized/carousel/image3-768.jpg 768w, ./images/optimized/carousel/image3-960.jpg 960w',
+      fallback: './images/carousel/image3.jpg',
+    },
   ],
   
   // About Section
@@ -37,7 +52,9 @@ export const personalInfo = {
     title: 'Innovation & Leadership',
     description:
       "I played a pivotal role in Wipro's GenAI Accelerator PoC initiative, where I led tool assessments leveraging Katalon and Playwright across diverse client environments.",
-    image: '/about-poster.png',
+    image: '/images/optimized/about-poster-960.jpg',
+    imageSrcSet: '/images/optimized/about-poster-640.jpg 640w, /images/optimized/about-poster-960.jpg 960w',
+    imageFallback: '/about-poster.png',
   },
 
   techExpertise: [
