@@ -33,9 +33,51 @@ const Hero = () => {
   const getImageFallback = (image) => (typeof image === 'string' ? image : image.fallback || image.src)
   const getImageSrcSet = (image) => (typeof image === 'string' ? undefined : image.srcSet)
 
+  const recordCarouselFailure = (image, resolved) => {
+    const original = getImageSrc(image)
+    setFailedCarouselUrls((items) => {
+      if (items.some((item) => item.resolved === resolved)) return items
+      return [...items, { original, resolved }]
+    })
+    setHasCarouselError(true)
+  }
+
   useEffect(() => {
     setIsMounted(true)
   }, [])
+
+  useEffect(() => {
+    if (!isMounted || !hasCarousel || hasCarouselError || typeof window === 'undefined') return
+
+    const image = carouselImages[currentSlide]
+    if (!image) return
+
+    let cancelled = false
+    const resolved = resolveAssetPath(getImageSrc(image))
+    const fallback = resolveAssetPath(getImageFallback(image))
+    const probe = new window.Image()
+
+    const fail = () => {
+      if (!cancelled) recordCarouselFailure(image, resolved)
+    }
+
+    probe.onload = () => {}
+    probe.onerror = () => {
+      if (fallback && fallback !== resolved) {
+        const fallbackProbe = new window.Image()
+        fallbackProbe.onload = () => {}
+        fallbackProbe.onerror = fail
+        fallbackProbe.src = fallback
+        return
+      }
+      fail()
+    }
+    probe.src = resolved
+
+    return () => {
+      cancelled = true
+    }
+  }, [carouselImages, currentSlide, hasCarousel, hasCarouselError, isMounted])
 
   // Diagnostic: log resolved asset URLs (helps capture what the resolver returns in different hosts)
   useEffect(() => {
@@ -220,19 +262,14 @@ const Hero = () => {
                               const fallback = resolveAssetPath(getImageFallback(image))
                               const resolved = resolveAssetPath(getImageSrc(image))
                               if (e.currentTarget.src !== fallback) {
-                                e.currentTarget.srcset = ''
+                                e.currentTarget.removeAttribute('srcset')
                                 e.currentTarget.src = fallback
                                 return
                               }
                               if (process.env.NODE_ENV !== 'production') {
                                 console.warn('Carousel image failed to load:', getImageSrc(image), 'resolved->', resolved, e?.nativeEvent?.src || e?.target?.src)
                               }
-                              setFailedCarouselUrls((s) => {
-                                const exists = s.find((x) => x.resolved === resolved)
-                                if (exists) return s
-                                return [...s, { original: getImageSrc(image), resolved }]
-                              })
-                              setHasCarouselError(true)
+                              recordCarouselFailure(image, resolved)
                             }}
                           />
                         </div>

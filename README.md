@@ -14,7 +14,7 @@ A modern, professional personal website built with Next.js, React, and plain CSS
 
 ### Prerequisites
 
-- Node.js 18+ and npm/yarn installed
+- Node.js 20+ and npm installed
 
 ### Installation
 
@@ -87,6 +87,22 @@ npm run build
 ```
 
 2. The static files will be in the `out/` directory
+
+## Testing
+
+Run the Playwright suite after starting the app locally:
+
+```bash
+npm run dev
+npm run test:e2e:ci
+```
+
+If port `3000` is already in use, start Next.js on another port and point the tests at it:
+
+```bash
+npm run dev -- -p 3001
+$env:E2E_BASE_URL='http://localhost:3001'; npm run test:e2e:ci
+```
 
 ## Project Structure
 

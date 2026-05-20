@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import emailjs from 'emailjs-com'
 import { personalInfo } from '@/data/personalInfo.js'
 import { useScrollAnimation } from '@/hooks/useScrollAnimation.js'
@@ -13,53 +13,82 @@ const emailConfig = {
   autoTemplateId: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_AUTO ?? '',
 }
 
+const initialFormData = { name: '', email: '', message: '' }
+const initialErrors = { name: '', email: '', message: '' }
+
+const validateField = (name, value) => {
+  const normalizedValue = value?.trim() ?? ''
+
+  if (name === 'name' && !normalizedValue) return 'Name is required.'
+  if (name === 'email') {
+    if (!normalizedValue) return 'Email is required.'
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedValue)) return 'Please enter a valid email address.'
+  }
+  if (name === 'message' && !normalizedValue) return 'Message is required.'
+
+  return ''
+}
+
+const validateForm = (data) => ({
+  name: validateField('name', data.name),
+  email: validateField('email', data.email),
+  message: validateField('message', data.message),
+})
+
+const hasValidationErrors = (nextErrors) => Object.values(nextErrors).some(Boolean)
+
 const Contact = () => {
   const [ref, isVisible] = useScrollAnimation(0.2)
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: '',
-  })
+  const [formData, setFormData] = useState(initialFormData)
   const [status, setStatus] = useState('idle')
-  const [errors, setErrors] = useState({ name: '', email: '', message: '' })
+  const [errors, setErrors] = useState(initialErrors)
   const [backendError, setBackendError] = useState('')
   const [submitAttempted, setSubmitAttempted] = useState(false)
   const [isErrorDismissing, setIsErrorDismissing] = useState(false)
   const [shakeKey, setShakeKey] = useState(0)
+  const timeoutIds = useRef([])
 
   useEffect(() => {
     if (emailConfig.publicKey) emailjs.init(emailConfig.publicKey)
   }, [])
 
-  const validateForm = (data) => {
-    const nextErrors = { name: '', email: '', message: '' }
-    if (!data.name?.trim()) nextErrors.name = 'Name is required.'
-    if (!data.email?.trim()) nextErrors.email = 'Email is required.'
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) nextErrors.email = 'Please enter a valid email address.'
-    if (!data.message?.trim()) nextErrors.message = 'Message is required.'
-    return nextErrors
+  useEffect(() => {
+    return () => {
+      timeoutIds.current.forEach((timeoutId) => clearTimeout(timeoutId))
+    }
+  }, [])
+
+  const setManagedTimeout = (callback, delay) => {
+    const timeoutId = window.setTimeout(callback, delay)
+    timeoutIds.current.push(timeoutId)
+    return timeoutId
+  }
+
+  const clearManagedTimeouts = () => {
+    timeoutIds.current.forEach((timeoutId) => clearTimeout(timeoutId))
+    timeoutIds.current = []
   }
 
   const showTemporaryError = () => {
+    clearManagedTimeouts()
     setStatus('error')
     setShakeKey((prev) => prev + 1)
     setIsErrorDismissing(false)
-    setTimeout(() => setIsErrorDismissing(true), 2500)
-    setTimeout(() => {
+    setManagedTimeout(() => setIsErrorDismissing(true), 2500)
+    setManagedTimeout(() => {
       setStatus('idle')
       setIsErrorDismissing(false)
     }, 3000)
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
     setSubmitAttempted(true)
-    setStatus('sending')
     setBackendError('')
 
     const newErrors = validateForm(formData)
     setErrors(newErrors)
-    if (newErrors.name || newErrors.email || newErrors.message) {
+    if (hasValidationErrors(newErrors)) {
       showTemporaryError()
       return
     }
@@ -70,62 +99,47 @@ const Contact = () => {
       return
     }
 
-    // Send admin notification using EmailJS
+    clearManagedTimeouts()
+    setStatus('sending')
+
     const adminParams = {
-      to_email: 'naveennagendiran321@gmail.com',
+      to_email: personalInfo.email,
       from_name: formData.name,
       from_email: formData.email,
       message: formData.message,
       reply_to: formData.email,
     }
 
-    emailjs.send(emailConfig.serviceId, emailConfig.adminTemplateId, adminParams)
-      .then((response) => {
-        if (process.env.NODE_ENV !== 'production') console.log('Admin email sent:', response)
+    try {
+      const response = await emailjs.send(emailConfig.serviceId, emailConfig.adminTemplateId, adminParams)
+      if (process.env.NODE_ENV !== 'production') console.log('Admin email sent:', response)
 
-        // Attempt to send auto-reply to visitor (non-blocking)
-        if (emailConfig.autoTemplateId) {
-          const autoParams = {
-            // template may use {{email}} or {{to_email}} to determine recipient
-            to_email: formData.email,
-            email: formData.email,
-            from_name: formData.name,
-            from_email: formData.email,
-            message: formData.message,
-            // make reply-to your address so visitor replies go to you
-            reply_to: 'naveennagendiran321@gmail.com',
-          }
-
-          emailjs.send(emailConfig.serviceId, emailConfig.autoTemplateId, autoParams)
-            .then((r2) => {
-              if (process.env.NODE_ENV !== 'production') console.log('Auto-reply sent:', r2)
-            })
-            .catch((err2) => {
-              // Auto-reply failure should not block the main success path
-              console.error('Auto-reply error:', err2)
-            })
+      if (emailConfig.autoTemplateId) {
+        const autoParams = {
+          to_email: formData.email,
+          email: formData.email,
+          from_name: formData.name,
+          from_email: formData.email,
+          message: formData.message,
+          reply_to: personalInfo.email,
         }
 
-        setStatus('success')
-        setFormData({ name: '', email: '', message: '' })
-        setErrors({ name: '', email: '', message: '' })
-        setSubmitAttempted(false)
-        setTimeout(() => setStatus('idle'), 2800)
-      })
-      .catch((err) => {
-        console.error('EmailJS error:', err)
-        setBackendError('Something went wrong. Please try again.')
-        setStatus('error')
-        setIsErrorDismissing(false)
-        // Start fade-out after 2.5 seconds
-        setTimeout(() => setIsErrorDismissing(true), 2500)
-        // Auto-dismiss error after 3 seconds
-        setTimeout(() => {
-          setStatus('idle')
-          setBackendError('')
-          setIsErrorDismissing(false)
-        }, 3000)
-      })
+        emailjs.send(emailConfig.serviceId, emailConfig.autoTemplateId, autoParams)
+          .catch((error) => {
+            console.error('Auto-reply error:', error)
+          })
+      }
+
+      setStatus('success')
+      setFormData(initialFormData)
+      setErrors(initialErrors)
+      setSubmitAttempted(false)
+      setManagedTimeout(() => setStatus('idle'), 2800)
+    } catch (error) {
+      console.error('EmailJS error:', error)
+      setBackendError('Something went wrong. Please try again.')
+      showTemporaryError()
+    }
   }
 
   const handleChange = (event) => {
@@ -135,24 +149,9 @@ const Contact = () => {
       [name]: value,
     }))
 
-    // Real-time validation: clear error when corrected (instant disappearance)
-    setErrors((prev) => {
-      const next = { ...prev }
-      if (name === 'name') {
-        if (value && value.trim()) next.name = ''
-        else next.name = 'Name is required.'
-      }
-      if (name === 'email') {
-        if (!value || !value.trim()) next.email = 'Email is required.'
-        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) next.email = 'Please enter a valid email address.'
-        else next.email = ''
-      }
-      if (name === 'message') {
-        if (value && value.trim()) next.message = ''
-        else next.message = 'Message is required.'
-      }
-      return next
-    })
+    if (submitAttempted) {
+      setErrors((previous) => ({ ...previous, [name]: validateField(name, value) }))
+    }
   }
 
   return (
@@ -223,9 +222,11 @@ const Contact = () => {
                   onChange={handleChange}
                   required
                   placeholder="What's your name?"
+                  aria-invalid={Boolean(submitAttempted && errors.name)}
+                  aria-describedby="name-error"
                   className={`${submitAttempted && errors.name ? 'has-error' : ''}`}
                 />
-                <div className={`contact__fieldError ${errors.name ? 'is-visible' : ''}`}>
+                <div id="name-error" className={`contact__fieldError ${errors.name ? 'is-visible' : ''}`}>
                   {errors.name}
                 </div>
               </div>
@@ -241,9 +242,11 @@ const Contact = () => {
                   onChange={handleChange}
                   required
                   placeholder="your.email@domain.com"
+                  aria-invalid={Boolean(submitAttempted && errors.email)}
+                  aria-describedby="email-error"
                   className={`${submitAttempted && errors.email ? 'has-error' : ''}`}
                 />
-                <div className={`contact__fieldError ${errors.email ? 'is-visible' : ''}`}>
+                <div id="email-error" className={`contact__fieldError ${errors.email ? 'is-visible' : ''}`}>
                   {errors.email}
                 </div>
               </div>
@@ -260,14 +263,14 @@ const Contact = () => {
                 rows={3}
                 placeholder="Share what's on your mind—ideas, opportunities, collaboration..."
                 required
+                aria-invalid={Boolean(submitAttempted && errors.message)}
+                aria-describedby="message-error"
                 className={`${submitAttempted && errors.message ? 'has-error' : ''}`}
               />
-              <div className={`contact__fieldError ${errors.message ? 'is-visible' : ''}`}>
+              <div id="message-error" className={`contact__fieldError ${errors.message ? 'is-visible' : ''}`}>
                 {errors.message}
               </div>
             </div>
-
-            <div style={{ height: '1rem' }} />
 
             <button type="submit" className="btn btn-primary contact__submit" disabled={status === 'sending'}>
               {status === 'sending' ? 'Sending...' : status === 'success' ? 'Message Sent' : 'Send Message'}

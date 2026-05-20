@@ -39,7 +39,7 @@ const manrope = Manrope({
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${poppins.variable} ${manrope.variable}`} suppressHydrationWarning>
-      <body>
+      <body suppressHydrationWarning>
         {/* Skip link for keyboard users */}
         <a href="#main" className="skip-link">Skip to content</a>
         <Script id="theme-init" strategy="beforeInteractive" dangerouslySetInnerHTML={{ __html: themeInitScript }} />

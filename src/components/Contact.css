@@ -149,10 +149,10 @@
 }
 
 .contact__detail-value {
-  font-weight: 500;
+  font-weight: 600;
   color: var(--text-primary);
   text-decoration: none;
-  font-size: 0.95rem;
+  font-size: 0.96rem;
   transition: color 0.3s ease;
   word-break: break-word;
 }
@@ -164,11 +164,6 @@
 [data-theme='dark'] .contact__detail {
   background: rgba(6, 35, 43, 0.4);
   border-color: rgba(241, 201, 105, 0.25);
-}
-
-/* Ensure contact cards are equal height so tiles align */
-.contact__card {
-  height: 100%;
 }
 
 @media (max-width: 768px) {
@@ -186,38 +181,11 @@
     border-radius: var(--radius-sm);
     padding: 0.5rem 0.75rem;
   }
-  
-  .contact__field textarea {
-    min-height: 60px;
-  }
-}
-
-.contact__detail-label {
-  font-size: 0.78rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
-
-.contact__detail-value {
-  font-weight: 600;
-  color: var(--text-primary);
-  text-decoration: none;
-  font-size: 0.96rem;
 }
 
 .contact__detail-value:hover,
 .contact__detail-value:focus-visible {
   text-decoration: underline;
-}
-
-/* Custom styles for textarea */
-.contact__field textarea {
-  min-height: 72px; /* compact height for ~3 rows */
-  max-height: 180px;
-  resize: vertical;
-  padding: 0.5rem 0.75rem;
-  line-height: 1.4;
 }
 
 .contact__form {
@@ -385,7 +353,7 @@
 .contact__submit {
   width: 100%;
   max-width: 500px;
-  margin-top: 0.4rem;
+  margin-top: 1.4rem;
   margin-bottom: 0;
 }
 
@@ -466,5 +434,10 @@
   .contact__field input,
   .contact__field textarea {
     transition: none;
+  }
+
+  .contact__field input.has-error,
+  .contact__field textarea.has-error {
+    animation: none;
   }
 }

@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState, useCallback } from 'react'
-import { REDUCED_MOTION_EVENT, readReducedMotionPreference } from '@/lib/theme.js'
+import { useEffect, useRef, useState } from 'react'
+import { subscribeToReducedMotionPreference } from '@/lib/theme.js'
 
 const defaultOptions = {
   threshold: 0.08,
@@ -18,50 +18,10 @@ export const useScrollAnimation = (options = {}) => {
   const [isVisible, setIsVisible] = useState(false)
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
   const ref = useRef(null)
-  const prefersReducedMotionRef = useRef(false)
 
-  // Memoize reduced motion check to avoid re-reads
-  const readPref = useCallback(() => {
-    try {
-      return readReducedMotionPreference()
-    } catch (e) {
-      return false
-    }
-  }, [])
-
-  // Single setup effect for reduced motion preference
   useEffect(() => {
-    if (typeof window === 'undefined') return
-
-    const initial = readPref()
-    setPrefersReducedMotion(initial)
-    prefersReducedMotionRef.current = initial
-
-    // Debounced handler for preference changes
-    let timeoutId
-    const handleChange = () => {
-      clearTimeout(timeoutId)
-      timeoutId = setTimeout(() => {
-        const newPref = readPref()
-        if (prefersReducedMotionRef.current !== newPref) {
-          setPrefersReducedMotion(newPref)
-          prefersReducedMotionRef.current = newPref
-        }
-      }, 100)
-    }
-
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
-    mediaQuery.addEventListener('change', handleChange)
-    document.addEventListener(REDUCED_MOTION_EVENT, handleChange)
-    window.addEventListener('storage', handleChange)
-
-    return () => {
-      clearTimeout(timeoutId)
-      mediaQuery.removeEventListener('change', handleChange)
-      document.removeEventListener(REDUCED_MOTION_EVENT, handleChange)
-      window.removeEventListener('storage', handleChange)
-    }
-  }, [readPref])
+    return subscribeToReducedMotionPreference(setPrefersReducedMotion)
+  }, [])
 
   // Intersection observer effect
   useEffect(() => {

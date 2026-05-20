@@ -30,15 +30,8 @@ export function getInitialThemeState() {
     savedFamily = null
   }
 
-  const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches
-  const theme = savedTheme === 'dark' || savedTheme === 'light'
-    ? savedTheme
-    : prefersDark
-      ? 'dark'
-      : DEFAULT_THEME
-
   return {
-    theme,
+    theme: normalizeTheme(savedTheme),
     family: normalizeThemeFamily(savedFamily),
   }
 }
@@ -73,6 +66,30 @@ export function readReducedMotionPreference() {
   }
 
   return Boolean(typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)
+}
+
+export function subscribeToReducedMotionPreference(callback) {
+  if (typeof window === 'undefined' || typeof document === 'undefined') return () => {}
+
+  const update = () => callback(readReducedMotionPreference())
+  const mediaQuery = window.matchMedia?.('(prefers-reduced-motion: reduce)')
+
+  update()
+  if (mediaQuery?.addEventListener) mediaQuery.addEventListener('change', update)
+  else mediaQuery?.addListener?.(update)
+  document.addEventListener(REDUCED_MOTION_EVENT, update)
+
+  const handleStorage = (event) => {
+    if (!event.key || event.key === REDUCED_MOTION_STORAGE_KEY) update()
+  }
+  window.addEventListener('storage', handleStorage)
+
+  return () => {
+    if (mediaQuery?.removeEventListener) mediaQuery.removeEventListener('change', update)
+    else mediaQuery?.removeListener?.(update)
+    document.removeEventListener(REDUCED_MOTION_EVENT, update)
+    window.removeEventListener('storage', handleStorage)
+  }
 }
 
 export function applyReducedMotionPreference(reduced, options = {}) {
@@ -111,7 +128,7 @@ export const themeInitScript = `
   } catch (error) {}
 
   if (theme !== 'dark' && theme !== 'light') {
-    theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : '${DEFAULT_THEME}';
+    theme = '${DEFAULT_THEME}';
   }
 
   if (family !== '2' && family !== '1') family = '${DEFAULT_THEME_FAMILY}';
