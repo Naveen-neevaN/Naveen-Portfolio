@@ -79,6 +79,50 @@ test('contact form validates email format before sending', async ({ page }) => {
   await expect(page.locator('#email')).toHaveAttribute('aria-invalid', 'true')
 })
 
+test('contact form reports a delivered message when the acknowledgement fails', async ({ page }) => {
+  const templateIds = []
+
+  await page.route('https://api.emailjs.com/api/v1.0/email/send', async (route) => {
+    const request = JSON.parse(route.request().postData() ?? '{}')
+    templateIds.push(request.template_id)
+
+    if (request.template_id === 'template_psfmd3n') {
+      await route.fulfill({ status: 500, body: 'Auto-reply unavailable' })
+      return
+    }
+
+    await route.fulfill({ status: 200, body: 'OK' })
+  })
+
+  await page.locator('#contact').scrollIntoViewIfNeeded()
+  await page.locator('#name').fill('Test Visitor')
+  await page.locator('#email').fill('visitor@example.com')
+  await page.locator('#message').fill('Checking contact delivery.')
+  await page.getByRole('button', { name: /send message/i }).click()
+
+  await expect(page.getByText("Your message was sent, but we couldn't send the acknowledgement email.")).toBeVisible()
+  await expect.poll(() => templateIds.length).toBe(2)
+  expect(templateIds).toEqual(['template_grhlujf', 'template_psfmd3n'])
+})
+
+test('contact form reports a clear failure when owner delivery is rejected', async ({ page }) => {
+  let requestCount = 0
+
+  await page.route('https://api.emailjs.com/api/v1.0/email/send', async (route) => {
+    requestCount += 1
+    await route.fulfill({ status: 422, body: 'The recipients address is empty' })
+  })
+
+  await page.locator('#contact').scrollIntoViewIfNeeded()
+  await page.locator('#name').fill('Test Visitor')
+  await page.locator('#email').fill('visitor@example.com')
+  await page.locator('#message').fill('Checking owner delivery failure.')
+  await page.getByRole('button', { name: /send message/i }).click()
+
+  await expect(page.getByRole('alert')).toHaveText(/contact inbox is temporarily unavailable/i)
+  await expect.poll(() => requestCount).toBe(1)
+})
+
 test('carousel falls back when public images fail', async ({ page }) => {
   await page.route(/\/images\/(?:optimized\/)?carousel\//, (route) => route.abort())
   await page.goto(baseUrl, { waitUntil: 'networkidle' })

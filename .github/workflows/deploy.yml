@@ -40,6 +40,10 @@ jobs:
         env:
           NODE_ENV: production
           NEXT_PUBLIC_BUILD_ID: ${{ github.sha }}
+          NEXT_PUBLIC_EMAILJS_PUBLIC_KEY: ${{ secrets.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY }}
+          NEXT_PUBLIC_EMAILJS_SERVICE_ID: ${{ secrets.NEXT_PUBLIC_EMAILJS_SERVICE_ID }}
+          NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_ADMIN: ${{ secrets.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_ADMIN }}
+          NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_AUTO: ${{ secrets.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_AUTO }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -52,4 +56,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-

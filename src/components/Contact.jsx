@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import emailjs from 'emailjs-com'
 import { personalInfo } from '@/data/personalInfo.js'
 import { useScrollAnimation } from '@/hooks/useScrollAnimation.js'
@@ -8,10 +8,19 @@ import './Contact.css'
 
 const emailConfig = {
   publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY ?? '',
-  serviceId: process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID ?? '',
-  adminTemplateId: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_ADMIN ?? '',
-  autoTemplateId: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_AUTO ?? '',
+  // GitHub Actions substitutes an unset secret with an empty string. Use `||`
+  // for these known IDs so that an empty optional deployment variable does not
+  // override their working defaults.
+  serviceId: process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || 'service_7jktasp',
+  adminTemplateId: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_ADMIN || 'template_grhlujf',
+  autoTemplateId: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_AUTO || 'template_psfmd3n',
 }
+
+const isContactServiceConfigured = () => (
+  Boolean(emailConfig.publicKey.trim())
+  && Boolean(emailConfig.serviceId.trim())
+  && Boolean(emailConfig.adminTemplateId.trim())
+)
 
 const initialFormData = { name: '', email: '', message: '' }
 const initialErrors = { name: '', email: '', message: '' }
@@ -37,108 +46,127 @@ const validateForm = (data) => ({
 
 const hasValidationErrors = (nextErrors) => Object.values(nextErrors).some(Boolean)
 
+const getEmailJsError = (error) => ({
+  status: Number(error?.status) || 0,
+  message: typeof error?.text === 'string' && error.text.trim()
+    ? error.text.trim()
+    : typeof error?.message === 'string' && error.message.trim()
+      ? error.message.trim()
+      : 'The email service did not return an error message.',
+})
+
+const getUserFacingEmailError = ({ status, message }) => {
+  const normalizedMessage = message.toLowerCase()
+
+  if (status === 422 && normalizedMessage.includes('recipient')) {
+    return 'The contact inbox is temporarily unavailable. Please use the email link instead.'
+  }
+  if (status === 429) return 'The contact service is busy. Please wait a moment and try again.'
+  if (status === 401 || status === 403) return 'The contact service could not be authorised. Please use the email link instead.'
+  if (status >= 500) return 'The contact service is temporarily unavailable. Please try again shortly.'
+
+  return 'Your message could not be sent. Please try again or use the email link instead.'
+}
+
 const Contact = () => {
   const [ref, isVisible] = useScrollAnimation(0.2)
   const [formData, setFormData] = useState(initialFormData)
   const [status, setStatus] = useState('idle')
   const [errors, setErrors] = useState(initialErrors)
   const [backendError, setBackendError] = useState('')
+  const [successMessage, setSuccessMessage] = useState('')
   const [submitAttempted, setSubmitAttempted] = useState(false)
-  const [isErrorDismissing, setIsErrorDismissing] = useState(false)
-  const [shakeKey, setShakeKey] = useState(0)
-  const timeoutIds = useRef([])
 
   useEffect(() => {
     if (emailConfig.publicKey) emailjs.init(emailConfig.publicKey)
   }, [])
 
-  useEffect(() => {
-    return () => {
-      timeoutIds.current.forEach((timeoutId) => clearTimeout(timeoutId))
-    }
-  }, [])
-
-  const setManagedTimeout = (callback, delay) => {
-    const timeoutId = window.setTimeout(callback, delay)
-    timeoutIds.current.push(timeoutId)
-    return timeoutId
-  }
-
-  const clearManagedTimeouts = () => {
-    timeoutIds.current.forEach((timeoutId) => clearTimeout(timeoutId))
-    timeoutIds.current = []
-  }
-
-  const showTemporaryError = () => {
-    clearManagedTimeouts()
+  const showError = (message) => {
+    setBackendError(message)
+    setSuccessMessage('')
     setStatus('error')
-    setShakeKey((prev) => prev + 1)
-    setIsErrorDismissing(false)
-    setManagedTimeout(() => setIsErrorDismissing(true), 2500)
-    setManagedTimeout(() => {
-      setStatus('idle')
-      setIsErrorDismissing(false)
-    }, 3000)
   }
 
   const handleSubmit = async (event) => {
     event.preventDefault()
     setSubmitAttempted(true)
     setBackendError('')
+    setSuccessMessage('')
 
     const newErrors = validateForm(formData)
     setErrors(newErrors)
     if (hasValidationErrors(newErrors)) {
-      showTemporaryError()
+      showError('Please correct the highlighted fields and try again.')
       return
     }
 
-    if (!emailConfig.publicKey || !emailConfig.serviceId || !emailConfig.adminTemplateId) {
-      setBackendError('Email service is not configured yet.')
-      showTemporaryError()
+    if (!isContactServiceConfigured()) {
+      showError('The contact service is not configured. Please use the email link instead.')
       return
     }
 
-    clearManagedTimeouts()
     setStatus('sending')
+    setSuccessMessage('Sending your message…')
+
+    const submission = {
+      name: formData.name.trim(),
+      email: formData.email.trim(),
+      message: formData.message.trim(),
+    }
 
     const adminParams = {
       to_email: personalInfo.email,
-      from_name: formData.name,
-      from_email: formData.email,
-      message: formData.message,
-      reply_to: formData.email,
+      // EmailJS templates in older projects often use `email` or
+      // `recipient_email` in their To Email field. Keep each recipient alias
+      // populated so existing templates continue to resolve the owner address.
+      email: personalInfo.email,
+      recipient_email: personalInfo.email,
+      from_name: submission.name,
+      from_email: submission.email,
+      message: submission.message,
+      reply_to: submission.email,
     }
 
     try {
       const response = await emailjs.send(emailConfig.serviceId, emailConfig.adminTemplateId, adminParams)
       if (process.env.NODE_ENV !== 'production') console.log('Admin email sent:', response)
 
-      if (emailConfig.autoTemplateId) {
+      if (emailConfig.autoTemplateId.trim()) {
         const autoParams = {
-          to_email: formData.email,
-          email: formData.email,
-          from_name: formData.name,
-          from_email: formData.email,
-          message: formData.message,
+          to_email: submission.email,
+          email: submission.email,
+          recipient_email: submission.email,
+          from_name: submission.name,
+          from_email: submission.email,
+          message: submission.message,
           reply_to: personalInfo.email,
         }
 
-        emailjs.send(emailConfig.serviceId, emailConfig.autoTemplateId, autoParams)
-          .catch((error) => {
-            console.error('Auto-reply error:', error)
-          })
+        try {
+          await emailjs.send(emailConfig.serviceId, emailConfig.autoTemplateId, autoParams)
+        } catch (error) {
+          const emailError = getEmailJsError(error)
+          console.warn('EmailJS acknowledgement error:', emailError, error)
+          setStatus('partial')
+          setSuccessMessage("Your message was sent, but we couldn't send the acknowledgement email.")
+          setFormData(initialFormData)
+          setErrors(initialErrors)
+          setSubmitAttempted(false)
+          return
+        }
       }
 
       setStatus('success')
+      setSuccessMessage("Message sent. I'll be in touch shortly.")
       setFormData(initialFormData)
       setErrors(initialErrors)
       setSubmitAttempted(false)
-      setManagedTimeout(() => setStatus('idle'), 2800)
     } catch (error) {
-      console.error('EmailJS error:', error)
-      setBackendError('Something went wrong. Please try again.')
-      showTemporaryError()
+      const emailError = getEmailJsError(error)
+      // Keep the detailed response available during development without letting
+      // Next.js replace the page with its console-error overlay.
+      console.warn('EmailJS error:', emailError, error)
+      showError(getUserFacingEmailError(emailError))
     }
   }
 
@@ -151,6 +179,12 @@ const Contact = () => {
 
     if (submitAttempted) {
       setErrors((previous) => ({ ...previous, [name]: validateField(name, value) }))
+    }
+
+    if (status !== 'sending') {
+      setStatus('idle')
+      setBackendError('')
+      setSuccessMessage('')
     }
   }
 
@@ -213,7 +247,6 @@ const Contact = () => {
               <div className="contact__field">
                 <label htmlFor="name">Name</label>
                 <input
-                  key={`name-${shakeKey}`}
                   type="text"
                   id="name"
                   name="name"
@@ -233,7 +266,6 @@ const Contact = () => {
               <div className="contact__field">
                 <label htmlFor="email">Email</label>
                 <input
-                  key={`email-${shakeKey}`}
                   type="email"
                   id="email"
                   name="email"
@@ -255,7 +287,6 @@ const Contact = () => {
             <div className="contact__field">
               <label htmlFor="message">Message</label>
               <textarea
-                key={`message-${shakeKey}`}
                 id="message"
                 name="message"
                 value={formData.message}
@@ -273,16 +304,20 @@ const Contact = () => {
             </div>
 
             <button type="submit" className="btn btn-primary contact__submit" disabled={status === 'sending'}>
-              {status === 'sending' ? 'Sending...' : status === 'success' ? 'Message Sent' : 'Send Message'}
+              {status === 'sending' ? 'Sending…' : status === 'success' || status === 'partial' ? 'Message Sent' : 'Send Message'}
             </button>
 
-            <div className="contact__status" role="status" aria-live="polite">
-              {status === 'success' ? (
+            <div className="contact__status" role={status === 'error' ? 'alert' : 'status'} aria-live="polite">
+              {status === 'sending' || status === 'success' ? (
                 <span className="contact__statusMessage contact__statusMessage--success">
-                  Your message has been received successfully!
+                  {successMessage}
+                </span>
+              ) : status === 'partial' ? (
+                <span className="contact__statusMessage contact__statusMessage--warning">
+                  {successMessage}
                 </span>
               ) : status === 'error' ? (
-                <span className={`contact__statusMessage contact__statusMessage--error ${isErrorDismissing ? 'is-dismissing' : ''}`}>
+                <span className="contact__statusMessage contact__statusMessage--error">
                   {backendError ? backendError : 'Please fill in all required fields.'}
                 </span>
               ) : null}

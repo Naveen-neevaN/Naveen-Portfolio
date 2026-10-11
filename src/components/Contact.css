@@ -380,15 +380,14 @@
   color: var(--text-primary);
 }
 
+.contact__statusMessage--warning {
+  background: rgba(225, 161, 22, 0.2);
+  color: #725000;
+}
+
 .contact__statusMessage--error {
   background: rgba(232, 76, 61, 0.18);
   color: #9a1f2d;
-  opacity: 1;
-  transition: opacity 0.5s ease-out;
-}
-
-.contact__statusMessage--error.is-dismissing {
-  opacity: 0;
 }
 
 @media (max-width: 768px) {

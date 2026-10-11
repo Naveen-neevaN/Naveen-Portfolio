@@ -1,76 +1,87 @@
-# EmailJS Setup Guide
+# EmailJS Contact Form Setup
 
-The contact form now uses **EmailJS** to send emails directly to your inbox without needing a backend server.
+The contact form sends two emails through EmailJS:
 
-## Step-by-Step Setup
+1. An owner notification to Naveen when a visitor submits the form.
+2. An acknowledgement to the visitor.
 
-### 1. Create an EmailJS Account
-- Go to https://www.emailjs.com/
-- Sign up with a free account (includes 200 emails/month)
+The browser can only send these emails after the EmailJS service, templates, and public key are configured.
 
-### 2. Connect Your Email Service
-- In the EmailJS dashboard, go to **Email Services**
-- Click **Add Service**
-- Choose **Gmail** (or your email provider)
-- Authorize EmailJS to send emails from your account
-- Save your **Service ID** (e.g., `service_xxxxxxx`)
+## Current configuration
 
-### 3. Create an Email Template
-- Go to **Email Templates** in the dashboard
-- Click **Create New Template**
-- Name it: `Contact Form Message`
-- Set **Template ID**: `template_contact_message`
+| Purpose | Environment variable | Current EmailJS ID |
+| --- | --- | --- |
+| Gmail service | `NEXT_PUBLIC_EMAILJS_SERVICE_ID` | `service_7jktasp` |
+| Owner notification | `NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_ADMIN` | `template_grhlujf` |
+| Visitor acknowledgement | `NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_AUTO` | `template_psfmd3n` |
+| Browser public key | `NEXT_PUBLIC_EMAILJS_PUBLIC_KEY` | Copy this from EmailJS → Account → API Keys |
 
-**Template Content:**
+Create `.env.local` for local development. This file is ignored by Git.
+
+```bash
+NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=your_emailjs_public_key
+NEXT_PUBLIC_EMAILJS_SERVICE_ID=service_7jktasp
+NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_ADMIN=template_grhlujf
+NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_AUTO=template_psfmd3n
 ```
-To: naveennagendiran321@gmail.com
-Subject: New Contact Form Submission
 
+Restart `npm run dev` whenever `.env.local` changes.
+
+## Required template settings
+
+EmailJS resolves the recipient from the **To Email** field inside each template. An empty field causes the provider error: `The recipients address is empty (422)`.
+
+### Owner notification — `template_grhlujf` (`Auto-Reply` in EmailJS)
+
+Configure this template in EmailJS → Email Templates:
+
+- **To Email:** `naveennagendiran321@gmail.com`
+- **Reply To:** `{{reply_to}}`
+- **Subject:** `New portfolio message from {{from_name}}`
+
+Suggested body:
+
+```text
 Name: {{from_name}}
 Email: {{from_email}}
+
 Message:
 {{message}}
-
----
-Reply to: {{reply_to}}
 ```
 
-### 4. Get Your Public Key
-- Go to **Account** → **API Keys**
-- Copy your **Public Key**
-- It looks like: `abc123def456ghi789`
+Using the fixed owner address here prevents a visitor from changing the destination of the owner notification.
 
-### 5. Update the Contact Component
-Update `src/components/Contact.jsx` with your keys:
+### Visitor acknowledgement — `template_psfmd3n` (`Welcome` in EmailJS)
 
-```javascript
-const EMAILJS_PUBLIC_KEY = 'YOUR_PUBLIC_KEY_HERE'  // ← Replace this
-const EMAILJS_SERVICE_ID = 'service_contact_form'
-const EMAILJS_TEMPLATE_ID = 'template_contact_message'
+- **To Email:** `{{email}}` or `{{to_email}}`
+- **Reply To:** `{{reply_to}}`
+- **Subject:** `Thanks for contacting Naveen`
+
+Suggested body:
+
+```text
+Hi {{from_name}},
+
+Thanks for reaching out. Your message has been received and I will respond shortly.
 ```
 
-Replace `YOUR_PUBLIC_KEY_HERE` with your actual Public Key from step 4.
+Save both templates after changing these settings.
 
-### 6. Test Locally
-- Run `npm run dev`
-- Go to Contact section
-- Submit the form
-- Check your email at naveennagendiran321@gmail.com
+## GitHub Pages deployment
 
-## Important Notes
+For the production static build, create GitHub Actions secrets with these exact names:
 
-✅ Works on both **local development** and **production (GitHub Pages)**
-✅ No backend server needed
-✅ Free tier includes 200 emails/month
-⚠️ Keep your Public Key visible (it's safe to expose in frontend code)
+- `NEXT_PUBLIC_EMAILJS_PUBLIC_KEY`
+- `NEXT_PUBLIC_EMAILJS_SERVICE_ID`
+- `NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_ADMIN`
+- `NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_AUTO`
 
-## Troubleshooting
+Push to `main` to rebuild and deploy. `NEXT_PUBLIC_*` values are compiled into the browser bundle; the EmailJS **public** key is designed for that use. Never add an EmailJS private key to the project, browser, or GitHub Actions environment.
 
-If emails don't arrive:
-1. Check your **Spam/Junk** folder
-2. Verify the Service ID and Template ID are correct
-3. Check the **Logs** in EmailJS dashboard for errors
-4. Ensure Gmail has authorized EmailJS (check Gmail connected app)
+## Contact-form behaviour
 
-## Disable API Route
-The old `/api/storeMessage` route has been removed. No Excel files are created anymore.
+- The button immediately changes to **Sending…** and cannot be clicked twice.
+- A successful owner notification is required for a successful submission.
+- The visitor acknowledgement is sent immediately afterward.
+- If the acknowledgement fails, the visitor sees that their message was delivered but the acknowledgement could not be sent.
+- Provider failures are translated into a clear, persistent error state; typing in the form clears it for a retry.

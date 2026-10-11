@@ -65,7 +65,14 @@ NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_ADMIN=your_admin_template_id
 NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_AUTO=your_auto_reply_template_id
 ```
 
-For GitHub Pages, add the same values as repository/environment variables used during the build.
+For GitHub Pages, add these values as repository secrets:
+`NEXT_PUBLIC_EMAILJS_PUBLIC_KEY`, `NEXT_PUBLIC_EMAILJS_SERVICE_ID`,
+`NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_ADMIN`, and `NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_AUTO`.
+The workflow injects them into the static build.
+
+Configure the **To Email** and **Reply To** fields inside both EmailJS templates as well. See [EMAILJS_SETUP.md](EMAILJS_SETUP.md) for the exact recipient values and the contact form's delivery-status behaviour.
+
+For this portfolio's current EmailJS templates, the owner-notification ID is `template_grhlujf` and the visitor-acknowledgement ID is `template_psfmd3n`. Keep the GitHub Actions secrets aligned with that mapping.
 
 ### Base Path
 
@@ -133,4 +140,3 @@ personal-website/
 ## License
 
 This project is open source and available under the MIT License.
-
